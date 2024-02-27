@@ -9,6 +9,14 @@ export default defineConfig({
   server: {
     // 设置host
     host: '0.0.0.0',
+    proxy: {
+      // 代理配置
+      '/api': {
+        target: 'http://localhost:8888', // 后端服务地址
+        changeOrigin: true, // 需要虚拟主机站点
+        rewrite: (path) => path // 重写 API 请求
+      },
+    },
   },
   plugins: [vue()],
   resolve: {
