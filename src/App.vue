@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { darkTheme } from "naive-ui";
-import { useDesignSettingStore } from "./store/modules/designSetting";
+import { useDesignSettingStore } from "./stores/modules/designSetting";
 
 const designStore = useDesignSettingStore();
 

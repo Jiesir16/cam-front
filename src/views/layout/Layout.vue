@@ -15,8 +15,9 @@
         <div class="center-align">
           <h2>CAM</h2>
         </div>
-       
-          <n-menu
+
+        <n-menu
+          :value="activeMenu"
           :collapsed-width="64"
           :collapsed-icon-size="22"
           :options="menuOptions"
@@ -33,7 +34,7 @@
             style="padding: 10px 24px"
           >
             <n-flex>仪表盘</n-flex>
-            <n-flex style="font-size:large;">
+            <n-flex style="font-size: large">
               <NButton text>操作1</NButton>
               <NButton text @click="linkToGithub">
                 <template #icon>
@@ -54,7 +55,7 @@
                 <template #trigger>
                   <n-avatar size="large" round></n-avatar>
                 </template>
-                <span> hi </span>
+                <span>hi</span>
               </n-tooltip>
             </n-flex>
           </n-flex>
@@ -98,8 +99,15 @@ import {
   LogoGithub,
   PersonCircleOutline,
 } from "@vicons/ionicons5";
-import { Component, h, ref } from "vue";
-import { useRouter } from 'vue-router'
+import { Component, h, ref ,computed} from "vue";
+import { useRouter, useRoute } from "vue-router";
+
+const router = useRouter();
+const message = useMessage();
+
+const route = useRoute();
+// 使用计算属性来动态设置当前激活的菜单项
+const activeMenu = computed(() => route.name);
 
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
@@ -118,26 +126,30 @@ const menuOptions: MenuOption[] = [
     icon: renderIcon(HomeOutline), // 使用图标
   },
   {
+    label: "用户管理",
+    key: "user",
+    icon: renderIcon(DocumentTextOutline), // 使用图标
+  },
+  {
     label: "项目",
     key: "projects",
     icon: renderIcon(LayersOutline), // 使用图标
+    disabled: true,
   },
   {
     label: "报告",
     key: "reports",
     icon: renderIcon(DocumentTextOutline), // 使用图标
+    disabled: true,
   },
   // 更多菜单项...
 ];
 
-const message = useMessage();
-const router = useRouter();
-function handleUpdateValue (key: string, item: MenuOption) {
-        message.info('[onUpdate:value]: ' + JSON.stringify(key))
-        message.info('[onUpdate:value]: ' + JSON.stringify(item))
-        router.push({ name: 'home' })
-      }
-
+function handleUpdateValue(key: string, item: MenuOption) {
+  message.info("[onUpdate:value]: " + JSON.stringify(key));
+  message.info("[onUpdate:value]: " + JSON.stringify(item));
+  router.push({ name: key });
+}
 </script>
 
 <style lang="scss">
