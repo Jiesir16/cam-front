@@ -26,8 +26,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { NFlex } from "naive-ui";
+import { ref,h } from "vue";
+import { NFlex, NButton,useMessage } from "naive-ui";
 import userApi from "./api";
 
 const pagination = ref(true);
@@ -47,8 +47,28 @@ const columns = [
     title: "邮箱",
     key: "email",
   },
-  // 添加更多列
+  {
+    title: "操作",
+    key: "actions",
+    render(row) {
+      return h(
+        NButton,
+        {
+          strong: true,
+          tertiary: true,
+          size: "small",
+          onClick: () => play(row),
+        },
+        { default: () => "Play" },
+      );
+    },
+  },
 ];
+
+const message = useMessage();
+function play () {
+  message.info(`Play ${row.title}`)
+}
 
 // 读取用户列表
 async function fetchUsers() {

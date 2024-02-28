@@ -1,6 +1,15 @@
 // http.ts
 import axios from "axios";
 
+// 外部调用反馈组件
+// naive-ui-discrete-api.ts
+//import { createDiscreteApi } from 'naive-ui';
+
+// 使用 createDiscreteApi 初始化，这里我们只初始化了 message，您可以根据需要添加更多
+//const { message } = createDiscreteApi(['message']);
+//message.success("123");
+
+
 // 环境变量中定义的 API 主机地址和基路径
 const API_HOST = "http://localhost:8888";
 const API_BASE_PATH = "/api/v1";
