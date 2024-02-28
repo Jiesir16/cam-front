@@ -19,19 +19,19 @@
       :bordered="false"
       :single-line="false"
       :columns="columns"
-      :data="data"
+      :data="tableData"
       :pagination="pagination"
     />
   </NFlex>
 </template>
 
 <script setup lang="ts">
-import { ref,computed } from "vue";
-import { NFlex ,useMessage} from "naive-ui";
-import { useUsersStore } from '@/stores/modules/users'
-const message = useMessage();
+import { ref } from "vue";
+import { NFlex } from "naive-ui";
+import userApi from "./api";
 
-
+const pagination = ref(true);
+const tableData = ref([]);
 const searchParams = ref({
   name: "",
   email: "",
@@ -41,22 +41,24 @@ const searchParams = ref({
 const columns = [
   {
     title: "用户名",
-    key: "name"
+    key: "username",
   },
   {
-    title: '邮箱',
-    key: 'email'
+    title: "邮箱",
+    key: "email",
   },
   // 添加更多列
-]
+];
 
-const data = computed(() => [{"name":"123","email":"11@qq.com"}])
-
-const userStore = useUsersStore();
-function fetchUsers() {
-  userStore.fetchUsers(searchParams.value);
+// 读取用户列表
+async function fetchUsers() {
+  try {
+    const response = await userApi.read(searchParams.value);
+    tableData.value = response.data; // 假设响应数据在data字段中
+  } catch (error) {
+    console.error(error);
+  }
 }
 
-
-const pagination = true;
+fetchUsers();
 </script>

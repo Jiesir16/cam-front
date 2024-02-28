@@ -7,10 +7,8 @@ export const useUsersStore = defineStore("users", {
   }),
   actions: {
     async fetchUsers(params) {
-      console.log(params);
       try {
-        const response = await restfulApi.get("/user/list", params);
-        this.users = response.data;
+        this.users = (await restfulApi.get("/user/list", params)).data;
       } catch (error) {
         console.error("Failed to fetch users:", error);
       }
