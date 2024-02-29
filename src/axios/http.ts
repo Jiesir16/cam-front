@@ -15,7 +15,7 @@ const API_HOST = "http://localhost:8888";
 const API_BASE_PATH = "/api/v1";
 
 const JWT_STR =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjMiLCJpc3MiOiJzeXN0ZW0iLCJpYXQiOjE3MDkxMTQwMDgsImV4cCI6MTcwOTIwMDQwOH0.n28Pb5wqyimNv5TNhsjqHKlwqyQnlwXEHBEM7OY4flc";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjMiLCJpc3MiOiJzeXN0ZW0iLCJpYXQiOjE3MDkyMDYxODksImV4cCI6MTcwOTgxMDk4OX0.dCfj7gT0uHwDpAlcZnZIJEKhdx42-Yhg2KdKk5gdL8E";
 
 // 创建 Axios 实例
 const http = axios.create({

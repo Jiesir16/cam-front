@@ -35,15 +35,15 @@
           >
             <n-flex>仪表盘</n-flex>
             <n-flex style="font-size: large">
-              <NButton text>操作1</NButton>
-              <NButton text @click="linkToGithub">
+              <NButton text size="large">操作1</NButton>
+              <NButton text @click="linkToGithub" size="large">
                 <template #icon>
                   <n-icon>
                     <LogoGithub />
                   </n-icon>
                 </template>
               </NButton>
-              <n-button text>
+              <n-button text size="large">
                 <template #icon>
                   <n-icon>
                     <PersonCircleOutline />
@@ -114,7 +114,7 @@ function renderIcon(icon: Component) {
 }
 
 const linkToGithub = () => {
-  window.open("https://github.com/Jiesir16", "_blank");
+  window.open("https://github.com/Jiesir16/cam-front", "_blank");
 };
 
 const collapsed = ref(false);

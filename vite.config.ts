@@ -9,6 +9,7 @@ export default defineConfig({
   server: {
     // 设置host
     host: '0.0.0.0',
+//    host: 'localhost',
     proxy: {
       // 代理配置
       '/api': {
