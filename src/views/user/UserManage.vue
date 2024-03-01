@@ -13,7 +13,12 @@
       </n-form-item>
       <!-- 可以根据需要添加更多查询条件 -->
       <n-form-item>
-        <n-button type="default" @click="fetchUsers">查询</n-button>
+        <slot name="fetchUserSlot">
+          <n-button type="default" @click="fetchUsers">查询</n-button>
+        </slot>
+        <slot name="resetFormSlot">
+          <n-button @click="resetSearchForm">重置</n-button>
+        </slot>
       </n-form-item>
     </n-form>
 
@@ -29,6 +34,25 @@
       resizable
     />
   </NFlex>
+
+  <n-modal v-model:show="showModal">
+    <n-card closable @close="handleClose" style="width: 500px">
+      <template #header>用户信息</template>
+      <n-form ref="editForm">
+        <!-- 表单内容，例如： -->
+        <n-form-item label="用户名">
+          <n-input v-model:value="editData.username" />
+        </n-form-item>
+        <n-form-item label="邮箱">
+          <n-input v-model:value="editData.email" />
+        </n-form-item>
+        <!-- 其他表单项 -->
+      </n-form>
+      <template #action>
+        <n-button @click="handleSubmit">提交</n-button>
+      </template>
+    </n-card>
+  </n-modal>
 </template>
 
 <script setup lang="ts">
@@ -37,22 +61,47 @@ import { NButton, NFlex, NIcon, useMessage } from "naive-ui";
 import { LayersOutline, TrashOutline } from "@vicons/ionicons5";
 import userApi from "./api";
 
-// 参考https://www.naiveui.com/zh-CN/light/components/pagination#Pagination-Props
-const paginationReactive = reactive({
+// modal start
+const initEditData = {
+  username: null,
+  email: null,
+};
+const editData = ref({ ...initEditData });
+
+function handleSubmit() {
+  console.log(editData);
+}
+
+const showModal = ref(false);
+
+function handleClose() {
+  console.log(initEditData);
+  console.log(editData);
+  editData.value = { ...initEditData };
+  showModal.value = !showModal;
+}
+
+// modal end
+
+const defaultPagination = {
   page: 1,
   pageCount: 1,
   pageSize: 10,
   prefix({ itemCount }) {
     return `Total is ${itemCount}.`;
   },
-});
+};
+
+// 参考https://www.naiveui.com/zh-CN/light/components/pagination#Pagination-Props
+const paginationReactive = reactive(defaultPagination);
 const paginationRef = paginationReactive;
 const tableData = ref([]);
-const searchParams = ref({
+const initSearchParams = {
   username: null,
   email: null,
   // 其他查询参数
-});
+};
+const searchParams = ref({ ...initSearchParams });
 
 const columns = [
   {
@@ -118,6 +167,8 @@ const message = useMessage();
 
 function editItem(row) {
   message.info(`Play ${JSON.stringify(row)}`);
+  showModal.value = true;
+  editData.value = {...row}
 }
 
 function deleteItem(row) {
@@ -137,6 +188,12 @@ async function handlePageChange(currentPage) {
   paginationReactive["itemCount"] = response.data.total;
   // 假设响应数据在data字段中
   tableData.value = response.data.records;
+}
+
+//重置表单
+function resetSearchForm() {
+  searchParams.value = { ...initSearchParams };
+  fetchUsers();
 }
 
 // 读取用户列表

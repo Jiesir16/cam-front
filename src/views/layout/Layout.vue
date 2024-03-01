@@ -53,7 +53,7 @@
               </n-button>
               <n-tooltip placement="bottom" trigger="hover">
                 <template #trigger>
-                  <n-avatar size="large" round></n-avatar>
+                  <n-avatar size="large" round src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"></n-avatar>
                 </template>
                 <span>hi</span>
               </n-tooltip>
