@@ -1,45 +1,63 @@
 <template>
-  <n-modal v-model:show="showModal">
-      <n-card
-          style="width: 600px"
-          title="模态框"
-          :bordered="false"
-          size="huge"
-          role="dialog"
-          aria-modal="true"
-          >
-          <template #header-extra>噢</template>
-          <n-flex>
-              <n-form ref="editForm">
-                  <n-form-item label="用户名">
-                      <n-input v-model:value="editFormData.username" disabled/>
-                  </n-form-item>
-                  <n-form-item label="邮箱">
-                      <n-input v-model:value="editFormData.email" disabled/>
-                  </n-form-item>
-          <!-- 其他表单项 -->
-              </n-form>
-          </n-flex>
-          <template #footer>
-            <n-button @click="handleSubmit">提交</n-button>
-          </template>
-      </n-card>
+  <n-modal :show="show1" title="编辑用户信息">
+    <n-card closable @close="handleClose" style="width: 500px">
+      <template #header>用户信息</template>
+      <n-form ref="editForm">
+        <!-- 表单内容，例如： -->
+        <n-form-item label="用户名">
+          <n-input v-model:value="user.username" />
+        </n-form-item>
+        <n-form-item label="邮箱">
+          <n-input v-model:value="user.email" />
+        </n-form-item>
+        <!-- 其他表单项 -->
+      </n-form>
+      <template #action>
+        <n-button @click="handleSubmit">提交</n-button>
+        <n-button @click="handleCancel">取消</n-button>
+      </template>
+    </n-card>
   </n-modal>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref } from "vue";
+import { NButton, NForm, NFormItem, NInput, NModal } from "naive-ui";
 
-const showModal = ref(false);
-const editFormData = ref({
-    username: '',
-    // 其他表单数据
+// 定义组件属性
+const props = defineProps({
+  show1: typeof Boolean,
+  user: {
+    id: typeof Number,
+    username: typeof String,
+    email: typeof String,
+  },
 });
 
-// 暴露 showModal，以便外部可以控制模态框的显示与隐藏
-defineExpose({ showModal });
-</script>
+// 定义发送事件
+const emit = defineEmits(["update:show", "edit"]);
 
-<style scoped>
-/* 如果需要，可以在这里添加一些 CSS 样式 */
-</style>
+const userInfo = ref({ ...props.userInfo });
+
+function handleSubmit() {
+  console.log(
+    "[Modal子组件] 触发表单提交, 发送给父组件[edit事件、更新show属性的事件]",
+  );
+  emit("edit", userInfo.value);
+  emit("update:show", false);
+}
+
+function handleCancel() {
+  console.log(
+    "[Modal子组件] 触发了 handleCancel ，发送给父组件 更新show属性的事件",
+  );
+  emit("update:show", false);
+}
+
+function handleClose() {
+  console.log(
+    "[Modal子组件] 触发了 handleClose ，发送给父组件 更新show属性的事件",
+  );
+  emit("update:show", false);
+}
+</script>

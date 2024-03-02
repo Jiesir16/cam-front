@@ -131,6 +131,17 @@ const menuOptions: MenuOption[] = [
     icon: renderIcon(DocumentTextOutline), // 使用图标
   },
   {
+    label: "系统管理",
+    key: "system_manage",
+    icon: renderIcon(DocumentTextOutline), // 使用图标
+    children: [
+      {
+        label: '用户管理',
+        key: 'user2'
+      }
+    ]
+  },
+  {
     label: "项目",
     key: "projects",
     icon: renderIcon(LayersOutline), // 使用图标
