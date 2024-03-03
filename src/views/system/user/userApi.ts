@@ -1,4 +1,4 @@
-import { restfulApi } from "@/axios/http";
+import { restfulApi } from "@/axios";
 
 interface UserData {
   id: number;

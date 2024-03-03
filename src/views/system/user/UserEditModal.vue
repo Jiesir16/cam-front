@@ -1,14 +1,14 @@
 <template>
-  <n-modal :show="show1" title="编辑用户信息">
+  <n-modal :show="show1">
     <n-card closable @close="handleClose" style="width: 500px">
       <template #header>用户信息</template>
       <n-form ref="editForm">
         <!-- 表单内容，例如： -->
         <n-form-item label="用户名">
-          <n-input v-model:value="user.username" />
+          <n-input :value="user1.username" />
         </n-form-item>
         <n-form-item label="邮箱">
-          <n-input v-model:value="user.email" />
+          <n-input :value="user1.email" />
         </n-form-item>
         <!-- 其他表单项 -->
       </n-form>
@@ -22,28 +22,31 @@
 
 <script setup>
 import { ref } from "vue";
-import { NButton, NForm, NFormItem, NInput, NModal } from "naive-ui";
+import { NButton, NForm, NFormItem, NInput, NModal ,useMessage} from "naive-ui";
 
 // 定义组件属性
 const props = defineProps({
   show1: typeof Boolean,
-  user: {
-    id: typeof Number,
-    username: typeof String,
-    email: typeof String,
-  },
+  edit: typeof Boolean,
+  user1: { username: typeof String, email: typeof String },
 });
 
-// 定义发送事件
-const emit = defineEmits(["update:show", "edit"]);
+const user12 = ref({ ...props.user1 });
 
-const userInfo = ref({ ...props.userInfo });
+// 定义发送事件
+const emit = defineEmits(["update:show", "edit", "create"]);
 
 function handleSubmit() {
   console.log(
     "[Modal子组件] 触发表单提交, 发送给父组件[edit事件、更新show属性的事件]",
   );
-  emit("edit", userInfo.value);
+  let evrntStr = "edit";
+  if (!props.edit) {
+    evrntStr = "create";
+  }
+  console.log("userInfo", user12);
+  console.log("userInfo.value", user12.value);
+  emit(evrntStr, user12.value);
   emit("update:show", false);
 }
 
@@ -60,4 +63,11 @@ function handleClose() {
   );
   emit("update:show", false);
 }
+
+const message = useMessage();
+function asd() {
+  message.info("cccccccccccc");
+}
+
+asd();
 </script>

@@ -13,7 +13,7 @@
         @expand="collapsed = false"
       >
         <div class="center-align">
-          <h2>CAM</h2>
+          <p>CAM</p>
         </div>
 
         <n-menu
@@ -23,7 +23,6 @@
           :options="menuOptions"
           @update:value="handleUpdateValue"
         />
-        
       </n-layout-sider>
       <n-layout>
         <!-- 顶部导航栏 -->
@@ -31,9 +30,15 @@
           <n-flex
             justify="space-between"
             align="center"
-            style="padding: 10px 24px"
+            style="padding: 5px 24px"
           >
-            <n-flex>仪表盘</n-flex>
+            <n-flex>
+              <n-breadcrumb>
+                <n-breadcrumb-item>主页</n-breadcrumb-item>
+                <n-breadcrumb-item>系统管理</n-breadcrumb-item>
+                <n-breadcrumb-item>用户管理</n-breadcrumb-item>
+              </n-breadcrumb>
+            </n-flex>
             <n-flex style="font-size: large">
               <NButton text size="large">操作1</NButton>
               <NButton text @click="linkToGithub" size="large">
@@ -53,18 +58,23 @@
               </n-button>
               <n-tooltip placement="bottom" trigger="hover">
                 <template #trigger>
-                  <n-avatar size="large" round src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"></n-avatar>
+                  <n-avatar
+                    size="large"
+                    round
+                    src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"
+                  ></n-avatar>
                 </template>
                 <span>hi</span>
               </n-tooltip>
             </n-flex>
           </n-flex>
         </n-layout-header>
+
         <!-- 内容区域：侧边栏和主内容 -->
         <n-flex item style="flex: 1">
           <!-- 主内容区 -->
           <n-layout>
-            <n-layout-content style="padding: 10px 24px">
+            <n-layout-content>
               <router-view />
             </n-layout-content>
           </n-layout>
@@ -97,10 +107,12 @@ import {
   HomeOutline,
   LayersOutline,
   LogoGithub,
+  PeopleOutline,
   PersonCircleOutline,
+  SettingsOutline,
 } from "@vicons/ionicons5";
-import { Component, h, ref ,computed} from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { Component, computed, h, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 const router = useRouter();
 const message = useMessage();
@@ -126,20 +138,16 @@ const menuOptions: MenuOption[] = [
     icon: renderIcon(HomeOutline), // 使用图标
   },
   {
-    label: "用户管理",
-    key: "user",
-    icon: renderIcon(DocumentTextOutline), // 使用图标
-  },
-  {
     label: "系统管理",
     key: "system_manage",
-    icon: renderIcon(DocumentTextOutline), // 使用图标
+    icon: renderIcon(SettingsOutline), // 使用图标
     children: [
       {
-        label: '用户管理',
-        key: 'user2'
-      }
-    ]
+        label: "用户管理",
+        key: "user",
+        icon: renderIcon(PeopleOutline),
+      },
+    ],
   },
   {
     label: "项目",
@@ -171,12 +179,12 @@ function handleUpdateValue(key: string, item: MenuOption) {
   justify-content: center;
   align-items: center;
   text-align: center; // 确保文本也居中，特别是对多行文本很有用
-
-  h2 {
+  height: 50px;
+  p {
     // 如果您需要对 h2 元素进行一些特定的样式设置
     // 比如更改颜色、字体大小等
     color: #18a058;
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 }
 </style>

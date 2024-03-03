@@ -3,8 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/views/home/Home.vue";
 import Layout from "@/views/layout/Layout.vue";
 import Login from "@/views/login/Login.vue";
-import UserView from "@/views/user/Index.vue";
-import UserView2 from "@/views/user2/UserManagement.vue";
+import UserView from "@/views/system/user/UserManagement.vue";
 
 const routes = [
   {
@@ -33,11 +32,6 @@ const routes = [
         path: "/dashboard/user",
         name: "user",
         component: UserView,
-      },
-      {
-        path: "/dashboard/user2",
-        name: "user2",
-        component: UserView2,
       },
     ],
   },

@@ -1,5 +1,5 @@
 <template>
-  <n-form @submit.prevent="onSearch" ref="searchForm">
+  <n-form @submit.prevent="onSearch" ref="searchForm" inline>
     <n-form-item label="用户名">
       <n-input
         v-model:value="searchFormInfo.username"
@@ -9,8 +9,12 @@
     <n-form-item label="邮箱">
       <n-input v-model:value="searchFormInfo.email" placeholder="请输入邮箱" />
     </n-form-item>
-    <n-button type="primary" attr-type="submit">搜索</n-button>
-    <n-button @click="onReset">重置</n-button>
+    <n-form-item>
+      <n-button type="primary" attr-type="submit">搜索</n-button>
+    </n-form-item>
+    <n-form-item>
+      <n-button @click="onReset">重置</n-button>
+    </n-form-item>
   </n-form>
 </template>
 

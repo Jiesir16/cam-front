@@ -4,20 +4,23 @@ import { LayersOutline, TrashOutline } from "@vicons/ionicons5";
 
 export const getTableColumns = (
   updateActivationStatus: Function,
-  editItem: Function,
+  openEditModal: Function,
   deleteItem: Function,
 ) => [
   {
     title: "用户名",
     key: "username",
+    align: "center",
   },
   {
     title: "邮箱",
     key: "email",
+    align: "center",
   },
   {
     title: "是否激活",
     key: "activated",
+    align: "center",
     render(row) {
       return h(
         NSwitch,
@@ -40,14 +43,17 @@ export const getTableColumns = (
   {
     title: "创建时间",
     key: "createTime",
+    align: "center",
   },
   {
     title: "修改时间",
     key: "updateTime",
+    align: "center",
   },
   {
     title: "Actions",
     key: "actions",
+    align: "center",
     render(row) {
       return [
         h(
@@ -55,7 +61,7 @@ export const getTableColumns = (
           {
             text: true,
             type: "info",
-            onClick: () => editItem(row),
+            onClick: () => openEditModal(row),
           },
           {
             default: () => [

@@ -2,6 +2,8 @@ import type { App } from 'vue';
 import {
   create,
   NMessageProvider,
+  NH1,
+  NText,
   NDialogProvider,
   NConfigProvider,
   NInput,
@@ -24,6 +26,9 @@ import {
   NTooltip,
   NAvatar,
   NTabs,
+  NFlex,
+  NAffix,
+  NH2,
   NTabPane,
   NCard,
   NRow,
@@ -73,6 +78,8 @@ import {
 const naive = create({
   components: [
     NMessageProvider,
+    NH1,
+    NText,
     NDialogProvider,
     NConfigProvider,
     NInput,
@@ -95,6 +102,9 @@ const naive = create({
     NTooltip,
     NAvatar,
     NTabs,
+    NFlex,
+    NAffix,
+    NH2,
     NTabPane,
     NCard,
     NRow,
