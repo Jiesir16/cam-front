@@ -39,6 +39,7 @@ export default {
       tableDataRef.value = response.data.records;
     } catch (error) {
       console.error(error);
+      pagination.itemCount = 0;
     }
   },
   update: (data: UserData) => restfulApi.patch(`/user/${data.id}`, data),

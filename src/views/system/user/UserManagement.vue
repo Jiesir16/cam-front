@@ -93,6 +93,7 @@ function editUser(user) {
 
 function createUser(user) {
   console.log("[用户列表父组件] 收到Modal发送的create事件", user);
+  console.log("------------------", currentUser);
 
   userApi
     .create(user)
