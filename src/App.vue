@@ -1,9 +1,12 @@
 <template>
-  <n-message-provider>
-    <n-config-provider :theme="getDarkTheme">
-      <router-view />
-    </n-config-provider>
-  </n-message-provider>
+
+  <n-config-provider v-model:theme="getDarkTheme">
+    <n-message-provider>
+      <n-loading-bar-provider>
+        <router-view />
+      </n-loading-bar-provider>
+    </n-message-provider>
+  </n-config-provider>
 </template>
 
 <script setup lang="ts">

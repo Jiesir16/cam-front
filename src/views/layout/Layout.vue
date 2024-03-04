@@ -1,90 +1,91 @@
 <template>
-  <n-flex vertical style="height: 100vh">
-    <n-layout has-sider>
-      <!-- 侧边栏 -->
-      <n-layout-sider
-        bordered
-        collapse-mode="width"
-        :collapsed-width="64"
-        :width="240"
-        :collapsed="collapsed"
-        show-trigger
-        @collapse="collapsed = true"
-        @expand="collapsed = false"
-      >
-        <div class="center-align">
-          <p>CAM</p>
-        </div>
-
-        <n-menu
-          :value="activeMenu"
+  <n-flex vertical style="height: 100vh; width: 100vw;gap: 0" >
+      <n-layout has-sider>
+        <!-- 侧边栏 -->
+        <n-layout-sider
+          bordered
+          collapse-mode="width"
           :collapsed-width="64"
-          :collapsed-icon-size="22"
-          :options="menuOptions"
-          @update:value="handleUpdateValue"
-        />
-      </n-layout-sider>
-      <n-layout>
-        <!-- 顶部导航栏 -->
-        <n-layout-header>
-          <n-flex
-            justify="space-between"
-            align="center"
-            style="padding: 5px 24px"
-          >
-            <n-flex>
-              <n-breadcrumb>
-                <n-breadcrumb-item>主页</n-breadcrumb-item>
-                <n-breadcrumb-item>系统管理</n-breadcrumb-item>
-                <n-breadcrumb-item>用户管理</n-breadcrumb-item>
-              </n-breadcrumb>
-            </n-flex>
-            <n-flex style="font-size: large">
-              <NButton text size="large">操作1</NButton>
-              <NButton text @click="linkToGithub" size="large">
-                <template #icon>
-                  <n-icon>
-                    <LogoGithub />
-                  </n-icon>
-                </template>
-              </NButton>
-              <n-button text size="large">
-                <template #icon>
-                  <n-icon>
-                    <PersonCircleOutline />
-                  </n-icon>
-                </template>
-                个人设置
-              </n-button>
-              <n-tooltip placement="bottom" trigger="hover">
-                <template #trigger>
-                  <n-avatar
-                    size="large"
-                    round
-                    src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"
-                  ></n-avatar>
-                </template>
-                <span>hi</span>
-              </n-tooltip>
-            </n-flex>
-          </n-flex>
-        </n-layout-header>
+          :width="240"
+          :collapsed="collapsed"
+          show-trigger
+          @collapse="collapsed = true"
+          @expand="collapsed = false"
+        >
+          <div class="center-align">
+            <n-gradient-text :size="24" type="success">CAM</n-gradient-text>
+          </div>
 
-        <!-- 内容区域：侧边栏和主内容 -->
-        <n-flex item style="flex: 1">
-          <!-- 主内容区 -->
-          <n-layout>
-            <n-layout-content>
-              <router-view />
-            </n-layout-content>
-          </n-layout>
-        </n-flex>
+          <n-menu
+            :value="activeMenu"
+            :collapsed-width="64"
+            :collapsed-icon-size="22"
+            :options="menuOptions"
+            @update:value="handleUpdateValue"
+          />
+        </n-layout-sider>
+        <n-layout>
+          <!-- 顶部导航栏 -->
+          <n-layout-header>
+            <n-flex
+              justify="space-between"
+              align="center"
+              style="padding: 5px 24px"
+            >
+              <n-flex>
+                <n-breadcrumb>
+                  <n-breadcrumb-item>主页</n-breadcrumb-item>
+                  <n-breadcrumb-item>系统管理</n-breadcrumb-item>
+                  <n-breadcrumb-item>用户管理</n-breadcrumb-item>
+                </n-breadcrumb>
+              </n-flex>
+              <n-flex style="font-size: large">
+                <NButton text size="large">操作1</NButton>
+                <NButton text @click="linkToGithub" size="large">
+                  <template #icon>
+                    <n-icon>
+                      <LogoGithub />
+                    </n-icon>
+                  </template>
+                </NButton>
+                <n-button text size="large">
+                  <template #icon>
+                    <n-icon>
+                      <PersonCircleOutline />
+                    </n-icon>
+                  </template>
+                  个人设置
+                </n-button>
+                <n-tooltip placement="bottom" trigger="hover">
+                  <template #trigger>
+                    <n-avatar
+                      size="large"
+                      round
+                      src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"
+                    ></n-avatar>
+                  </template>
+                  <span>hi</span>
+                </n-tooltip>
+                <n-button text @click="changeTheme">切换主题</n-button>
+              </n-flex>
+            </n-flex>
+          </n-layout-header>
+
+          <!-- 内容区域：侧边栏和主内容 -->
+          <n-flex item style="flex: 1">
+            <!-- 主内容区 -->
+            <n-layout>
+              <n-layout-content>
+                <router-view />
+              </n-layout-content>
+            </n-layout>
+          </n-flex>
+        </n-layout>
       </n-layout>
-    </n-layout>
-    <!-- 底部Footer -->
-    <n-layout-footer style="text-align: center; padding: 8px">
-      © 2024 Your Company Name
-    </n-layout-footer>
+      <!-- 底部Footer -->
+      <n-layout-footer style="text-align: center; padding: 8px">
+        © 2024 Your Company Name
+      </n-layout-footer>
   </n-flex>
 </template>
 
@@ -100,6 +101,7 @@ import {
   NLayoutHeader,
   NLayoutSider,
   NMenu,
+  useLoadingBar,
   useMessage,
 } from "naive-ui";
 import {
@@ -113,9 +115,12 @@ import {
 } from "@vicons/ionicons5";
 import { Component, computed, h, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useDesignSettingStore } from "@/stores/modules/designSetting";
 
+const designStore = useDesignSettingStore();
 const router = useRouter();
 const message = useMessage();
+const loadingBar = useLoadingBar();
 
 const route = useRoute();
 // 使用计算属性来动态设置当前激活的菜单项
@@ -169,6 +174,10 @@ function handleUpdateValue(key: string, item: MenuOption) {
   message.info("[onUpdate:value]: " + JSON.stringify(item));
   router.push({ name: key });
 }
+
+function changeTheme() {
+  designStore.reserveTheme();
+}
 </script>
 
 <style lang="scss">
@@ -180,6 +189,7 @@ function handleUpdateValue(key: string, item: MenuOption) {
   align-items: center;
   text-align: center; // 确保文本也居中，特别是对多行文本很有用
   height: 50px;
+
   p {
     // 如果您需要对 h2 元素进行一些特定的样式设置
     // 比如更改颜色、字体大小等

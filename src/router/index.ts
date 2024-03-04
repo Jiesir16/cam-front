@@ -4,6 +4,7 @@ import Home from "@/views/home/Home.vue";
 import Layout from "@/views/layout/Layout.vue";
 import Login from "@/views/login/Login.vue";
 import UserView from "@/views/system/user/UserManagement.vue";
+import { loadingBar } from "@/plugins/naive-ui-discrete-api";
 
 const routes = [
   {
@@ -44,4 +45,14 @@ const router = createRouter({
   routes,
 });
 
+router.beforeEach(() => {
+  // ...
+  // 返回 false 以取消导航
+  loadingBar.start();
+  return true;
+});
+router.afterEach(() => {
+  loadingBar.finish();
+  return true;
+})
 export default router;

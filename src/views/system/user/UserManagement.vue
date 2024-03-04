@@ -1,22 +1,11 @@
 <template>
-  <n-flex
-    justify="space-between"
-    align="center"
-    style="
-      padding: 0 24px;
-      border-left: none;
-      border-bottom: 1px solid #eee;
-      border-top: solid #eee;
-    "
-  >
+  <n-flex justify="space-between" align="center" style="padding: 0 24px">
     <n-flex style="height: 50px" align="center">
-        <n-h2 prefix="bar" align-text style="margin: 0">
-          <n-text type="success" strong tag="div">用户管理</n-text>
-        </n-h2>
+      <n-gradient-text :size="24" type="success">用户管理</n-gradient-text>
     </n-flex>
 
     <n-flex>
-      <n-button @click="openCreateModal" tertiary round type="primary">
+      <n-button @click="openCreateModal" ghost round type="primary">
         <n-icon>
           <PersonAddOutline />
         </n-icon>
@@ -40,12 +29,12 @@
       :data="tableData"
       :pagination="paginationRef"
       @update:page="handlePageChange"
+      :loading="loading"
       resizable
     />
     <UserEditModal
       v-model:show1="showEditModal"
       v-model:user1="currentUser"
-      v-model:edit="isEdit"
       @edit="editUser"
       @create="createUser"
       @update:show="handleShow"
@@ -58,36 +47,47 @@ import { reactive, ref } from "vue";
 import { getTableColumns } from "./userTableColumns";
 import { PersonAddOutline } from "@vicons/ionicons5";
 import UserSearchForm from "./UserSearchForm.vue";
-import UserEditModal from "./UserEditModal.vue";
+import UserEditModal, { User } from "./UserEditModal.vue";
 import userApi from "./userApi";
 import { message } from "@/plugins/naive-ui-discrete-api";
 
 // 搜索表单 start
 const searchParams = ref({ username: null, email: null });
 
-function handleSearch(params) {
+function handleSearch() {
   console.log(
-    "[用户列表父组件] 收到 [SearchForm子组件] 发送的 [search事件] ,父组件执行获取用户方法",
+    "[用户列表父组件] 收到 [SearchForm子组件] 发送的 [search事件] ,父组件执行获取列表数据方法",
   );
-  fetchUsers(params);
+  fetchUsers(searchParams.value);
 }
 
 function resetSearch() {
   console.log(
-    "[用户列表父组件] 收到 [SearchForm子组件] 发送的 [reset事件] ,父组件执行获取用户方法",
+    "[用户列表父组件] 收到 [SearchForm子组件] 发送的 [reset事件] ,父组件执行获取列表数据方法",
   );
-  fetchUsers({});
+  paginationRef.page = 1;
+  searchParams.value = { username: null, email: null };
+  fetchUsers(searchParams.value);
 }
 
 // 搜索表单 end
 
 // 模态框 start
 const showEditModal = ref(false);
-const currentUser = ref({ username: null, email: null });
-const isEdit = ref(false);
+
+const currentUser = ref<User>({ id: null, username: null, email: null });
 
 function editUser(user) {
   console.log("[用户列表父组件] 收到Modal发送的edit事件", user);
+  userApi
+    .update(user)
+    .then(() => {
+      message.success("修改成功");
+      fetchUsers({});
+    })
+    .catch(() => {
+      message.error("修改失败");
+    });
   showEditModal.value = true;
 }
 
@@ -99,6 +99,7 @@ function createUser(user) {
     .create(user)
     .then(() => {
       message.success("创建成功");
+      fetchUsers({});
     })
     .catch((error) => {
       console.log("创建用户失败", error);
@@ -118,6 +119,8 @@ function handleShow(show) {
 
 // 模态框 end
 
+const loading = ref<Boolean>(false);
+
 const tableData = ref([]);
 
 // 删除用户
@@ -135,10 +138,8 @@ const updateActivationStatus = (id: number, activated: boolean) => {
 };
 
 const openEditModal = (row) => {
-  isEdit.value = true;
   showEditModal.value = true;
-  let param1 = { username: row.username, email: row.email };
-  currentUser.value = param1;
+  currentUser.value = { id: row.id, username: row.username, email: row.email };
   console.log("editItem", row);
 };
 
@@ -151,7 +152,6 @@ const columns = getTableColumns(
 function openCreateModal() {
   showEditModal.value = true;
   currentUser.value = { username: null, email: null };
-  isEdit.value = false;
 }
 
 // 参考https://www.naiveui.com/zh-CN/light/components/pagination#Pagination-Props
@@ -166,31 +166,18 @@ const paginationRef = reactive({
 
 // 分页按钮
 function handlePageChange(currentPage: number) {
-  userApi.read(
-    paginationRef,
-    {
-      current: currentPage,
-      size: 10,
-      ...searchParams.value,
-    },
-    tableData,
-  );
+  fetchUsers({
+    current: currentPage,
+    ...searchParams.value,
+  });
 }
 
 // 获取用户列表
 function fetchUsers(params: any) {
-  userApi.read(paginationRef, params, tableData);
+  userApi.read(paginationRef, params, tableData, loading);
 }
 
 fetchUsers({});
 </script>
 
-<style>
-.container {
-  width: 100%;
-  height: 200px;
-  background-color: rgba(128, 128, 128, 0.3);
-  border-radius: 3px;
-  overflow: auto;
-}
-</style>
+<style></style>
