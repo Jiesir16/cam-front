@@ -4,6 +4,8 @@ import Home from "@/views/home/Home.vue";
 import Layout from "@/views/layout/Layout.vue";
 import Login from "@/views/login/Login.vue";
 import UserView from "@/views/system/user/UserManagement.vue";
+import RoleView from "@/views/system/role/RoleManagement.vue";
+import PermissionView from "@/views/system/permission/PermissionManagement.vue";
 import { loadingBar } from "@/plugins/naive-ui-discrete-api";
 
 const routes = [
@@ -34,6 +36,16 @@ const routes = [
         name: "user",
         component: UserView,
       },
+      {
+        path: "/dashboard/role",
+        name: "role",
+        component: RoleView,
+      },
+      {
+        path: "/dashboard/permission",
+        name: "permission",
+        component: PermissionView,
+      },
     ],
   },
 
@@ -54,5 +66,5 @@ router.beforeEach(() => {
 router.afterEach(() => {
   loadingBar.finish();
   return true;
-})
+});
 export default router;

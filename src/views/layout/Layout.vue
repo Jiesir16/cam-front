@@ -152,6 +152,17 @@ const menuOptions: MenuOption[] = [
         key: "user",
         icon: renderIcon(PeopleOutline),
       },
+      {
+        label: "角色管理",
+        key: "role",
+        icon: renderIcon(PeopleOutline),
+      },
+      {
+        label: "权限管理",
+        key: "permission",
+        icon: renderIcon(PeopleOutline),
+        show: true,
+      },
     ],
   },
   {
