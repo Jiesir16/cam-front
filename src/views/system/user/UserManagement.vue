@@ -14,11 +14,23 @@
     </n-flex>
   </n-flex>
   <n-flex vertical style="margin: 12px; padding: 24px">
-    <UserSearchForm
-      v-model:searchParams="searchParams"
-      @search="handleSearch"
-      @reset="resetSearch"
-    />
+    <n-form @submit.prevent="onSearch" ref="searchForm" inline>
+      <n-form-item label="用户名">
+        <n-input
+          v-model:value="searchParams.username"
+          placeholder="请输入用户名"
+        />
+      </n-form-item>
+      <n-form-item label="邮箱">
+        <n-input v-model:value="searchParams.email" placeholder="请输入邮箱" />
+      </n-form-item>
+      <n-form-item>
+        <n-button type="primary" attr-type="submit">搜索</n-button>
+      </n-form-item>
+      <n-form-item>
+        <n-button @click="onReset">重置</n-button>
+      </n-form-item>
+    </n-form>
 
     <!-- 数据表格 -->
     <n-data-table
@@ -46,26 +58,18 @@
 import { reactive, ref } from "vue";
 import { getTableColumns } from "./userTableColumns";
 import { PersonAddOutline } from "@vicons/ionicons5";
-import UserSearchForm from "./UserSearchForm.vue";
 import UserEditModal, { User } from "./UserEditModal.vue";
-import userApi from "./userApi";
+import userApi, { UserSearchParam } from "./userApi";
 import { message } from "@/plugins/naive-ui-discrete-api";
 
 // 搜索表单 start
-const searchParams = ref({ username: null, email: null });
+const searchParams = ref<UserSearchParam>({ username: null, email: null });
 
-function handleSearch() {
-  console.log(
-    "[用户列表父组件] 收到 [SearchForm子组件] 发送的 [search事件] ,父组件执行获取列表数据方法",
-  );
+function onSearch() {
   fetchUsers(searchParams.value);
 }
 
-function resetSearch() {
-  console.log(
-    "[用户列表父组件] 收到 [SearchForm子组件] 发送的 [reset事件] ,父组件执行获取列表数据方法",
-  );
-  paginationRef.page = 1;
+function onReset() {
   searchParams.value = { username: null, email: null };
   fetchUsers(searchParams.value);
 }

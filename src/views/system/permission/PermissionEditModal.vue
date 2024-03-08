@@ -14,7 +14,7 @@
           <n-input
             v-model:value="permissionInfo.permName"
             placeholder="请输入权限名称"
-            />
+          />
         </n-form-item>
         <n-form-item label="父节点ID">
           <n-input
@@ -31,8 +31,10 @@
         <!-- 其他表单项 -->
       </n-form>
       <template #action>
-        <n-button @click="handleSubmit">提交</n-button>
-        <n-button @click="handleCancel">取消</n-button>
+        <n-flex justify="end">
+          <n-button @click="handleCancel">取消</n-button>
+          <n-button @click="handleSubmit" type="primary">提交</n-button>
+        </n-flex>
       </template>
     </n-card>
   </n-modal>

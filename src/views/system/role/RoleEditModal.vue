@@ -25,8 +25,10 @@
         <!-- 其他表单项 -->
       </n-form>
       <template #action>
-        <n-button @click="handleSubmit">提交</n-button>
-        <n-button @click="handleCancel">取消</n-button>
+        <n-flex justify="end">
+          <n-button @click="handleCancel">取消</n-button>
+          <n-button @click="handleSubmit" type="primary">提交</n-button>
+        </n-flex>
       </template>
     </n-card>
   </n-modal>

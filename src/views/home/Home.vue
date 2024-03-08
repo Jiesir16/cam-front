@@ -5,7 +5,7 @@
     </div>
   </template>
   
-  <script setup>
+  <script setup lang="ts">
   // 在这里导入其他组件或者使用 Composition API
   </script>
   

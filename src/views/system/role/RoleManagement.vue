@@ -14,21 +14,19 @@
     </n-flex>
   </n-flex>
 
-  
-
   <n-flex vertical style="margin: 12px; padding: 24px">
     <n-form @submit.prevent="onSearch" ref="searchForm" inline>
       <n-form-item label="角色编码">
         <n-input
           v-model:value="searchParams.roleCode"
           placeholder="请输入角色编码"
-          />
+        />
       </n-form-item>
       <n-form-item label="角色名称">
         <n-input
           v-model:value="searchParams.roleName"
           placeholder="请输入角色名称"
-          />
+        />
       </n-form-item>
       <n-form-item>
         <n-button type="primary" attr-type="submit">搜索</n-button>
@@ -37,7 +35,7 @@
         <n-button @click="onReset">重置</n-button>
       </n-form-item>
     </n-form>
-  
+
     <!-- 数据表格 -->
     <n-data-table
       remote
@@ -72,7 +70,7 @@ const message = useMessage();
 
 // modal start
 
-const showEditModal = ref<Boolean>(false);
+const showEditModal = ref<boolean>(false);
 
 const currentRole = ref<Role>({
   roleCode: null,
@@ -92,7 +90,6 @@ function editRole(role: Role) {
       message.error("更新失败");
     });
   showEditModal.value = false;
-  
 }
 
 function createRole(role: Role) {

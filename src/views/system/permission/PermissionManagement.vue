@@ -49,7 +49,7 @@
     />
     <PermissionEditModal
       v-model:show="showEditModal"
-      v-model:permission-info="currentPermission"
+      v-model:permissionInfo="currentPermission"
       @edit="editPermission"
       @create="createPermission"
       @update:show="handleShow"
@@ -85,8 +85,12 @@ function onReset() {
 
 // modal start
 
-const showEditModal = ref<Boolean>(false);
-const currentPermission = ref<Permission>();
+const showEditModal = ref<boolean>(false);
+const currentPermission = ref<Permission>({
+  parentId: null,
+  permCode: null,
+  permName: null,
+});
 
 function handleShow(value) {
   showEditModal.value = value;

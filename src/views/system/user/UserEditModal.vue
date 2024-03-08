@@ -5,16 +5,18 @@
       <n-form ref="editForm">
         <!-- 表单内容，例如： -->
         <n-form-item label="用户名">
-          <n-input v-model:value="user1.username" placeholder="请输入用户名"/>
+          <n-input v-model:value="user1.username" placeholder="请输入用户名" />
         </n-form-item>
         <n-form-item label="邮箱">
-          <n-input v-model:value="user1.email" placeholder="请输入邮箱"/>
+          <n-input v-model:value="user1.email" placeholder="请输入邮箱" />
         </n-form-item>
         <!-- 其他表单项 -->
       </n-form>
       <template #action>
-        <n-button @click="handleSubmit">提交</n-button>
-        <n-button @click="handleCancel">取消</n-button>
+        <n-flex justify="end">
+          <n-button @click="handleCancel">取消</n-button>
+          <n-button @click="handleSubmit" type="primary">提交</n-button>
+        </n-flex>
       </template>
     </n-card>
   </n-modal>

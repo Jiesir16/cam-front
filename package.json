@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "preview": "vite preview",
-    "lint": "eslint -c .eslintrc.ts --ext .ts,.vue src"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@vicons/ionicons5": "^0.12.0",

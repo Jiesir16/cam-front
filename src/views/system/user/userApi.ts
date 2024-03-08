@@ -1,6 +1,11 @@
 import { restfulApi } from "@/axios";
 import { message } from "@/plugins/naive-ui-discrete-api";
 
+export interface UserSearchParam {
+  username: String | null;
+  email: String | null;
+}
+
 interface UserData {
   id: number;
   activated: boolean;

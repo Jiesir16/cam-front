@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { restfulApi } from "@/axios/http";
+import { restfulApi } from "@/axios";
 
 export const useUsersStore = defineStore("users", {
   state: () => ({
