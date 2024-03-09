@@ -49,7 +49,7 @@ export default {
         tableDataRef.value = [];
         pagination.itemCount = 0;
         loading.value = false;
-        message.error("系统异常");
+        message.error("系统异常,请联系管理员");
       });
   },
   update: (data: Permission) => restfulApi.patch(`/perm/${data.id}`, data),

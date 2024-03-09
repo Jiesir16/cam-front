@@ -10,6 +10,14 @@
         <n-form-item label="邮箱">
           <n-input v-model:value="user1.email" placeholder="请输入邮箱" />
         </n-form-item>
+        <n-form-item>
+          <n-tree-select
+            v-model:value="user1.roleIds"
+            multiple
+            :options="options"
+            @update:value="handleUpdateValue"
+          />
+        </n-form-item>
         <!-- 其他表单项 -->
       </n-form>
       <template #action>
@@ -23,15 +31,36 @@
 </template>
 
 <script setup lang="ts">
+import { TreeSelectOption } from "naive-ui";
+
 export interface User {
   id?: Number | null;
   username?: String | null;
   email?: String | null;
+  roleIds: Array<number>;
 }
 
 export interface Props {
   show1?: boolean;
   user1: User;
+}
+
+const options = [
+  {
+    label: "管理员",
+    key: 1,
+  },
+  {
+    label: "访客",
+    key: 2,
+  },
+];
+
+function handleUpdateValue(
+  value: string | number | Array<string | number> | null,
+  option: TreeSelectOption | null | Array<TreeSelectOption | null>,
+) {
+  console.log(value, option);
 }
 
 // 定义组件属性

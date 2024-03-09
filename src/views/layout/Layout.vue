@@ -17,6 +17,7 @@
         </div>
 
         <n-menu
+          v-model:value="selectedKey"
           :collapsed-width="64"
           :collapsed-icon-size="22"
           :options="menuOptions"
@@ -111,8 +112,11 @@ import {
   SettingsOutline,
 } from "@vicons/ionicons5";
 import { Component, h, ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useDesignSettingStore } from "@/stores/modules/designSetting";
+import { Key } from "naive-ui/lib/menu/src/interface";
+
+const route = useRoute();
 
 const designStore = useDesignSettingStore();
 const router = useRouter();
@@ -125,6 +129,13 @@ const linkToGithub = () => {
   window.open("https://github.com/Jiesir16/cam-front", "_blank");
 };
 
+const selectedKey = ref<Key>("dashboard");
+
+function handleRouteMenu() {
+  selectedKey.value = String(route.name);
+}
+
+handleRouteMenu();
 const collapsed = ref(false);
 // 使用图标的菜单项定义
 const menuOptions: MenuOption[] = [
