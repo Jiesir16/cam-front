@@ -12,8 +12,10 @@
         </n-form-item>
         <n-form-item>
           <n-tree-select
-            v-model:value="user1.roleIds"
             multiple
+            v-model:value="user1.roleIds"
+            label-field="roleName"
+            key-field="id"
             :options="options"
             @update:value="handleUpdateValue"
           />
@@ -32,12 +34,13 @@
 
 <script setup lang="ts">
 import { TreeSelectOption } from "naive-ui";
+import { useRolesStore } from "@/stores/modules/role";
 
 export interface User {
   id?: Number | null;
   username?: String | null;
   email?: String | null;
-  roleIds: Array<number>;
+  roleIds?: Array<number>;
 }
 
 export interface Props {
@@ -45,16 +48,25 @@ export interface Props {
   user1: User;
 }
 
-const options = [
-  {
-    label: "管理员",
-    key: 1,
-  },
-  {
-    label: "访客",
-    key: 2,
-  },
-];
+const roleStore = useRolesStore();
+let s = [];
+roleStore.fetchAllRoles().then(data => {
+  console.log("data",data);
+  s = data;
+});
+
+const options = s;
+
+//const options = [
+//  {
+//    roleName: "管理员",
+//    id: 1,
+//  },
+//  {
+//    roleName: "访客",
+//    id: 2,
+//  },
+//];
 
 function handleUpdateValue(
   value: string | number | Array<string | number> | null,

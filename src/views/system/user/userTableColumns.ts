@@ -1,5 +1,5 @@
 import { h } from "vue";
-import { NButton, NIcon, NSwitch } from "naive-ui";
+import { NButton, NIcon, NSwitch, NTag } from "naive-ui";
 import { LayersOutline, TrashOutline } from "@vicons/ionicons5";
 
 export const getTableColumns = (
@@ -16,6 +16,28 @@ export const getTableColumns = (
     title: "邮箱",
     key: "email",
     align: "center",
+  },
+  {
+    title: "角色",
+    key: "roles",
+    align: "center",
+    render(row) {
+      return row.roles.map((role) => {
+        return h(
+          NTag,
+          {
+            style: {
+              marginRight: "6px",
+            },
+            type: "success",
+            bordered: false,
+          },
+          {
+            default: () => role.roleName,
+          },
+        );
+      });
+    },
   },
   {
     title: "是否激活",

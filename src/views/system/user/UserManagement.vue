@@ -138,7 +138,13 @@ const deleteItem = (id: number) => {
 const updateActivationStatus = (id: number, activated: boolean) => {
   userApi.update({ id, activated }).then((reponse) => {
     console.log("更新响应", reponse);
+    // 刷新列表
+    fetchUsers({
+      current: paginationRef.page,
+      ...searchParams.value,
+    });
   });
+
 };
 
 const openEditModal = (row) => {
