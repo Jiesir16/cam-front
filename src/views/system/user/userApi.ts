@@ -1,5 +1,6 @@
 import { restfulApi } from "@/axios";
 import { message } from "@/plugins/naive-ui-discrete-api";
+import {Role} from "@/views/system/role/roleApi.ts";
 
 export interface UserSearchParam {
   username: String | null;
@@ -9,6 +10,7 @@ export interface UserSearchParam {
 interface UserData {
   id: number;
   activated: boolean;
+  roles?: Array<Role>;
   // 其他字段...l
 }
 

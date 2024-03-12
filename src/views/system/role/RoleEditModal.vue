@@ -16,6 +16,17 @@
             placeholder="请输入角色名称"
           />
         </n-form-item>
+        <n-form-item label="角色权限">
+          <n-tree
+            cascade
+            block-line
+            :data="options"
+            :default-expanded-keys="defaultExpandedKeys"
+            @update:checked-keys="handleCheckedKeysChange"
+            expand-on-click
+            checkable
+          />
+        </n-form-item>
         <n-form-item label="角色描述">
           <n-input
             v-model:value="roleInfo.description"
@@ -36,6 +47,38 @@
 
 <script setup lang="ts">
 import { Role } from "@/views/system/role/roleApi";
+import { ref } from "vue";
+import { TreeOption } from "naive-ui";
+import {message} from "@/plugins/naive-ui-discrete-api.ts";
+
+const defaultExpandedKeys = ref<string[]>(["keylevel21"]);
+
+const options = ref<TreeOption[]>([
+  {
+    label: "level 11",
+    key: "keylevel11",
+    children: [
+      {
+        label: "level 2",
+        key: "keylevel21",
+      },
+    ],
+  },
+  {
+    label: "level 12",
+    key: "keylevel12",
+    children: [
+      {
+        label: "level 2",
+        key: "keylevel22",
+      },
+    ],
+  },
+]);
+
+function handleCheckedKeysChange(checkedKeys: string[]) {
+  message.info(JSON.stringify(checkedKeys))
+}
 
 export interface Props {
   show?: boolean;

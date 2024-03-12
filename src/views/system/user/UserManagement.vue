@@ -83,6 +83,10 @@ const currentUser = ref<User>({ id: null, username: null, email: null });
 
 function editUser(user) {
   console.log("[用户列表父组件] 收到Modal发送的edit事件", user);
+  user.roles = user.roleIds.map((id) => {
+    return { id: id };
+  });
+  console.log("------------------user", user);
   userApi
     .update(user)
     .then(() => {
@@ -144,12 +148,16 @@ const updateActivationStatus = (id: number, activated: boolean) => {
       ...searchParams.value,
     });
   });
-
 };
 
 const openEditModal = (row) => {
   showEditModal.value = true;
-  currentUser.value = { id: row.id, username: row.username, email: row.email };
+  currentUser.value = {
+    id: row.id,
+    username: row.username,
+    email: row.email,
+    roleIds: row.roles.map((role) => role.id),
+  };
   console.log("editItem", row);
 };
 
