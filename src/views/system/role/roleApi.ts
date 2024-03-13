@@ -5,6 +5,7 @@ export interface Role {
     id?: Number | null;
     roleCode: String | null;
     roleName: String | null;
+    permissionIds?: Array<number>;
     description?: String | null;
 }
 

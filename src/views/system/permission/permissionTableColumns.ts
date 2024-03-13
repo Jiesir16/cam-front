@@ -12,6 +12,11 @@ export const getTableColumns = (
     align: "center",
   },
   {
+    title: "父节点ID",
+    key: "parentId",
+    align: "center",
+  },
+  {
     title: "权限名称",
     key: "permName",
     align: "center",

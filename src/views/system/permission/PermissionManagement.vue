@@ -53,7 +53,7 @@
       @edit="editPermission"
       @create="createPermission"
       @update:show="handleShow"
-    />
+      />
   </n-flex>
 </template>
 
@@ -86,13 +86,16 @@ function onReset() {
 // modal start
 
 const showEditModal = ref<boolean>(false);
+
 const currentPermission = ref<Permission>({
+  id: null,
   parentId: null,
   permCode: null,
   permName: null,
+  description: null,
 });
 
-function handleShow(value) {
+function handleShow(value: boolean) {
   showEditModal.value = value;
 }
 
@@ -152,9 +155,16 @@ const paginationRef = reactive<PageParam>({
     return `Total is ${itemCount}.`;
   },
 });
-const openEditModal = (row) => {
-  currentPermission.value = { ...row };
+
+const openEditModal = (row: Permission) => {
   showEditModal.value = true;
+  currentPermission.value = {
+    id: row.id,
+    parentId: row.parentId,
+    permCode: row.permCode,
+    permName: row.permName,
+    description: row.description,
+  };
 };
 const deleteItem = (id: number) => {
   permissionApi

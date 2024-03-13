@@ -18,12 +18,14 @@
         </n-form-item>
         <n-form-item label="角色权限">
           <n-tree
+            check-strategy="all"
             cascade
             block-line
             :data="options"
-            :default-expanded-keys="defaultExpandedKeys"
-            @update:checked-keys="handleCheckedKeysChange"
-            expand-on-click
+            v-model:checked-keys="roleInfo.permissionIds"
+            label-field="permName"
+            key-field="id"
+            default-expand-all
             checkable
           />
         </n-form-item>
@@ -47,38 +49,13 @@
 
 <script setup lang="ts">
 import { Role } from "@/views/system/role/roleApi";
-import { ref } from "vue";
-import { TreeOption } from "naive-ui";
-import {message} from "@/plugins/naive-ui-discrete-api.ts";
+import { usePermsStore } from "@/stores/modules/perms.ts";
+import { computed } from "vue";
 
-const defaultExpandedKeys = ref<string[]>(["keylevel21"]);
-
-const options = ref<TreeOption[]>([
-  {
-    label: "level 11",
-    key: "keylevel11",
-    children: [
-      {
-        label: "level 2",
-        key: "keylevel21",
-      },
-    ],
-  },
-  {
-    label: "level 12",
-    key: "keylevel12",
-    children: [
-      {
-        label: "level 2",
-        key: "keylevel22",
-      },
-    ],
-  },
-]);
-
-function handleCheckedKeysChange(checkedKeys: string[]) {
-  message.info(JSON.stringify(checkedKeys))
-}
+const permsStore = usePermsStore();
+permsStore.fetchAllPerms();
+console.log("permsStore.getPerms()", permsStore.getPerms());
+const options = computed(() => permsStore.perms);
 
 export interface Props {
   show?: boolean;

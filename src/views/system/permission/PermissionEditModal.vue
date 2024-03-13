@@ -8,25 +8,26 @@
           <n-input
             v-model:value="permissionInfo.permCode"
             placeholder="请输入权限编码"
-          />
+            />
         </n-form-item>
         <n-form-item label="权限名称">
           <n-input
             v-model:value="permissionInfo.permName"
             placeholder="请输入权限名称"
-          />
+            />
         </n-form-item>
         <n-form-item label="父节点ID">
-          <n-input
+          <n-input-number
+            :show-button="false"
             v-model:value="permissionInfo.parentId"
-            placeholder="请输入权限名称"
-          />
+            placeholder="请输入父节点ID"
+            />
         </n-form-item>
         <n-form-item label="权限描述">
           <n-input
             v-model:value="permissionInfo.description"
             placeholder="请输入权限描述"
-          />
+            />
         </n-form-item>
         <!-- 其他表单项 -->
       </n-form>
@@ -58,13 +59,12 @@ function handleSubmit() {
   console.log(
     "[Modal子组件] 触发表单提交, 发送给父组件[edit事件、更新show属性的事件]",
   );
-  console.log("userInfo.value", props);
+  console.log("props.value", props);
   if (props.permissionInfo.id) {
     emit("edit", { ...props.permissionInfo });
   } else {
     emit("create", { ...props.permissionInfo });
   }
-
   emit("update:show", false);
 }
 

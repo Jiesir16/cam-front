@@ -2,8 +2,8 @@ import { restfulApi } from "@/axios";
 import { message } from "@/plugins/naive-ui-discrete-api";
 
 export interface Permission {
-  id?: Number | null;
-  parentId: Number | null;
+  id?: number | null;
+  parentId: number | null;
   permCode: String | null;
   permName: String | null;
   description?: String | null;

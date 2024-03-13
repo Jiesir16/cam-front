@@ -142,7 +142,13 @@ const paginationRef = reactive<PageParam>({
   },
 });
 const openEditModal = (row) => {
-  currentRole.value = { ...row };
+  currentRole.value = {
+    id: row.id,
+    roleCode: row.roleCode,
+    roleName: row.roleName,
+    permissionIds: row.permissions.map((permission) => permission.id),
+    description: row.description,
+  };
   showEditModal.value = true;
 };
 const deleteItem = (roleId: number) => {
@@ -177,7 +183,7 @@ function onReset() {
 }
 
 function fetchRoles(param) {
-  console.log("获取角色", param);
+  console.log("获取角色param", param);
   roleApi.read(paginationRef, param, tableDataRef, loading);
 }
 
