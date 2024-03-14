@@ -1,92 +1,99 @@
-
 <template>
-        <n-form
-          ref="formRef"
-          label-placement="left"
-          size="large"
-          :model="formInline"
-          :rules="rules"
+  <div class="login-container">
+    <n-form
+      ref="formRef"
+      label-placement="left"
+      size="large"
+      :model="formInline"
+      :rules="rules"
+    >
+      <n-form-item path="username">
+        <n-input v-model:value="formInline.username" placeholder="请输入用户名">
+          <template #prefix>
+            <n-icon size="18" color="#808695">
+              <PersonOutline />
+            </n-icon>
+          </template>
+        </n-input>
+      </n-form-item>
+      <n-form-item path="password">
+        <n-input
+          v-model:value="formInline.password"
+          type="password"
+          showPasswordOn="click"
+          placeholder="请输入密码"
         >
-          <n-form-item path="username">
-            <n-input v-model:value="formInline.username" placeholder="请输入用户名">
-              <template #prefix>
-                <n-icon size="18" color="#808695">
-                  <PersonOutline />
-                </n-icon>
-              </template>
-            </n-input>
-          </n-form-item>
-          <n-form-item path="password">
-            <n-input
-              v-model:value="formInline.password"
-              type="password"
-              showPasswordOn="click"
-              placeholder="请输入密码"
-            >
-              <template #prefix>
-                <n-icon size="18" color="#808695">
-                  <LockClosedOutline />
-                </n-icon>
-              </template>
-            </n-input>
-          </n-form-item>
-          <n-form-item class="default-color">
-            <div class="flex justify-between">
-              <div class="flex-initial">
-                <n-checkbox v-model:checked="autoLogin">自动登录</n-checkbox>
-              </div>
-              <div class="flex-initial order-last">
-                <a href="javascript:">忘记密码</a>
-              </div>
-            </div>
-          </n-form-item>
-          <n-form-item>
-            <n-button type="primary" @click="handleSubmit" size="large" :loading="loading" block>
-              登录
-            </n-button>
-          </n-form-item>
-        </n-form>
+          <template #prefix>
+            <n-icon size="18" color="#808695">
+              <LockClosedOutline />
+            </n-icon>
+          </template>
+        </n-input>
+      </n-form-item>
+      <n-form-item>
+        <n-button
+          type="primary"
+          @click="handleSubmit"
+          size="large"
+          :loading="loading"
+          block
+        >
+          登录
+        </n-button>
+      </n-form-item>
+    </n-form>
+  </div>
 </template>
 
-
 <script lang="ts" setup>
-import { reactive, ref } from 'vue';
-import { PersonOutline, LockClosedOutline } from '@vicons/ionicons5';
+import { reactive, ref } from "vue";
+import { LockClosedOutline, PersonOutline } from "@vicons/ionicons5";
+import { restfulApi } from "@/axios";
+import { useMessage } from "naive-ui";
+import { LoginUserInfo, useUsersStore } from "@/stores/modules/users.ts";
+import { useRouter } from "vue-router";
 
+const message = useMessage();
 
 const rules = {
-    username: { required: true, message: '请输入用户名', trigger: 'blur' },
-    password: { required: true, message: '请输入密码', trigger: 'blur' },
-  };
+  username: { required: true, message: "请输入用户名", trigger: "blur" },
+  password: { required: true, message: "请输入密码", trigger: "blur" },
+};
 
 const formRef = ref();
 
-const autoLogin = ref(false);
 const loading = ref(false);
 
 const formInline = reactive({
-    username: '',
-    password: '',
-    isCaptcha: false,
-  });
+  username: null,
+  password: null,
+});
 
-
+const usersStore = useUsersStore();
+const router = useRouter();
 const handleSubmit = (e) => {
-        e.preventDefault();
-  formRef.value.validate(async (error) =>{
+  e.preventDefault();
+  formRef.value.validate(async (error) => {
     if (!error) {
-      console.log('Received values of form: ', formInline);
+      await restfulApi.post("/auth/signIn", formInline).then((res) => {
+        console.log("登陆响应", res);
+
+        usersStore.setLoginUserInfo(<LoginUserInfo>{ username: "admin" });
+        message.success("登陆成功");
+        router.push({ name: "dashboard" });
+      });
     }
-  })
-}
+  });
+};
 </script>
 
 <style>
 .login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .login-form {

@@ -64,7 +64,7 @@
                     src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"
                   ></n-avatar>
                 </template>
-                <span>hi</span>
+                <span>{{ username }}</span>
               </n-tooltip>
               <n-button text @click="changeTheme">切换主题</n-button>
             </n-flex>
@@ -111,16 +111,19 @@ import {
   PersonCircleOutline,
   SettingsOutline,
 } from "@vicons/ionicons5";
-import { Component, h, ref } from "vue";
+import { Component, computed, h, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useDesignSettingStore } from "@/stores/modules/designSetting";
 import { Key } from "naive-ui/lib/menu/src/interface";
+import { useUsersStore } from "@/stores/modules/users";
 
 const route = useRoute();
 
+const usersStore = useUsersStore();
 const designStore = useDesignSettingStore();
 const router = useRouter();
 
+const username = computed(() => usersStore.loginUserInfo.username);
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
 }

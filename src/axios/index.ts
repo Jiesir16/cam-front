@@ -1,5 +1,6 @@
 // http.ts
 import axios from "axios";
+import { message } from "@/plugins/naive-ui-discrete-api.ts";
 
 // 外部调用反馈组件
 // naive-ui-discrete-api.ts
@@ -8,7 +9,6 @@ import axios from "axios";
 // 使用 createDiscreteApi 初始化，这里我们只初始化了 message，您可以根据需要添加更多
 //const { message } = createDiscreteApi(['message']);
 //message.success("123");
-
 
 // 环境变量中定义的 API 主机地址和基路径
 const API_HOST = "http://localhost:8888";
@@ -39,11 +39,23 @@ http.interceptors.request.use(
 http.interceptors.response.use(
   (response) => {
     // 统一处理响应数据
-    console.log(response);
+    console.log("成功响应 response", response);
+    if (response.status == 404) {
+      message.error("资源路径错误");
+    }
+
     return response;
   },
   (error) => {
     // 统一处理响应错误
+    console.log("失败响应 error", error);
+    if (error.response.status == 404) {
+      message.error("资源路径错误");
+    } else {
+      message.error(error.response.data);
+    }
+
+
     return Promise.reject(error);
   },
 );

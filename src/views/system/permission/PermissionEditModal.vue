@@ -8,6 +8,7 @@
           <n-input
             v-model:value="permissionInfo.permCode"
             placeholder="请输入权限编码"
+            :disabled="permissionInfo.id!=null"
             />
         </n-form-item>
         <n-form-item label="权限名称">

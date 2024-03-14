@@ -8,6 +8,7 @@
           <n-input
             v-model:value="roleInfo.roleCode"
             placeholder="请输入角色编码"
+            :disabled="roleInfo.id!=null"
           />
         </n-form-item>
         <n-form-item label="角色名称">

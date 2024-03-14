@@ -5,7 +5,7 @@
       <n-form ref="editForm">
         <!-- 表单内容，例如： -->
         <n-form-item label="用户名">
-          <n-input v-model:value="user1.username" placeholder="请输入用户名" />
+          <n-input v-model:value="user1.username" placeholder="请输入用户名" :disabled="user1.id!=null"/>
         </n-form-item>
         <n-form-item label="邮箱">
           <n-input v-model:value="user1.email" placeholder="请输入邮箱" />
