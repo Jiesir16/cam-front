@@ -1,16 +1,18 @@
 import { createApp } from "vue";
-import App from "./App.vue";
-import router from "./router";
-import { createPinia } from "pinia";
-import { setupNaive } from "./plugins";
+import App from "@/App.vue";
+import { setupStore } from "@/stores";
+import { setupNaive } from "@/plugins";
+import router from "@/router";
 
 async function bootstrap() {
   const app = createApp(App);
 
   setupNaive(app);
-
+  // 两种集成方法
+  // setUp
+  setupStore(app);
+  // app.use
   app.use(router);
-  app.use(createPinia());
   app.mount("#app");
 }
 

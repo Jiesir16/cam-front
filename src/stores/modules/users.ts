@@ -26,4 +26,8 @@ export const useUsersStore = defineStore("users", {
     },
     // 添加其他如 createUser、updateUser、deleteUser 等方法
   },
+  persist: {
+    storage: localStorage,
+    paths: ["loginUserInfo"]
+  }
 });

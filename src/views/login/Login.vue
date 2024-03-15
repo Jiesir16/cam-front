@@ -76,10 +76,10 @@ const handleSubmit = (e) => {
   formRef.value.validate(async (error) => {
     if (!error) {
       await restfulApi.post("/auth/signIn", formInline).then((res) => {
-        console.log("登陆响应", res);
+        console.log("登录响应", res);
 
         usersStore.setLoginUserInfo(<LoginUserInfo>{ username: "admin" });
-        message.success("登陆成功");
+        message.success("登录成功");
         router.push({ name: "dashboard" });
       });
     }

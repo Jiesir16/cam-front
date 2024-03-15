@@ -83,7 +83,7 @@ router.beforeEach((to, from, next) => {
   const userPermissions = ["view_home", "view_profile", "view_role"]; // 假设用户有两个权限：查看首页和查看个人资料
   console.log("[router] login user info ", usersStore.loginUserInfo.username);
   const username = computed(() => usersStore.loginUserInfo.username);
-  console.log("[router] login user info ",username);
+  console.log("[router] login user info ", username);
   if (to.name == "Login" && usersStore.loginUserInfo.username != null) {
     next({ name: "dashboard" });
     return true;
@@ -105,4 +105,5 @@ router.afterEach(() => {
   loadingBar.finish();
   return true;
 });
+
 export default router;
