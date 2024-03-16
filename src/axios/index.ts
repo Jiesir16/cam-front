@@ -1,7 +1,7 @@
 // http.ts
 import axios from "axios";
 import { message } from "@/plugins/naive-ui-discrete-api.ts";
-
+import router from "@/router";
 // 外部调用反馈组件
 // naive-ui-discrete-api.ts
 //import { createDiscreteApi } from 'naive-ui';
@@ -35,6 +35,7 @@ http.interceptors.request.use(
   },
 );
 
+
 // 响应拦截器
 http.interceptors.response.use(
   (response) => {
@@ -51,10 +52,19 @@ http.interceptors.response.use(
     console.log("失败响应 error", error);
     if (error.response.status == 404) {
       message.error("资源路径错误");
+    } else if (error.response.status == 403) {
+      router
+        .push({ name: "403" })
+        .then((r) => {
+          console.log("403 push success", r);
+          // todo 403跳转到403页面，并重新刷新资源菜单
+        })
+        .catch((e) => {
+          console.log("403 push faild", e);
+        });
     } else {
       message.error(error.response.data);
     }
-
 
     return Promise.reject(error);
   },

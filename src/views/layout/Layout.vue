@@ -112,7 +112,9 @@ import {
   SettingsOutline,
 } from "@vicons/ionicons5";
 import { Component, computed, h, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
+import router from "@/router";
+
 import { useDesignSettingStore } from "@/stores/modules/designSetting";
 import { Key } from "naive-ui/lib/menu/src/interface";
 import { useUsersStore } from "@/stores/modules/users";
@@ -121,7 +123,6 @@ const route = useRoute();
 
 const usersStore = useUsersStore();
 const designStore = useDesignSettingStore();
-const router = useRouter();
 
 const username = computed(() => usersStore.loginUserInfo.username);
 function renderIcon(icon: Component) {

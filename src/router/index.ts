@@ -57,7 +57,7 @@ const routes = [
       },
       {
         path: "/dashboard/forbidden",
-        name: "403-forbidden",
+        name: "403",
         component: Forbidden,
       },
     ],
