@@ -118,6 +118,8 @@ import router from "@/router";
 import { useDesignSettingStore } from "@/stores/modules/designSetting";
 import { Key } from "naive-ui/lib/menu/src/interface";
 import { useUsersStore } from "@/stores/modules/users";
+import { usePermsStore } from "@/stores/modules/perms.ts";
+import { restfulApi } from "@/axios";
 
 const route = useRoute();
 
@@ -125,6 +127,7 @@ const usersStore = useUsersStore();
 const designStore = useDesignSettingStore();
 
 const username = computed(() => usersStore.loginUserInfo.username);
+
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
 }
@@ -140,8 +143,8 @@ function handleRouteMenu() {
 }
 
 handleRouteMenu();
-const collapsed = ref(false);
-// 使用图标的菜单项定义
+const currentPerms = computed(() => usePermsStore().getCurrentPerms());
+
 const menuOptions: MenuOption[] = [
   {
     label: "主页",
@@ -152,22 +155,25 @@ const menuOptions: MenuOption[] = [
     label: "系统管理",
     key: "system_manage",
     icon: renderIcon(SettingsOutline), // 使用图标
+    show: currentPerms.value.includes("system_manage"),
     children: [
       {
         label: "用户管理",
         key: "user",
         icon: renderIcon(PeopleOutline),
+        show: currentPerms.value.includes("user"),
       },
       {
         label: "角色管理",
         key: "role",
         icon: renderIcon(PeopleOutline),
+        show: currentPerms.value.includes("role"),
       },
       {
         label: "权限管理",
         key: "permission",
         icon: renderIcon(PeopleOutline),
-        show: true,
+        show: currentPerms.value.includes("permission"),
       },
     ],
   },
@@ -183,8 +189,21 @@ const menuOptions: MenuOption[] = [
     icon: renderIcon(DocumentTextOutline), // 使用图标
     disabled: true,
   },
-  // 更多菜单项...
 ];
+
+async function getCurrentPerms() {
+  await restfulApi
+    .get("/perm/getCurrentPerms")
+    .then((res) => {
+      usePermsStore().setCurrentPerms(res.data);
+    })
+    .catch(() => {
+      router.push({ name: "Login" });
+    });
+}
+
+getCurrentPerms();
+const collapsed = ref(false);
 
 //function handleUpdateValue(key: string, item: MenuOption) {
 function handleUpdateValue(key: string) {

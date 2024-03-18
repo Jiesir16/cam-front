@@ -2,6 +2,7 @@
 import axios from "axios";
 import { message } from "@/plugins/naive-ui-discrete-api.ts";
 import router from "@/router";
+import { useUsersStore } from "@/stores/modules/users.ts";
 // 外部调用反馈组件
 // naive-ui-discrete-api.ts
 //import { createDiscreteApi } from 'naive-ui';
@@ -14,9 +15,6 @@ import router from "@/router";
 const API_HOST = "http://localhost:8888";
 const API_BASE_PATH = "/api/v1";
 
-const JWT_STR =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjMiLCJpc3MiOiJzeXN0ZW0iLCJpYXQiOjE3MDk5OTQxMTAsImV4cCI6MTcxMDU5ODkxMH0.HXgyMAteM_KnudWZ4q4AdNJ8xJtEUOnHKHzkF3-JnpA";
-
 // 创建 Axios 实例
 const http = axios.create({
   baseURL: `${API_HOST}${API_BASE_PATH}`, // 使用模板字符串拼接完整的 baseURL
@@ -27,14 +25,13 @@ const http = axios.create({
 http.interceptors.request.use(
   (config) => {
     // 可以在这里为请求添加认证 token 等
-    config.headers.Authorization = `Bearer ${JWT_STR}`;
+    config.headers.Authorization = useUsersStore().loginUserInfo.token;
     return config;
   },
   (error) => {
     return Promise.reject(error);
   },
 );
-
 
 // 响应拦截器
 http.interceptors.response.use(
@@ -58,6 +55,7 @@ http.interceptors.response.use(
         .then((r) => {
           console.log("403 push success", r);
           // todo 403跳转到403页面，并重新刷新资源菜单
+          // 获取菜单资源
         })
         .catch((e) => {
           console.log("403 push faild", e);

@@ -3,6 +3,7 @@ import { restfulApi } from "@/axios";
 
 export interface LoginUserInfo {
   id: number;
+  token: string;
   username: string;
   email: string;
 }
@@ -21,13 +22,13 @@ export const useUsersStore = defineStore("users", {
       }
     },
     setLoginUserInfo(userInfo: LoginUserInfo) {
+      console.log("user store userInfo", userInfo);
       this.loginUserInfo = userInfo;
-      console.log("user store userInfo", this.loginUserInfo);
     },
     // 添加其他如 createUser、updateUser、deleteUser 等方法
   },
   persist: {
     storage: localStorage,
-    paths: ["loginUserInfo"]
-  }
+    paths: ["loginUserInfo"],
+  },
 });

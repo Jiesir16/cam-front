@@ -65,8 +65,8 @@ const formRef = ref();
 const loading = ref(false);
 
 const formInline = reactive({
-  username: null,
-  password: null,
+  username: "admin",
+  password: "123456",
 });
 
 const usersStore = useUsersStore();
@@ -78,7 +78,10 @@ const handleSubmit = (e) => {
       await restfulApi.post("/auth/signIn", formInline).then((res) => {
         console.log("登录响应", res);
 
-        usersStore.setLoginUserInfo(<LoginUserInfo>{ username: "admin" });
+        usersStore.setLoginUserInfo(<LoginUserInfo>{
+          username: formInline.username,
+          token: res.headers["authorization"],
+        });
         message.success("登录成功");
         router.push({ name: "dashboard" });
       });
