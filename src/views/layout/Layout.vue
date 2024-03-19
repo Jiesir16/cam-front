@@ -56,6 +56,7 @@
                 </template>
                 个人设置
               </n-button>
+              <n-button @click="handelSignOut">登出</n-button>
               <n-tooltip placement="bottom" trigger="hover">
                 <template #trigger>
                   <n-avatar
@@ -119,7 +120,6 @@ import { useDesignSettingStore } from "@/stores/modules/designSetting";
 import { Key } from "naive-ui/lib/menu/src/interface";
 import { useUsersStore } from "@/stores/modules/users";
 import { usePermsStore } from "@/stores/modules/perms.ts";
-import { restfulApi } from "@/axios";
 
 const route = useRoute();
 
@@ -143,7 +143,14 @@ function handleRouteMenu() {
 }
 
 handleRouteMenu();
-const currentPerms = computed(() => usePermsStore().getCurrentPerms());
+
+function handelSignOut() {
+  useUsersStore().resetUserStore();
+  usePermsStore().resetCurrentPerms();
+  router.push({ name: "Login" });
+}
+
+const currentPerms = computed(() => usePermsStore().currentPerms);
 
 const menuOptions: MenuOption[] = [
   {
@@ -155,27 +162,33 @@ const menuOptions: MenuOption[] = [
     label: "系统管理",
     key: "system_manage",
     icon: renderIcon(SettingsOutline), // 使用图标
-    show: currentPerms.value.includes("system_manage"),
+    show: currentPerms.value.includes("SYSTEM_MNG"),
     children: [
       {
         label: "用户管理",
         key: "user",
         icon: renderIcon(PeopleOutline),
-        show: currentPerms.value.includes("user"),
+        show: currentPerms.value.includes("USER_MNG"),
       },
       {
         label: "角色管理",
         key: "role",
         icon: renderIcon(PeopleOutline),
-        show: currentPerms.value.includes("role"),
+        show: currentPerms.value.includes("ROLE_MNG"),
       },
       {
         label: "权限管理",
         key: "permission",
         icon: renderIcon(PeopleOutline),
-        show: currentPerms.value.includes("permission"),
+        show: currentPerms.value.includes("PERM_MNG"),
       },
     ],
+  },
+  {
+    label: "活动管理",
+    key: "enevts",
+    icon: renderIcon(LayersOutline), // 使用图标
+    show: currentPerms.value.includes("EVENT_MNG"),
   },
   {
     label: "项目",
@@ -191,18 +204,6 @@ const menuOptions: MenuOption[] = [
   },
 ];
 
-async function getCurrentPerms() {
-  await restfulApi
-    .get("/perm/getCurrentPerms")
-    .then((res) => {
-      usePermsStore().setCurrentPerms(res.data);
-    })
-    .catch(() => {
-      router.push({ name: "Login" });
-    });
-}
-
-getCurrentPerms();
 const collapsed = ref(false);
 
 //function handleUpdateValue(key: string, item: MenuOption) {

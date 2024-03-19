@@ -52,6 +52,7 @@ import { restfulApi } from "@/axios";
 import { useMessage } from "naive-ui";
 import { LoginUserInfo, useUsersStore } from "@/stores/modules/users.ts";
 import { useRouter } from "vue-router";
+import {usePermsStore} from "@/stores/modules/perms.ts";
 
 const message = useMessage();
 
@@ -71,6 +72,7 @@ const formInline = reactive({
 
 const usersStore = useUsersStore();
 const router = useRouter();
+
 const handleSubmit = (e) => {
   e.preventDefault();
   formRef.value.validate(async (error) => {
@@ -82,6 +84,7 @@ const handleSubmit = (e) => {
           username: formInline.username,
           token: res.headers["authorization"],
         });
+        usePermsStore().getCurrentPerms();
         message.success("登录成功");
         router.push({ name: "dashboard" });
       });

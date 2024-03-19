@@ -10,6 +10,7 @@ import Forbidden from "@/views/403.vue";
 import { loadingBar } from "@/plugins/naive-ui-discrete-api";
 import { useUsersStore } from "@/stores/modules/users.ts";
 import { computed } from "vue";
+import {usePermsStore} from "@/stores/modules/perms.ts";
 
 const routes = [
   {
@@ -44,7 +45,7 @@ const routes = [
         name: "role",
         component: RoleView,
         meta: {
-          requiresPermission: "view_role", // 指定需要的权限名称
+          requiresPermission: "ROLE_MNG", // 指定需要的权限名称
         },
       },
       {
@@ -52,7 +53,7 @@ const routes = [
         name: "permission",
         component: PermissionView,
         meta: {
-          requiresPermission: "view_perm", // 指定需要的权限名称
+          requiresPermission: "PERM_MNG", // 指定需要的权限名称
         },
       },
       {
@@ -80,7 +81,7 @@ router.beforeEach((to, from, next) => {
   const usersStore = useUsersStore();
 
   // 假设在用户登录后会将用户权限存储在全局变量或 Vuex 中
-  const userPermissions = ["view_home", "view_profile", "view_role"]; // 假设用户有两个权限：查看首页和查看个人资料
+  const userPermissions = usePermsStore().currentPerms; // 假设用户有两个权限：查看首页和查看个人资料
   console.log("[router] login user info ", usersStore.loginUserInfo.username);
   const username = computed(() => usersStore.loginUserInfo.username);
   console.log("[router] login user info ", username);

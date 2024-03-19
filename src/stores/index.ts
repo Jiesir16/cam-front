@@ -4,14 +4,16 @@ import { createPersistedState } from "pinia-plugin-persistedstate";
 
 const store = createPinia();
 
+const piniaPersisted = createPersistedState({
+  storage: sessionStorage,
+  key: (id) => `__persisted__${id}`,
+});
+
+
+
 export function setupStore(app: App<Element>) {
-  store.use(
-    createPersistedState({
-      storage: sessionStorage,
-      key: (id) => `__persisted__${id}`,
-    }),
-  );
+  store.use(piniaPersisted);
   app.use(store);
 }
 
-export { store };
+export { store,piniaPersisted };

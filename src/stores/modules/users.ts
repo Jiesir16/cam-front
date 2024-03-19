@@ -25,6 +25,9 @@ export const useUsersStore = defineStore("users", {
       console.log("user store userInfo", userInfo);
       this.loginUserInfo = userInfo;
     },
+    resetUserStore() {
+      this.$reset();
+    },
     // 添加其他如 createUser、updateUser、deleteUser 等方法
   },
   persist: {
