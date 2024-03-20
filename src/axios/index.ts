@@ -56,6 +56,7 @@ http.interceptors.response.use(
           console.log("403 push success", r);
           // todo 403跳转到403页面，并重新刷新资源菜单
           // 获取菜单资源
+
         })
         .catch((e) => {
           console.log("403 push faild", e);

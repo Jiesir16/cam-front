@@ -5,7 +5,10 @@
     description="总有些门是对你关闭的"
   >
     <template #footer>
-      <n-button>放轻松</n-button>
+    <router-link to="/">
+      <n-button>返回主页</n-button>
+    </router-link>
+
     </template>
   </n-result>
 </template>

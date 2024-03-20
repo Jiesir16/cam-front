@@ -20,7 +20,7 @@
           v-model:value="selectedKey"
           :collapsed-width="64"
           :collapsed-icon-size="22"
-          :options="menuOptions"
+          :options="usePermsStore().menus"
           @update:value="handleUpdateValue"
         />
       </n-layout-sider>
@@ -91,7 +91,6 @@
 </template>
 
 <script setup lang="ts">
-import type { MenuOption } from "naive-ui";
 import {
   NAvatar,
   NButton,
@@ -103,16 +102,8 @@ import {
   NLayoutSider,
   NMenu,
 } from "naive-ui";
-import {
-  DocumentTextOutline,
-  HomeOutline,
-  LayersOutline,
-  LogoGithub,
-  PeopleOutline,
-  PersonCircleOutline,
-  SettingsOutline,
-} from "@vicons/ionicons5";
-import { Component, computed, h, ref } from "vue";
+import { LogoGithub, PersonCircleOutline } from "@vicons/ionicons5";
+import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import router from "@/router";
 
@@ -124,14 +115,10 @@ import { usePermsStore } from "@/stores/modules/perms.ts";
 const route = useRoute();
 
 const usersStore = useUsersStore();
+const permsStore = usePermsStore();
 const designStore = useDesignSettingStore();
 
 const username = computed(() => usersStore.loginUserInfo.username);
-
-function renderIcon(icon: Component) {
-  return () => h(NIcon, null, { default: () => h(icon) });
-}
-
 const linkToGithub = () => {
   window.open("https://github.com/Jiesir16/cam-front", "_blank");
 };
@@ -143,66 +130,13 @@ function handleRouteMenu() {
 }
 
 handleRouteMenu();
+permsStore.fetchAllMenus();
 
 function handelSignOut() {
-  useUsersStore().resetUserStore();
-  usePermsStore().resetCurrentPerms();
+  usersStore.resetUserStore();
+  permsStore.resetCurrentPerms();
   router.push({ name: "Login" });
 }
-
-const currentPerms = computed(() => usePermsStore().currentPerms);
-
-const menuOptions: MenuOption[] = [
-  {
-    label: "主页",
-    key: "dashboard",
-    icon: renderIcon(HomeOutline), // 使用图标
-  },
-  {
-    label: "系统管理",
-    key: "system_manage",
-    icon: renderIcon(SettingsOutline), // 使用图标
-    show: currentPerms.value.includes("SYSTEM_MNG"),
-    children: [
-      {
-        label: "用户管理",
-        key: "user",
-        icon: renderIcon(PeopleOutline),
-        show: currentPerms.value.includes("USER_MNG"),
-      },
-      {
-        label: "角色管理",
-        key: "role",
-        icon: renderIcon(PeopleOutline),
-        show: currentPerms.value.includes("ROLE_MNG"),
-      },
-      {
-        label: "权限管理",
-        key: "permission",
-        icon: renderIcon(PeopleOutline),
-        show: currentPerms.value.includes("PERM_MNG"),
-      },
-    ],
-  },
-  {
-    label: "活动管理",
-    key: "enevts",
-    icon: renderIcon(LayersOutline), // 使用图标
-    show: currentPerms.value.includes("EVENT_MNG"),
-  },
-  {
-    label: "项目",
-    key: "projects",
-    icon: renderIcon(LayersOutline), // 使用图标
-    disabled: true,
-  },
-  {
-    label: "报告",
-    key: "reports",
-    icon: renderIcon(DocumentTextOutline), // 使用图标
-    disabled: true,
-  },
-];
 
 const collapsed = ref(false);
 

@@ -85,6 +85,7 @@ const handleSubmit = (e) => {
           token: res.headers["authorization"],
         });
         usePermsStore().getCurrentPerms();
+        usePermsStore().fetchAllMenus();
         message.success("登录成功");
         router.push({ name: "dashboard" });
       });

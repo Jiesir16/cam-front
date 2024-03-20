@@ -9,8 +9,6 @@ import PermissionView from "@/views/system/permission/PermissionManagement.vue";
 import Forbidden from "@/views/403.vue";
 import { loadingBar } from "@/plugins/naive-ui-discrete-api";
 import { useUsersStore } from "@/stores/modules/users.ts";
-import { computed } from "vue";
-import {usePermsStore} from "@/stores/modules/perms.ts";
 
 const routes = [
   {
@@ -77,30 +75,15 @@ router.beforeEach((to, from, next) => {
   // 返回 false 以取消导航
   loadingBar.start();
 
-  // 使用usersStore
   const usersStore = useUsersStore();
 
-  // 假设在用户登录后会将用户权限存储在全局变量或 Vuex 中
-  const userPermissions = usePermsStore().currentPerms; // 假设用户有两个权限：查看首页和查看个人资料
-  console.log("[router] login user info ", usersStore.loginUserInfo.username);
-  const username = computed(() => usersStore.loginUserInfo.username);
-  console.log("[router] login user info ", username);
-  if (to.name == "Login" && usersStore.loginUserInfo.username != null) {
+  const isAuthorization = Boolean(usersStore.loginUserInfo.token);
+
+  if (to.name == "Login" && isAuthorization) {
     next({ name: "dashboard" });
     return true;
   }
-  // 根据路由名称检查用户是否有访问该路由的权限
-  if (
-    to.meta &&
-    to.meta.requiresPermission &&
-    !userPermissions.includes(to.meta.requiresPermission)
-  ) {
-    // 如果用户权限不足，则跳转到 403 页面
-    next("/dashboard/forbidden");
-  } else {
-    next(); // 用户权限足够，继续访问页面
-  }
-  return true;
+  next();
 });
 router.afterEach(() => {
   loadingBar.finish();
