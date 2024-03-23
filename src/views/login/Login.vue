@@ -67,7 +67,7 @@ const loading = ref(false);
 
 const formInline = reactive({
   username: "admin",
-  password: "123456",
+  password: "admin123456",
 });
 
 const usersStore = useUsersStore();

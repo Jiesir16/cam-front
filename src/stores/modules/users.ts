@@ -28,6 +28,10 @@ export const useUsersStore = defineStore("users", {
     resetUserStore() {
       this.$reset();
     },
+    removeLoginUserInfo() {
+      console.log("removeLoginUserInfo 用户信息")
+      localStorage.removeItem("__persisted__users");
+    }
     // 添加其他如 createUser、updateUser、deleteUser 等方法
   },
   persist: {

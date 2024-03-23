@@ -1,5 +1,4 @@
 import { restfulApi } from "@/axios";
-import { message } from "@/plugins/naive-ui-discrete-api";
 import {Role} from "@/views/system/role/roleApi.ts";
 
 export interface UserSearchParam {
@@ -56,7 +55,6 @@ export default {
         tableDataRef.value = [];
         pagination.itemCount = 0;
         loading.value = false;
-        message.error("系统异常,请联系管理员");
       });
   },
   update: (data: UserData) => restfulApi.patch(`/user/${data.id}`, data),

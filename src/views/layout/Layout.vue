@@ -20,7 +20,7 @@
           v-model:value="selectedKey"
           :collapsed-width="64"
           :collapsed-icon-size="22"
-          :options="usePermsStore().menus"
+          :options="menusOptions"
           @update:value="handleUpdateValue"
         />
       </n-layout-sider>
@@ -39,35 +39,36 @@
                 <n-breadcrumb-item>用户管理</n-breadcrumb-item>
               </n-breadcrumb>
             </n-flex>
-            <n-flex style="font-size: large">
-              <NButton text size="large">操作1</NButton>
-              <NButton text @click="linkToGithub" size="large">
+            <n-flex style="font-size: large" align="center">
+              <NButton
+                text
+                @click="linkToGithub"
+                size="large"
+                style="margin: 6px"
+              >
                 <template #icon>
                   <n-icon>
                     <LogoGithub />
                   </n-icon>
                 </template>
+                开源地址
               </NButton>
-              <n-button text size="large">
-                <template #icon>
-                  <n-icon>
-                    <PersonCircleOutline />
-                  </n-icon>
-                </template>
-                个人设置
-              </n-button>
-              <n-button @click="handelSignOut">登出</n-button>
-              <n-tooltip placement="bottom" trigger="hover">
-                <template #trigger>
-                  <n-avatar
-                    size="large"
-                    round
-                    src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"
-                  ></n-avatar>
-                </template>
-                <span>{{ username }}</span>
-              </n-tooltip>
-              <n-button text @click="changeTheme">切换主题</n-button>
+              <n-dropdown
+                :options="dropdownOptions"
+                :on-select="handleDropClick"
+              >
+                <n-avatar
+                  size="large"
+                  round
+                  src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"
+                />
+              </n-dropdown>
+              <n-switch
+                v-model:value="active"
+                size="medium"
+                @update:value="changeTheme"
+              />
+              <!--<n-button text @click="changeTheme">切换主题</n-button>-->
             </n-flex>
           </n-flex>
         </n-layout-header>
@@ -92,6 +93,7 @@
 
 <script setup lang="ts">
 import {
+  DropdownOption,
   NAvatar,
   NButton,
   NFlex,
@@ -102,8 +104,13 @@ import {
   NLayoutSider,
   NMenu,
 } from "naive-ui";
-import { LogoGithub, PersonCircleOutline } from "@vicons/ionicons5";
-import { computed, ref } from "vue";
+import {
+  LogoGithub,
+  PersonCircleOutline,
+  Pencil as EditIcon,
+  LogOutOutline as LogoutIcon,
+} from "@vicons/ionicons5";
+import { Component, computed, h, ref } from "vue";
 import { useRoute } from "vue-router";
 import router from "@/router";
 
@@ -118,7 +125,32 @@ const usersStore = useUsersStore();
 const permsStore = usePermsStore();
 const designStore = useDesignSettingStore();
 
-const username = computed(() => usersStore.loginUserInfo.username);
+const renderIcon = (icon: Component) => {
+  return () => {
+    return h(NIcon, null, {
+      default: () => h(icon),
+    });
+  };
+};
+
+const menusOptions = computed(() => usePermsStore().menus);
+const dropdownOptions = [
+  {
+    label: "用户资料",
+    key: "profile",
+    icon: renderIcon(PersonCircleOutline),
+  },
+  {
+    label: "编辑用户资料",
+    key: "editProfile",
+    icon: renderIcon(EditIcon),
+  },
+  {
+    label: "退出登录",
+    key: "signOut",
+    icon: renderIcon(LogoutIcon),
+  },
+];
 const linkToGithub = () => {
   window.open("https://github.com/Jiesir16/cam-front", "_blank");
 };
@@ -130,7 +162,15 @@ function handleRouteMenu() {
 }
 
 handleRouteMenu();
+// 获取菜单
 permsStore.fetchAllMenus();
+
+function handleDropClick(key: string | number, option: DropdownOption) {
+  console.log("[Layout] key is ", key, "option is ", option);
+  if ("signOut" === key) {
+    handelSignOut();
+  }
+}
 
 function handelSignOut() {
   usersStore.resetUserStore();
@@ -144,6 +184,8 @@ const collapsed = ref(false);
 function handleUpdateValue(key: string) {
   router.push({ name: key });
 }
+
+const active = ref(designStore.darkTheme);
 
 function changeTheme() {
   designStore.reserveTheme();
