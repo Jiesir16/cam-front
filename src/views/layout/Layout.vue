@@ -67,7 +67,14 @@
                 v-model:value="active"
                 size="medium"
                 @update:value="changeTheme"
-              />
+              >
+                <template #checked-icon>
+                  <n-icon :component="Moon" />
+                </template>
+                <template #unchecked-icon>
+                  <n-icon :component="SunnyOutline" />
+                </template>
+              </n-switch>
               <!--<n-button text @click="changeTheme">切换主题</n-button>-->
             </n-flex>
           </n-flex>
@@ -109,6 +116,8 @@ import {
   PersonCircleOutline,
   Pencil as EditIcon,
   LogOutOutline as LogoutIcon,
+  Moon,
+  SunnyOutline,
 } from "@vicons/ionicons5";
 import { Component, computed, h, ref } from "vue";
 import { useRoute } from "vue-router";
