@@ -81,6 +81,9 @@ export const getTableColumns = (
         h(
           NButton,
           {
+            style: {
+              marginRight: "6px",
+            },
             text: true,
             type: "info",
             onClick: () => openEditModal(row),
@@ -88,13 +91,16 @@ export const getTableColumns = (
           {
             default: () => [
               h(NIcon, null, { default: () => h(LayersOutline) }),
-              " Edit",
+              " 编辑",
             ],
           },
         ),
         h(
           NButton,
           {
+            style: {
+              marginRight: "6px",
+            },
             text: true,
             type: "error",
             onClick: () => deleteItem(row.id),
@@ -102,7 +108,7 @@ export const getTableColumns = (
           {
             default: () => [
               h(NIcon, null, { default: () => h(TrashOutline) }),
-              " Delete",
+              " 删除",
             ],
           },
         ),

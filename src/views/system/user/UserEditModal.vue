@@ -5,12 +5,16 @@
       <n-form ref="editForm">
         <!-- 表单内容，例如： -->
         <n-form-item label="用户名">
-          <n-input v-model:value="user1.username" placeholder="请输入用户名" :disabled="user1.id!=null"/>
+          <n-input
+            v-model:value="user1.username"
+            placeholder="请输入用户名"
+            :disabled="user1.id != null"
+          />
         </n-form-item>
         <n-form-item label="邮箱">
           <n-input v-model:value="user1.email" placeholder="请输入邮箱" />
         </n-form-item>
-        <n-form-item>
+        <n-form-item label="用户角色">
           <n-tree-select
             multiple
             v-model:value="user1.roleIds"
@@ -35,7 +39,7 @@
 <script setup lang="ts">
 import { TreeSelectOption } from "naive-ui";
 import { useRolesStore } from "@/stores/modules/role";
-import {computed} from "vue";
+import { computed } from "vue";
 import { Role } from "@/views/system/role/roleApi.ts";
 
 export interface User {

@@ -84,10 +84,9 @@ const handleSubmit = (e) => {
           username: formInline.username,
           token: res.headers["authorization"],
         });
-        usePermsStore().getCurrentPerms();
         usePermsStore().fetchAllMenus();
         message.success("登录成功");
-        router.push({ name: "dashboard" });
+        router.push({ name: "home" });
       });
     }
   });

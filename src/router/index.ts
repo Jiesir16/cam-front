@@ -30,17 +30,17 @@ const routes = [
       },
       {
         path: "/dashboard/home",
-        name: "dashboard",
+        name: "home",
         component: Home,
       },
       {
         path: "/dashboard/user",
-        name: "user",
+        name: "system:user:mng",
         component: UserView,
       },
       {
         path: "/dashboard/role",
-        name: "role",
+        name: "system:role:mng",
         component: RoleView,
         meta: {
           requiresPermission: "ROLE_MNG", // 指定需要的权限名称
@@ -48,18 +48,18 @@ const routes = [
       },
       {
         path: "/dashboard/permission",
-        name: "permission",
+        name: "system:perm:mng",
         component: PermissionView,
         meta: {
           requiresPermission: "PERM_MNG", // 指定需要的权限名称
         },
       },
-      {
-        path: "/dashboard/forbidden",
-        name: "403",
-        component: Forbidden,
-      },
     ],
+  },
+  {
+    path: "/dashboard/forbidden",
+    name: "403",
+    component: Forbidden,
   },
 
   // 更多路由...
@@ -78,10 +78,19 @@ router.beforeEach((to, from, next) => {
   const usersStore = useUsersStore();
 
   const isAuthorization = Boolean(usersStore.loginUserInfo.token);
-
-  if (to.name == "Login" && isAuthorization) {
-    next({ name: "dashboard" });
-    return true;
+  // 未登录
+  if (to.path !== "/login" && to.path !== "/" && !isAuthorization) {
+    console.log("[router] 用户未登录,跳转登录页");
+    next("/login");
+    return;
+  }
+  // 登录了，去login页面禁止去login页面
+  if (to.path === "/login" && isAuthorization) {
+    console.log("[router] 用户登录了,禁止跳转登录页");
+    next({
+      path: from.path !== "/login" ? from.path : "/dashboard/home",
+    });
+    return;
   }
   next();
 });
