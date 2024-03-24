@@ -33,10 +33,13 @@
             style="padding: 5px 24px"
           >
             <n-flex>
-              <n-breadcrumb>
-                <n-breadcrumb-item>主页</n-breadcrumb-item>
-                <n-breadcrumb-item>系统管理</n-breadcrumb-item>
-                <n-breadcrumb-item>用户管理</n-breadcrumb-item>
+              <n-breadcrumb separator="/" class="breadcrumb-container">
+                <n-breadcrumb-item
+                  v-for="(item, index) in breadcrumbItems"
+                  :key="index"
+                >
+                  {{ item.label }}
+                </n-breadcrumb-item>
               </n-breadcrumb>
             </n-flex>
             <n-flex style="font-size: large" align="center">
@@ -51,7 +54,7 @@
                     <LogoGithub />
                   </n-icon>
                 </template>
-                开源地址
+                Github
               </NButton>
               <n-dropdown
                 :options="dropdownOptions"
@@ -119,7 +122,7 @@ import {
   Moon,
   SunnyOutline,
 } from "@vicons/ionicons5";
-import { Component, computed, h, ref } from "vue";
+import { Component, computed, h, ref, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import router from "@/router";
 
@@ -198,6 +201,21 @@ const active = ref(designStore.darkTheme);
 
 function changeTheme() {
   designStore.reserveTheme();
+}
+
+const breadcrumbItems = ref([]);
+// 监听路由变化
+watchEffect(() => {
+  updateBreadcrumbs();
+});
+
+function updateBreadcrumbs() {
+  console.log("[Layout] 更新面包屑");
+  const items = [];
+  route.matched.forEach((route) => {
+    items.push({ label: route.meta.desc });
+  });
+  breadcrumbItems.value = items;
 }
 </script>
 

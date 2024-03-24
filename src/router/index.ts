@@ -23,6 +23,9 @@ const routes = [
   {
     path: "/dashboard",
     component: Layout,
+    meta: {
+      desc: "仪表盘",
+    },
     children: [
       {
         path: "",
@@ -32,34 +35,52 @@ const routes = [
         path: "/dashboard/home",
         name: "home",
         component: Home,
-      },
-      {
-        path: "/dashboard/user",
-        name: "system:user:mng",
-        component: UserView,
-      },
-      {
-        path: "/dashboard/role",
-        name: "system:role:mng",
-        component: RoleView,
         meta: {
-          requiresPermission: "ROLE_MNG", // 指定需要的权限名称
+          desc: "主页",
         },
       },
       {
-        path: "/dashboard/permission",
-        name: "system:perm:mng",
-        component: PermissionView,
+        path: "/dashboard/system",
+        name: "system",
         meta: {
-          requiresPermission: "PERM_MNG", // 指定需要的权限名称
+          desc: "系统管理",
         },
+        children: [
+          {
+            path: "/dashboard/user",
+            name: "system:user:mng",
+            component: UserView,
+            meta: {
+              desc: "用户管理",
+            },
+          },
+          {
+            path: "/dashboard/role",
+            name: "system:role:mng",
+            component: RoleView,
+            meta: {
+              desc: "角色管理",
+              requiresPermission: "ROLE_MNG", // 指定需要的权限名称
+            },
+          },
+          {
+            path: "/dashboard/permission",
+            name: "system:perm:mng",
+            component: PermissionView,
+            meta: {
+              desc: "权限管理",
+              requiresPermission: "PERM_MNG", // 指定需要的权限名称
+            },
+          },
+        ],
+      },
+
+      {
+        path: "/dashboard/forbidden",
+        name: "403",
+        component: Forbidden,
       },
     ],
-  },
-  {
-    path: "/dashboard/forbidden",
-    name: "403",
-    component: Forbidden,
   },
 
   // 更多路由...

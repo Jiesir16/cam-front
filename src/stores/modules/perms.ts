@@ -30,6 +30,7 @@ export const usePermsStore = defineStore("perms", {
     perms: [],
     currentPerms: [],
     menus: [],
+    routers: [],
   }),
   actions: {
     async fetchAllPerms() {
