@@ -1,7 +1,7 @@
 <template>
   <n-flex justify="space-between" align="center" style="padding: 0 24px">
     <n-flex style="height: 50px" align="center">
-      <n-gradient-text :size="24" type="success">权限管理</n-gradient-text>
+      <n-gradient-text :size="22" type="success">权限管理</n-gradient-text>
     </n-flex>
 
     <n-flex>

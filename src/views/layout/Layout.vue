@@ -35,7 +35,7 @@
             <n-flex>
               <n-breadcrumb separator="/" class="breadcrumb-container">
                 <n-breadcrumb-item
-                  v-for="(item, index) in breadcrumbItems"
+                  v-for="(item, index) in breadcrumbRefs"
                   :key="index"
                 >
                   {{ item.label }}
@@ -114,22 +114,15 @@ import {
   NLayoutSider,
   NMenu,
 } from "naive-ui";
-import {
-  LogoGithub,
-  PersonCircleOutline,
-  Pencil as EditIcon,
-  LogOutOutline as LogoutIcon,
-  Moon,
-  SunnyOutline,
-} from "@vicons/ionicons5";
-import { Component, computed, h, ref, watchEffect } from "vue";
+import { LogoGithub, Moon, SunnyOutline } from "@vicons/ionicons5";
+import { computed, ref, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import router from "@/router";
-
 import { useDesignSettingStore } from "@/stores/modules/designSetting";
 import { Key } from "naive-ui/lib/menu/src/interface";
 import { useUsersStore } from "@/stores/modules/users";
 import { usePermsStore } from "@/stores/modules/perms.ts";
+import { renderIcon } from "@/utils";
 
 const route = useRoute();
 
@@ -137,30 +130,22 @@ const usersStore = useUsersStore();
 const permsStore = usePermsStore();
 const designStore = useDesignSettingStore();
 
-const renderIcon = (icon: Component) => {
-  return () => {
-    return h(NIcon, null, {
-      default: () => h(icon),
-    });
-  };
-};
-
 const menusOptions = computed(() => usePermsStore().menus);
 const dropdownOptions = [
   {
     label: "用户资料",
     key: "profile",
-    icon: renderIcon(PersonCircleOutline),
+    icon: renderIcon("i-PersonCircleOutline"),
   },
   {
     label: "编辑用户资料",
     key: "editProfile",
-    icon: renderIcon(EditIcon),
+    icon: renderIcon("i-EditIcon"),
   },
   {
     label: "退出登录",
     key: "signOut",
-    icon: renderIcon(LogoutIcon),
+    icon: renderIcon("i-LogoutIcon"),
   },
 ];
 const linkToGithub = () => {
@@ -203,7 +188,12 @@ function changeTheme() {
   designStore.reserveTheme();
 }
 
-const breadcrumbItems = ref([]);
+interface BreadcrumbItem {
+  label?: any;
+  path?: string | null;
+}
+
+const breadcrumbRefs = ref<Array<BreadcrumbItem>>([]);
 // 监听路由变化
 watchEffect(() => {
   updateBreadcrumbs();
@@ -211,11 +201,12 @@ watchEffect(() => {
 
 function updateBreadcrumbs() {
   console.log("[Layout] 更新面包屑");
-  const items = [];
+  const items: Array<BreadcrumbItem> = [];
   route.matched.forEach((route) => {
-    items.push({ label: route.meta.desc });
+    const item: BreadcrumbItem = { label: route.meta.desc };
+    items.push(item);
   });
-  breadcrumbItems.value = items;
+  breadcrumbRefs.value = items;
 }
 </script>
 

@@ -48,7 +48,7 @@ const routes = [
         children: [
           {
             path: "/dashboard/user",
-            name: "system:user:mng",
+            name: "system:user",
             component: UserView,
             meta: {
               desc: "用户管理",
@@ -56,7 +56,7 @@ const routes = [
           },
           {
             path: "/dashboard/role",
-            name: "system:role:mng",
+            name: "system:role",
             component: RoleView,
             meta: {
               desc: "角色管理",
@@ -65,7 +65,7 @@ const routes = [
           },
           {
             path: "/dashboard/permission",
-            name: "system:perm:mng",
+            name: "system:perm",
             component: PermissionView,
             meta: {
               desc: "权限管理",
