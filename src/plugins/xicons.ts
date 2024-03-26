@@ -2,9 +2,9 @@ import type { App } from "vue";
 import {
   AccessibilityOutline,
   HomeOutline,
-  LogOutOutline as LogoutIcon,
+  LogOutOutline,
   MenuOutline,
-  Pencil as EditIcon,
+  Pencil,
   PersonCircleOutline,
   PersonOutline,
   SettingsOutline,
@@ -18,8 +18,8 @@ const xicons = [
   PersonCircleOutline,
   SettingsOutline,
   PersonOutline,
-  EditIcon,
-  LogoutIcon,
+  Pencil,
+  LogOutOutline,
   MenuOutline,
   //  carbon start ===========
   UserRole,
