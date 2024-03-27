@@ -30,7 +30,7 @@
           <n-flex
             justify="space-between"
             align="center"
-            style="padding: 5px 24px"
+            style="padding: 5px 24px; border-bottom: 1px solid #eee"
           >
             <n-flex>
               <n-breadcrumb separator="/" class="breadcrumb-container">
@@ -140,12 +140,12 @@ const dropdownOptions = [
   {
     label: "编辑用户资料",
     key: "editProfile",
-    icon: renderIcon("i-EditIcon"),
+    icon: renderIcon("i-Pencil"),
   },
   {
     label: "退出登录",
     key: "signOut",
-    icon: renderIcon("i-LogoutIcon"),
+    icon: renderIcon("i-LogOutOutline"),
   },
 ];
 const linkToGithub = () => {

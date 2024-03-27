@@ -1,6 +1,8 @@
 <template>
-
-  <n-config-provider v-model:theme="getDarkTheme">
+  <n-config-provider
+    v-model:theme="getDarkTheme"
+    :theme-overrides="themeOverrides"
+  >
     <n-message-provider>
       <n-loading-bar-provider>
         <router-view />
@@ -11,10 +13,20 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { darkTheme } from "naive-ui";
+import { darkTheme, GlobalThemeOverrides } from "naive-ui";
 import { useDesignSettingStore } from "./stores/modules/designSetting";
 
 const designStore = useDesignSettingStore();
+
+const themeOverrides: GlobalThemeOverrides = {
+  common: {
+//    primaryColor: "#FF0000",
+//    primaryColorHover: "#FF0000",
+  },
+  Button: {
+//    textColor: "#FF0000",
+  },
+};
 
 const getDarkTheme = computed(() =>
   designStore.getDarkTheme ? darkTheme : undefined,

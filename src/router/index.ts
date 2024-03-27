@@ -13,7 +13,8 @@ import { useUsersStore } from "@/stores/modules/users.ts";
 const routes = [
   {
     path: "/",
-    redirect: "/login",
+    name: "/HomePage",
+    component: () => import("@/views/frontViews/HomePage.vue"),
   },
   {
     path: "/login",
@@ -74,7 +75,14 @@ const routes = [
           },
         ],
       },
-
+      {
+        path: "/dashboard/student",
+        name: "student:mng",
+        component: Home,
+        meta: {
+          desc: "学生管理",
+        },
+      },
       {
         path: "/dashboard/forbidden",
         name: "403",

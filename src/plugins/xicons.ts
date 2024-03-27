@@ -8,6 +8,7 @@ import {
   PersonCircleOutline,
   PersonOutline,
   SettingsOutline,
+  ListSharp,
 } from "@vicons/ionicons5";
 
 import { UserRole } from "@vicons/carbon";
@@ -21,6 +22,7 @@ const xicons = [
   Pencil,
   LogOutOutline,
   MenuOutline,
+  ListSharp,
   //  carbon start ===========
   UserRole,
 ];
