@@ -2,16 +2,17 @@ import type { App } from "vue";
 import {
   AccessibilityOutline,
   HomeOutline,
+  ListSharp,
   LogOutOutline,
   MenuOutline,
   Pencil,
   PersonCircleOutline,
   PersonOutline,
   SettingsOutline,
-  ListSharp,
+  Aperture,
 } from "@vicons/ionicons5";
 
-import { UserRole } from "@vicons/carbon";
+import { DataVis1, UserRole } from "@vicons/carbon";
 
 const xicons = [
   AccessibilityOutline,
@@ -23,8 +24,10 @@ const xicons = [
   LogOutOutline,
   MenuOutline,
   ListSharp,
+  Aperture,
   //  carbon start ===========
   UserRole,
+  DataVis1,
 ];
 
 export function setupXIcons(app: App<Element>) {

@@ -26,11 +26,11 @@
       </n-layout-sider>
       <n-layout>
         <!-- 顶部导航栏 -->
-        <n-layout-header>
+        <n-layout-header bordered>
           <n-flex
             justify="space-between"
             align="center"
-            style="padding: 5px 24px; border-bottom: 1px solid #eee"
+            style="padding: 5px 24px"
           >
             <n-flex>
               <n-breadcrumb separator="/" class="breadcrumb-container">

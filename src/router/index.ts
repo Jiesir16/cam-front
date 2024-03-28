@@ -13,8 +13,21 @@ import { useUsersStore } from "@/stores/modules/users.ts";
 const routes = [
   {
     path: "/",
-    name: "/HomePage",
-    component: () => import("@/views/frontViews/HomePage.vue"),
+    component: () => import("@/views/frontViews/Layout.vue"),
+    children: [
+      {
+        path: "",
+        redirect: "/home",
+      },
+      {
+        path: "/home",
+        name: "front:home",
+        component: () => import("@/views/frontViews/HomePage.vue"),
+        meta: {
+          desc: "主页",
+        },
+      },
+    ],
   },
   {
     path: "/login",
