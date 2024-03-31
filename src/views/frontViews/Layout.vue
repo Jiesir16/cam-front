@@ -1,48 +1,45 @@
 <template>
-  <div style="height: 100dvh">
-    <n-flex vertical align="center" justify="center">
-      <!-- header -->
-      <n-flex
-        justify="space-between"
-        align="center"
-        style="height: 60px; width: 100%; border-bottom: solid 1px #eeeeee"
-      >
-        <div style="margin: 0 24px">
-          <n-gradient-text>CampusEvent</n-gradient-text>
-        </div>
-        <div>
-          <n-menu
-            mode="horizontal"
-            v-model:value="selectedKey"
-            :options="menusOptions"
-            @update:value="handleSelected"
-          />
-        </div>
-        <div style="margin: 0 24px">
-          <n-avatar round size="large">未登录</n-avatar>
-        </div>
-      </n-flex>
-      <!-- content -->
-      <n-flex
-        vertical
-        justify="center"
-        style="flex: 0.8; width: 80%"
-        align="center"
-      >
-        <div style="height: 90%; width: 100%">
-          <router-view />
-        </div>
-      </n-flex>
-      <!-- footer -->
-      <n-flex
-        justify="center"
-        align="center"
-        style="height: 40px; width: 100%; border-top: solid 1px #eeeeee"
-      >
-        © 2024 CAM
-      </n-flex>
+  <n-flex vertical align="center" justify="center" style="gap: 0;height: 100%">
+    <!-- header -->
+    <n-flex
+      justify="space-between"
+      align="center"
+      style="height: 60px; width: 100%;background-color: #FFFFFF; border-bottom: solid 1px #eeeeee"
+    >
+      <div style="margin: 0 24px">
+        <n-gradient-text>CampusEvent</n-gradient-text>
+      </div>
+      <div>
+        <n-menu
+          mode="horizontal"
+          v-model:value="selectedKey"
+          :options="menusOptions"
+          @update:value="handleSelected"
+        />
+      </div>
+      <div style="margin: 0 24px">
+        <n-avatar round size="large">未登录</n-avatar>
+      </div>
     </n-flex>
-  </div>
+    <!-- content -->
+    <n-flex
+      vertical
+      justify="center"
+      align="center"
+      style="flex-grow: 1; padding: 18px 0"
+    >
+      <router-view />
+    </n-flex>
+    <!-- footer -->
+    <n-flex
+      justify="center"
+      align="center"
+      wrap
+      style="height: 40px; width: 100%; border-top: 1px solid #eee;background-color: #ffffff"
+    >
+      © 2024 CAM
+    </n-flex>
+  </n-flex>
 </template>
 
 <script setup lang="ts">
@@ -84,4 +81,8 @@ function handleSelectedMenu() {
 handleSelectedMenu();
 </script>
 
-<style scoped></style>
+<style scoped>
+.n-gradient-text {
+  font-size: 18px;
+}
+</style>

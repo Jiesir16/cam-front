@@ -36,11 +36,12 @@ const getDarkTheme = computed(() =>
 html,
 body,
 #app {
-  height: 100vh;
-  min-height: 100vh;
+  height: 100%;
+  min-height: 100%;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  background-color: #f4f4f4;
   /* 防止页面出现水平滚动条 */
 }
 </style>

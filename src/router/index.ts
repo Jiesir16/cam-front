@@ -27,6 +27,22 @@ const routes = [
           desc: "主页",
         },
       },
+      {
+        path: "/discover",
+        name: "front:discover",
+        component: () => import("@/views/frontViews/Discover.vue"),
+        meta: {
+          desc: "发现",
+        },
+      },
+      {
+        path: "/person",
+        name: "front:person",
+        component: () => import("@/views/frontViews/Person.vue"),
+        meta: {
+          desc: "个人主页",
+        },
+      },
     ],
   },
   {
