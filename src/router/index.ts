@@ -36,6 +36,14 @@ const routes = [
         },
       },
       {
+        path: "/event/detail",
+        name: "front:event:detail",
+        component: () => import("@/views/frontViews/EventDetail.vue"),
+        meta: {
+          desc: "活动详情",
+        },
+      },
+      {
         path: "/person",
         name: "front:person",
         component: () => import("@/views/frontViews/Person.vue"),

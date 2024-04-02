@@ -5,6 +5,7 @@ export interface LoginUserInfo {
   id: number;
   token: string;
   username: string;
+  roleName: string;
   email: string;
 }
 

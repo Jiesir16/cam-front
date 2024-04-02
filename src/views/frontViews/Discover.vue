@@ -12,7 +12,7 @@
     <n-radio-group
       v-model:value="eventTypeRef"
       name="radiobuttongroup1"
-      size="large"
+      size="medium"
     >
       <n-radio-button value="all"> 全部</n-radio-button>
       <n-radio-button value="onlineEnvent"> 线上活动</n-radio-button>
@@ -22,9 +22,9 @@
     <n-radio-group
       v-model:value="eventStatusRef"
       name="radiobuttongroup2"
-      size="large"
+      size="medium"
     >
-      <n-radio-button dvalue="all"> 全部</n-radio-button>
+      <n-radio-button value="all"> 全部</n-radio-button>
       <n-radio-button value="unstart"> 未开始</n-radio-button>
       <n-radio-button value="starting"> 进行中</n-radio-button>
       <n-radio-button value="end"> 已结束</n-radio-button>
@@ -47,11 +47,15 @@
         </n-card>
       </n-gi>
     </n-grid>
+    <n-flex justify="center">
+      <n-pagination v-model:page="page" :page-count="100" simple />
+    </n-flex>
   </n-flex>
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
 import { message } from "@/plugins/naive-ui-discrete-api.ts";
+import router from "@/router";
 
 const eventTypeRef = ref<"all" | "onlineEnvent" | "offlineEnvent">("all");
 const eventStatusRef = ref<"all" | "onlineEnvent" | "offlineEnvent">("all");
@@ -90,10 +94,11 @@ const eventsRef = ref([
 
 function handleClick(index: any) {
   message.info(`${index}点击了`);
+  router.push({ path: `/event/detail` });
 }
 </script>
 <style scoped>
 .n-text {
-  font-size: 16px;
+  font-size: 14px;
 }
 </style>

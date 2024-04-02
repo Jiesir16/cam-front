@@ -16,6 +16,8 @@ import {
   NCheckbox,
   NCheckboxGroup,
   NCol,
+  NCollapse,
+  NCollapseItem,
   NConfigProvider,
   NDataTable,
   NDatePicker,
@@ -59,6 +61,7 @@ import {
   NRadio,
   NRadioButton,
   NRadioGroup,
+  NRate,
   NResult,
   NRow,
   NSelect,
@@ -164,6 +167,9 @@ const naive = create({
     NPageHeader,
     NStatistic,
     NRadioButton,
+    NCollapse,
+    NCollapseItem,
+    NRate,
   ],
 });
 

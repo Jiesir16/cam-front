@@ -66,6 +66,9 @@
       </n-tab-pane>
     </n-tabs>
   </n-flex>
+  <n-flex justify="center" align="center">
+    <a href="/discover">查看更多...</a>
+  </n-flex>
 </template>
 
 <script setup lang="ts">
