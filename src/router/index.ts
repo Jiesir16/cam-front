@@ -36,9 +36,9 @@ const routes = [
         },
       },
       {
-        path: "/event/detail",
-        name: "front:event:detail",
-        component: () => import("@/views/frontViews/EventDetail.vue"),
+        path: "/activity/detail",
+        name: "front:activity:detail",
+        component: () => import("@/views/frontViews/ActivityDetail.vue"),
         meta: {
           desc: "活动详情",
         },
@@ -113,12 +113,29 @@ const routes = [
         ],
       },
       {
-        path: "/dashboard/student",
-        name: "student:mng",
-        component: Home,
+        path: "/dashboard/activity",
+        name: "activity",
         meta: {
-          desc: "学生管理",
+          desc: "活动管理",
         },
+        children: [
+          {
+            path: "/dashboard/activity/info",
+            name: "activity:info",
+            component: () => import("@/views/activity/ActivityManagement.vue"),
+            meta: {
+              desc: "活动信息",
+            },
+          },
+          {
+            path: "/dashboard/activity/apply",
+            name: "activity:apply",
+            component: () => import("@/views/activity/ActivityApply.vue"),
+            meta: {
+              desc: "活动申请",
+            },
+          },
+        ],
       },
       {
         path: "/dashboard/forbidden",

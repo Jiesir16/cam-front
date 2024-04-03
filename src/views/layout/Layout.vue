@@ -48,6 +48,7 @@
                 @click="linkToGithub"
                 size="large"
                 style="margin: 6px"
+                v-show="false"
               >
                 <template #icon>
                   <n-icon>

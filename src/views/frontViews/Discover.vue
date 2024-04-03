@@ -10,7 +10,7 @@
   >
     <n-text>活动类型:</n-text>
     <n-radio-group
-      v-model:value="eventTypeRef"
+      v-model:value="activityTypeRef"
       name="radiobuttongroup1"
       size="medium"
     >
@@ -20,7 +20,7 @@
     </n-radio-group>
     <n-text>活动状态:</n-text>
     <n-radio-group
-      v-model:value="eventStatusRef"
+      v-model:value="activityStatusRef"
       name="radiobuttongroup2"
       size="medium"
     >
@@ -31,7 +31,7 @@
     </n-radio-group>
     <n-divider />
     <n-grid x-gap="12" y-gap="8" :cols="3">
-      <n-gi v-for="(item, index) in eventsRef">
+      <n-gi v-for="(item, index) in activitiesRef">
         <n-card
           style="cursor: pointer"
           :title="item.title"
@@ -57,9 +57,9 @@ import { ref } from "vue";
 import { message } from "@/plugins/naive-ui-discrete-api.ts";
 import router from "@/router";
 
-const eventTypeRef = ref<"all" | "onlineEnvent" | "offlineEnvent">("all");
-const eventStatusRef = ref<"all" | "onlineEnvent" | "offlineEnvent">("all");
-const eventsRef = ref([
+const activityTypeRef = ref<"all" | "onlineEnvent" | "offlineEnvent">("all");
+const activityStatusRef = ref<"all" | "onlineEnvent" | "offlineEnvent">("all");
+const activitiesRef = ref([
   {
     title: "我们为什么要读书1",
     desc: "我哪知道读书长知识",
@@ -94,7 +94,7 @@ const eventsRef = ref([
 
 function handleClick(index: any) {
   message.info(`${index}点击了`);
-  router.push({ path: `/event/detail` });
+  router.push({ path: `/activity/detail` });
 }
 </script>
 <style scoped>

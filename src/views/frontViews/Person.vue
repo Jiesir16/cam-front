@@ -16,12 +16,12 @@
         <n-flex style="min-height: 61dvh">
           <n-tabs type="line" animated :tabs-padding="12">
             <n-tab-pane
-              name="collectedEvent"
+              name="collectedActivity"
               :tab="renderTab('i-HomeOutline', '收藏的活动')"
               display-directive="show:lazy"
             >
               <n-grid x-gap="12" y-gap="8" :cols="3">
-                <n-gi v-for="(item, index) in collectedEventsRef">
+                <n-gi v-for="(item, index) in collectedActivitiesRef">
                   <n-card
                     style="cursor: pointer"
                     :title="item.title"
@@ -44,7 +44,7 @@
               display-directive="show:lazy"
             >
               <n-grid x-gap="12" y-gap="8" :cols="3">
-                <n-gi v-for="(item, index) in participatedEventsRef">
+                <n-gi v-for="(item, index) in participatedActivitiesRef">
                   <n-card
                     style="cursor: pointer"
                     :title="item.title"
@@ -62,12 +62,12 @@
               </n-grid>
             </n-tab-pane>
             <n-tab-pane
-              name="publishedEvent"
+              name="publishedActivity"
               :tab="renderTab('i-HomeOutline', '发布过的活动')"
               display-directive="show:lazy"
             >
               <n-grid x-gap="12" y-gap="8" :cols="3">
-                <n-gi v-for="(item, index) in publishedEventsRef">
+                <n-gi v-for="(item, index) in publishedActivitiesRef">
                   <n-card
                     style="cursor: pointer"
                     :title="item.title"
@@ -101,7 +101,7 @@ interface GridItem {
   imgUrl?: string | undefined;
 }
 
-const collectedEventsRef = ref<Array<GridItem>>([
+const collectedActivitiesRef = ref<Array<GridItem>>([
   {
     title: "我们为什么要读书",
     desc: "读书长知识",
@@ -113,7 +113,7 @@ const collectedEventsRef = ref<Array<GridItem>>([
     imgUrl: "https://i.loli.net/2019/03/17/5c8db80696ca5.png",
   },
 ]);
-const participatedEventsRef = ref<Array<GridItem>>([
+const participatedActivitiesRef = ref<Array<GridItem>>([
   {
     title: "我们为什么要读书1",
     desc: "我哪知道读书长知识",
@@ -145,7 +145,7 @@ const participatedEventsRef = ref<Array<GridItem>>([
     imgUrl: "https://i.loli.net/2019/03/17/5c8db80696ca5.png",
   },
 ]);
-const publishedEventsRef = ref<Array<GridItem>>([
+const publishedActivitiesRef = ref<Array<GridItem>>([
   {
     title: "我们为什么要读书1",
     desc: "我哪知道读书长知识",

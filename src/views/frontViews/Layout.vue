@@ -17,7 +17,7 @@
       "
     >
       <div style="margin: 0 24px">
-        <n-gradient-text>CampusEvent</n-gradient-text>
+        <n-gradient-text>CampusActivity</n-gradient-text>
       </div>
       <div>
         <n-menu
@@ -138,7 +138,7 @@ const selectedKey = ref<Key>("front:home");
 function handleSelectedMenu() {
   const routeName = String(route.name);
   selectedKey.value =
-    routeName === "front:event:detail" ? "front:discover" : routeName;
+    routeName === "front:activity:detail" ? "front:discover" : routeName;
 }
 
 handleSelectedMenu();

@@ -47,22 +47,25 @@ http.interceptors.response.use(
   (error) => {
     // 统一处理响应错误
     console.log("失败响应 error", error);
-    if (error.response.status == 404) {
-      message.error("资源路径错误");
-    } else if (error.response.status == 403) {
-      router
-        .push({ name: "403" })
-        .then((r) => {
-          console.log("403 push success", r);
-          // todo 403跳转到403页面，并重新刷新资源菜单
-          // 获取菜单资源
-
-        })
-        .catch((e) => {
-          console.log("403 push faild", e);
-        });
+    if (error.response && error.response.status) {
+      if (error.response.status === 404) {
+        message.error("资源路径错误");
+      } else if (error.response.status === 403) {
+        router
+          .push({ name: "403" })
+          .then((r) => {
+            console.log("403 push success", r);
+            // todo 403跳转到403页面，并重新刷新资源菜单
+            // 获取菜单资源
+          })
+          .catch((e) => {
+            console.log("403 push faild", e);
+          });
+      } else {
+        message.error(error.response.data);
+      }
     } else {
-      message.error(error.response.data);
+      message.error(error.message);
     }
 
     return Promise.reject(error);

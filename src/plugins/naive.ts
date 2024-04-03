@@ -32,6 +32,7 @@ import {
   NFlex,
   NForm,
   NFormItem,
+  NFormItemGi,
   NGradientText,
   NGrid,
   NGridItem,
@@ -170,6 +171,7 @@ const naive = create({
     NCollapse,
     NCollapseItem,
     NRate,
+    NFormItemGi,
   ],
 });
 

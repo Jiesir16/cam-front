@@ -20,8 +20,8 @@
       <template #header>我们为什么要读书</template>
       <template #header-extra>
         <n-flex>
-          <n-rate readonly allow-half :default-value="eventRateRef" />
-          <n-gradient-text type="warning">{{ eventRateRef }}分</n-gradient-text>
+          <n-rate readonly allow-half :default-value="activityRateRef" />
+          <n-gradient-text type="warning">{{ activityRateRef }}分</n-gradient-text>
         </n-flex>
       </template>
       <n-flex vertical align="center" justify="center">
@@ -60,7 +60,7 @@
         <n-button>评论</n-button>
       </n-flex>
       <n-divider></n-divider>
-      <n-card v-for="item in eventCommentsRef">
+      <n-card v-for="item in activityCommentsRef">
         <n-flex vertical justify="start">
           <n-flex justify="space-between">
             <n-flex align="center">
@@ -133,9 +133,9 @@ import { ref } from "vue";
 import { ArrowBack } from "@vicons/ionicons5";
 import router from "@/router";
 
-const eventRateRef = ref(3.8);
+const activityRateRef = ref(3.8);
 
-const eventCommentsRef = ref([
+const activityCommentsRef = ref([
   {
     url: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
     username: "同学A",

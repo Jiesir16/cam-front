@@ -23,7 +23,7 @@
   <n-flex style="margin: 12px; width: 80%" justify="center" align="center">
     <n-tabs type="line" animated :tabs-padding="12">
       <n-tab-pane
-        name="onLineEvent"
+        name="onLineActivity"
         tab="线上活动"
         display-directive="show:lazy"
       >
@@ -45,9 +45,9 @@
           </n-gi>
         </n-grid>
       </n-tab-pane>
-      <n-tab-pane name="offLineEvent" tab="线下活动">
+      <n-tab-pane name="offLineActivity" tab="线下活动">
         <n-grid x-gap="12" y-gap="8" :cols="3">
-          <n-gi v-for="(item, index) in offlineEnevtRefs">
+          <n-gi v-for="(item, index) in offlineActivityRefs">
             <n-card
               style="cursor: pointer"
               :title="item.title"
@@ -113,7 +113,7 @@ const onlineEnevtRefs = ref<Array<GridItem>>([
     imgUrl: "https://i.loli.net/2019/03/17/5c8db80696ca5.png",
   },
 ]);
-const offlineEnevtRefs = ref<Array<GridItem>>([
+const offlineActivityRefs = ref<Array<GridItem>>([
   {
     title: "我们为什么要读书1",
     desc: "我哪知道读书长知识",
