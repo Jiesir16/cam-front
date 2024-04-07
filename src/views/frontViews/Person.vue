@@ -8,9 +8,21 @@
             src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"
             style="border-radius: 50%"
           />
-          <n-text>Jiesir</n-text>
-          <n-text>信息工程学院</n-text>
-          <n-text>2015信息工程03班</n-text>
+          <n-text
+            >{{
+              useUsersStore().loginUserInfo.name
+                ? useUsersStore().loginUserInfo.name
+                : useUsersStore().loginUserInfo.username
+            }}
+          </n-text>
+          <n-text>{{ useUsersStore().loginUserInfo.department }}</n-text>
+          <n-text
+            >{{
+              useUsersStore().loginUserInfo.grade +
+              useUsersStore().loginUserInfo.profession +
+              useUsersStore().loginUserInfo.userClass
+            }}班
+          </n-text>
         </n-flex>
 
         <n-flex style="min-height: 61dvh">
@@ -94,6 +106,7 @@
 import { ref } from "vue";
 import { message } from "@/plugins/naive-ui-discrete-api.ts";
 import { renderTab } from "@/utils";
+import { useUsersStore } from "../../stores/modules/users.ts";
 
 interface GridItem {
   title?: string | undefined;

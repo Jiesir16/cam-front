@@ -4,11 +4,11 @@
       <!-- 侧边栏 -->
       <n-layout-sider
         bordered
+        inverted
         collapse-mode="width"
         :collapsed-width="64"
         :width="240"
         :collapsed="collapsed"
-        show-trigger
         @collapse="collapsed = true"
         @expand="collapsed = false"
       >
@@ -17,6 +17,7 @@
         </div>
 
         <n-menu
+          inverted
           v-model:value="selectedKey"
           :collapsed-width="64"
           :collapsed-icon-size="22"
@@ -42,7 +43,20 @@
                 </n-breadcrumb-item>
               </n-breadcrumb>
             </n-flex>
-            <n-flex style="font-size: large" align="center">
+            <n-flex align="center">
+              <NButton
+                text
+                @click="linkToFrontHome"
+                size="large"
+                style="margin: 6px"
+              >
+                <template #icon>
+                  <n-icon>
+                    <HomeOutline />
+                  </n-icon>
+                </template>
+                前台主页
+              </NButton>
               <NButton
                 text
                 @click="linkToGithub"
@@ -68,6 +82,7 @@
                 />
               </n-dropdown>
               <n-switch
+                v-show="false"
                 v-model:value="active"
                 size="medium"
                 @update:value="changeTheme"
@@ -79,13 +94,28 @@
                   <n-icon :component="SunnyOutline" />
                 </template>
               </n-switch>
+              <n-flex vertical align="center" justify="center" style="gap: 2px">
+                <div>
+                  {{
+                    useUsersStore().loginUserInfo.name
+                      ? useUsersStore().loginUserInfo.name
+                      : useUsersStore().loginUserInfo.username
+                  }}
+                </div>
+                <div>
+                  {{
+                    useUsersStore().loginUserInfo.profession +
+                    useUsersStore().loginUserInfo.userClass
+                  }}班
+                </div>
+              </n-flex>
               <!--<n-button text @click="changeTheme">切换主题</n-button>-->
             </n-flex>
           </n-flex>
         </n-layout-header>
 
         <!-- 内容区域：侧边栏和主内容 -->
-        <n-flex item style="flex: 1">
+        <n-flex item style="flex: 1; background-color: #eeeeee">
           <!-- 主内容区 -->
           <n-layout>
             <n-layout-content>
@@ -95,10 +125,6 @@
         </n-flex>
       </n-layout>
     </n-layout>
-    <!-- 底部Footer -->
-    <n-layout-footer style="text-align: center; padding: 8px">
-      © 2024 Your Company Name
-    </n-layout-footer>
   </n-flex>
 </template>
 
@@ -110,12 +136,11 @@ import {
   NFlex,
   NIcon,
   NLayoutContent,
-  NLayoutFooter,
   NLayoutHeader,
   NLayoutSider,
   NMenu,
 } from "naive-ui";
-import { LogoGithub, Moon, SunnyOutline } from "@vicons/ionicons5";
+import { HomeOutline, LogoGithub, Moon, SunnyOutline } from "@vicons/ionicons5";
 import { computed, ref, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import router from "@/router";
@@ -139,16 +164,15 @@ const dropdownOptions = [
     icon: renderIcon("i-PersonCircleOutline"),
   },
   {
-    label: "编辑用户资料",
-    key: "editProfile",
-    icon: renderIcon("i-Pencil"),
-  },
-  {
     label: "退出登录",
     key: "signOut",
     icon: renderIcon("i-LogOutOutline"),
   },
 ];
+const linkToFrontHome = () => {
+  router.push({ name: "front:home" });
+};
+
 const linkToGithub = () => {
   window.open("https://github.com/Jiesir16/cam-front", "_blank");
 };
@@ -167,6 +191,9 @@ function handleDropClick(key: string | number, option: DropdownOption) {
   console.log("[Layout] key is ", key, "option is ", option);
   if ("signOut" === key) {
     handelSignOut();
+  }
+  if ("profile" === key) {
+    router.push({ name: "system:profile" });
   }
 }
 
@@ -224,7 +251,7 @@ function updateBreadcrumbs() {
   p {
     // 如果您需要对 h2 元素进行一些特定的样式设置
     // 比如更改颜色、字体大小等
-    color: #18a058;
+    color: salmon;
     font-size: 1.2rem;
   }
 }

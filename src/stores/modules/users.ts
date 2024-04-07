@@ -2,11 +2,19 @@ import { defineStore } from "pinia";
 import { restfulApi } from "@/axios";
 
 export interface LoginUserInfo {
-  id: number;
-  token: string;
+  id?: number;
   username: string;
-  roleName: string;
-  email: string;
+  name?: string;
+  account: string;
+  sex: string;
+  grade: string;
+  department: string;
+  profession: string;
+  userClass: string;
+  userType: string;
+  roleName?: string;
+  email?: string;
+  token: string;
 }
 
 export const useUsersStore = defineStore("users", {
@@ -30,13 +38,13 @@ export const useUsersStore = defineStore("users", {
       this.$reset();
     },
     removeLoginUserInfo() {
-      console.log("removeLoginUserInfo 用户信息")
+      console.log("removeLoginUserInfo 用户信息");
       localStorage.removeItem("__persisted__users");
-    }
+    },
     // 添加其他如 createUser、updateUser、deleteUser 等方法
   },
   persist: {
-    storage: localStorage,
+    storage: sessionStorage,
     paths: ["loginUserInfo"],
   },
 });

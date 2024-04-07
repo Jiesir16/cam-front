@@ -36,10 +36,6 @@
           >
           </n-avatar>
         </n-dropdown>
-        <n-flex vertical align="center" justify="center" style="gap: 2px">
-          <div>hi,{{ usersStore.loginUserInfo.username }}</div>
-          <div>信息工程1班</div>
-        </n-flex>
       </n-flex>
     </n-flex>
     <!-- content -->
@@ -47,7 +43,7 @@
       vertical
       justify="center"
       align="center"
-      style="flex-grow: 1; padding: 18px 0;width: 100%"
+      style="flex-grow: 1; padding: 18px 0; width: 100%"
     >
       <router-view />
     </n-flex>

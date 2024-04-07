@@ -85,6 +85,14 @@ const routes = [
         },
         children: [
           {
+            path: "/dashboard/profile",
+            name: "system:profile",
+            component: () => import("@/views/system/PersonProfile.vue"),
+            meta: {
+              desc: "个人资料",
+            },
+          },
+          {
             path: "/dashboard/user",
             name: "system:user",
             component: UserView,
