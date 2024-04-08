@@ -4,13 +4,12 @@ import router from "@/router";
 import { useUsersStore } from "@/stores/modules/users.ts";
 import { renderIcon } from "@/utils";
 
-//const currentPerms_1 = ["system_manage", "user", "role", "permission"];
-function convertToMenuItems(data: any[]) {
+function convertToMenuItems(data: any[], perms: any[]) {
   return data.map((item) => ({
     label: item.permName,
     key: item.permCode,
-    show: true, // 默认为 true，可以根据需要进行修改
-    children: item.children ? convertToMenuItems(item.children) : null,
+    show: perms.includes(item.permCode), // 默认为 true，可以根据需要进行修改
+    children: item.children ? convertToMenuItems(item.children, perms) : null,
     icon: renderIcon(item.iconName),
   }));
 }
@@ -32,20 +31,16 @@ export const usePermsStore = defineStore("perms", {
       return this.perms;
     },
     fetchAllMenus() {
-      restfulApi
-        .get("/perm/listAll")
-        .then((res) => {
-          this.menus = convertToMenuItems(res.data);
-        })
-        .then(() => {
-          usePermsStore().getCurrentPerms();
-        });
+      usePermsStore().getCurrentPerms();
     },
     async getCurrentPerms() {
       await restfulApi
         .get("/perm/getCurrentPerms")
         .then((res) => {
           this.currentPerms = res.data;
+          restfulApi.get("/perm/listAll").then((res) => {
+            this.menus = convertToMenuItems(res.data, this.currentPerms);
+          });
         })
         .catch(() => {
           console.log("[perm store] 获取权限失败，跳转登录页面");

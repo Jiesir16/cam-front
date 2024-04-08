@@ -10,6 +10,8 @@ export interface Activity {
   beginDatetime?: String | null;
   endDatetime?: String | null;
   enrollDeadline?: String | null;
+  activityBrief?: String | null;
+  enrollment?: number | null;
 }
 
 

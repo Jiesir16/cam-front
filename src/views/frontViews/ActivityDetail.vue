@@ -17,11 +17,13 @@
       }"
       style="background-color: #ffffff"
     >
-      <template #header>我们为什么要读书</template>
+      <template #header>{{ activityInfo.activityName }}</template>
       <template #header-extra>
         <n-flex>
           <n-rate readonly allow-half :default-value="activityRateRef" />
-          <n-gradient-text type="warning">{{ activityRateRef }}分</n-gradient-text>
+          <n-gradient-text type="warning"
+            >{{ activityRateRef }}分
+          </n-gradient-text>
         </n-flex>
       </template>
       <n-flex vertical align="center" justify="center">
@@ -30,34 +32,58 @@
           object-fit="fill"
           width="1200px"
           height="300px"
-          src="https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg"
-        />
-        <n-image
-          lazy
-          object-fit="fill"
-          width="1200px"
-          height="300px"
-          src="https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg"
+          :src="activityInfo.activityImg"
         />
         <n-divider>简介</n-divider>
-        <n-text>我们为什么要读书——全民阅读：为了不同目的阅读</n-text>
+        <n-text>{{ activityInfo.activityBrief }}</n-text>
         <n-divider>地址</n-divider>
-        图书馆报告厅
+        <n-text>{{ activityInfo.activityAddress }}</n-text>
+        <n-divider>描述</n-divider>
+        <n-text>{{ activityInfo.activityAddition }}</n-text>
       </n-flex>
       <template #action>
         <n-flex align="center" justify="center">
-          <n-button>收藏</n-button>
-          <n-button>我要报名</n-button>
-          <n-button>活动作品</n-button>
+          <n-button @click="toggleFavorite" :disabled="isFavorite">
+            <template v-if="!isFavorite" #icon>
+              <n-icon color="#ff5555">
+                <HeartOutline />
+              </n-icon>
+            </template>
+            <template v-else #icon>
+              <n-icon color="#ff5555">
+                <Heart />
+              </n-icon>
+            </template>
+            {{ isFavorite ? "已收藏" : "收藏" }}
+          </n-button>
+          <n-button @click="toggleEnroll" :disabled="isEnroll">
+            <template v-if="!isEnroll" #icon>
+              <n-icon color="#ff5555">
+                <HandRightOutline />
+              </n-icon>
+            </template>
+            <template v-else #icon>
+              <n-icon color="#ff5555">
+                <HandRight />
+              </n-icon>
+            </template>
+            {{ isEnroll ? "已报名" : "我要报名" }}
+          </n-button>
+          <n-button disabled>活动作品</n-button>
         </n-flex>
       </template>
     </n-card>
+    <n-input :value="activityIdRef" v-show="false"></n-input>
   </n-flex>
   <n-card style="width: 80dvw" title="评论:">
     <n-flex vertical justify="start">
-      <n-input type="textarea" placeholder="请输入评论" />
+      <n-input
+        v-model:value="commentRef"
+        type="textarea"
+        placeholder="请输入评论"
+      />
       <n-flex align="center" justify="end">
-        <n-button>评论</n-button>
+        <n-button @click="handleComment">评论</n-button>
       </n-flex>
       <n-divider></n-divider>
       <n-card v-for="item in activityCommentsRef">
@@ -79,9 +105,15 @@
             <template #header-extra> 回复</template>
             <n-collapse-item>
               <n-flex vertical>
-                <n-input type="textarea" placeholder="请输入回复内容" />
+                <n-input
+                  type="textarea"
+                  v-model:value="replyContentRef"
+                  placeholder="请输入回复内容"
+                />
                 <n-flex align="center" justify="end">
-                  <n-button>提交</n-button>
+                  <n-button @click="handleReply(item.id, item.id)"
+                    >提交
+                  </n-button>
                 </n-flex>
               </n-flex>
             </n-collapse-item>
@@ -113,9 +145,15 @@
                 <template #header-extra> 回复</template>
                 <n-collapse-item>
                   <n-flex vertical>
-                    <n-input type="textarea" placeholder="请输入回复内容" />
+                    <n-input
+                      type="textarea"
+                      v-model:value="replyContentRef"
+                      placeholder="请输入回复内容"
+                    />
                     <n-flex align="center" justify="end">
-                      <n-button>提交</n-button>
+                      <n-button @click="handleReply(item.id, item.userId)"
+                        >提交
+                      </n-button>
                     </n-flex>
                   </n-flex>
                 </n-collapse-item>
@@ -130,29 +168,117 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { ArrowBack } from "@vicons/ionicons5";
+import {
+  ArrowBack,
+  HandRight,
+  HandRightOutline,
+  Heart,
+  HeartOutline,
+} from "@vicons/ionicons5";
 import router from "@/router";
+import { useRoute } from "vue-router";
+import { restfulApi } from "@/axios";
+import { message } from "@/plugins/naive-ui-discrete-api.ts";
 
 const activityRateRef = ref(3.8);
 
-const activityCommentsRef = ref([
-  {
-    url: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
-    username: "同学A",
-    commentTime: "2024-04-02 19:19:19",
-    comment: "哇哇哇，这活动太棒了吧！",
-    replys: [
-      {
-        replyId: "123",
-        url: "",
-        username: "同学B",
-        targetUsername: "同学A",
-        commentTime: "2024-04-02 19:19:19",
-        comment: "是的，我也这么觉得。",
-      },
-    ],
-  },
-]);
+const activityCommentsRef = ref();
+const activityInfo = ref({
+  activityName: null,
+  activityImg: null,
+  activityBrief: null,
+  activityAddress: null,
+  activityType: null,
+  activityAddition: null,
+});
+const activityIdRef = ref(null);
+const isFavorite = ref(false);
+const isEnroll = ref(false);
+
+async function fetchActivityById() {
+  let paramId = useRoute().params.id;
+  activityIdRef.value = paramId;
+  await restfulApi.get(`/activity/detail/${paramId}`).then((res) => {
+    activityInfo.value = { ...res.data };
+    isFavorite.value = res.data.favorite;
+    isEnroll.value = res.data.enroll;
+  });
+  await fetchCommets();
+}
+
+function fetchCommets() {
+  restfulApi.get("/comment/comments", { activityId: 1 }).then((res) => {
+    console.log("pinlun", res.data);
+    activityCommentsRef.value = res.data.map((item) => ({
+      id: item.id,
+      url: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
+      userId: item.userId,
+      username: item.username,
+      commentTime: item.time,
+      comment: item.content,
+      replys: item.replies.map((reply) => ({
+        id: reply.id,
+        replyId: reply.replyId,
+        url: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
+        username: reply.replyUsername,
+        targetUsername: reply.replyTargetUsername,
+        commentTime: reply.replyTime,
+        comment: reply.replyContent,
+      })),
+    }));
+  });
+}
+
+const commentRef = ref(null);
+
+function handleComment() {
+  let data = {
+    content: commentRef.value,
+    activityId: activityIdRef.value,
+  };
+  restfulApi.post("/comment", data).then((res) => {
+    message.success("评论成功");
+    commentRef.value = null;
+    fetchCommets();
+  });
+}
+
+function toggleFavorite() {
+  let data = {
+    activityId: activityIdRef.value,
+  };
+  restfulApi.post("/collection", data).then((res) => {
+    message.success("收藏成功");
+    isFavorite.value = true;
+  });
+}
+
+function toggleEnroll() {
+  let data = {
+    activityId: activityIdRef.value,
+  };
+  restfulApi.post("/enroll", data).then((res) => {
+    message.success("报名成功");
+    isEnroll.value = true;
+  });
+}
+
+const replyContentRef = ref(null);
+
+function handleReply(commentId, targetUserId) {
+  let data = {
+    replyContent: replyContentRef.value,
+    replyCommentId: commentId,
+    replyTargetId: targetUserId,
+  };
+  restfulApi.post("/reply", data).then((res) => {
+    message.success("回复成功");
+    replyContentRef.value = null;
+    fetchCommets();
+  });
+}
+
+fetchActivityById();
 
 function handleBack() {
   router.go(-1);

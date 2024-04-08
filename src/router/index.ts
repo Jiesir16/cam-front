@@ -36,7 +36,7 @@ const routes = [
         },
       },
       {
-        path: "/activity/detail",
+        path: "/activity/detail/:id",
         name: "front:activity:detail",
         component: () => import("@/views/frontViews/ActivityDetail.vue"),
         meta: {
@@ -78,20 +78,20 @@ const routes = [
         },
       },
       {
+        path: "/dashboard/profile",
+        name: "system:profile",
+        component: () => import("@/views/system/PersonProfile.vue"),
+        meta: {
+          desc: "个人资料",
+        },
+      },
+      {
         path: "/dashboard/system",
         name: "system",
         meta: {
           desc: "系统管理",
         },
         children: [
-          {
-            path: "/dashboard/profile",
-            name: "system:profile",
-            component: () => import("@/views/system/PersonProfile.vue"),
-            meta: {
-              desc: "个人资料",
-            },
-          },
           {
             path: "/dashboard/user",
             name: "system:user",
@@ -168,7 +168,7 @@ router.beforeEach((to, from, next) => {
 
   const usersStore = useUsersStore();
 
-  const isAuthorization = Boolean(usersStore.loginUserInfo.token);
+  const isAuthorization = Boolean(usersStore.token);
   // 未登录
   if (to.path !== "/login" && to.path !== "/" && !isAuthorization) {
     console.log("[router] 用户未登录,跳转登录页");

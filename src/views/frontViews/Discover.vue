@@ -1,100 +1,118 @@
 <template>
-  <n-flex
+  <n-card
     vertical
     style="
       max-width: 80%;
       background-color: #ffffff;
       height: 100%;
       padding: 20px;
+      min-height: 85dvh;
+      min-width: 100dvh;
     "
   >
-    <n-text>活动类型:</n-text>
-    <n-radio-group
-      v-model:value="activityTypeRef"
-      name="radiobuttongroup1"
-      size="medium"
-    >
-      <n-radio-button value="all"> 全部</n-radio-button>
-      <n-radio-button value="onlineEnvent"> 线上活动</n-radio-button>
-      <n-radio-button value="offlineEnvent"> 线下活动</n-radio-button>
-    </n-radio-group>
-    <n-text>活动状态:</n-text>
-    <n-radio-group
-      v-model:value="activityStatusRef"
-      name="radiobuttongroup2"
-      size="medium"
-    >
-      <n-radio-button value="all"> 全部</n-radio-button>
-      <n-radio-button value="unstart"> 未开始</n-radio-button>
-      <n-radio-button value="starting"> 进行中</n-radio-button>
-      <n-radio-button value="end"> 已结束</n-radio-button>
-    </n-radio-group>
-    <n-divider />
-    <n-grid x-gap="12" y-gap="8" :cols="3">
-      <n-gi v-for="(item, index) in activitiesRef">
-        <n-card
-          style="cursor: pointer"
-          :title="item.title"
-          @click="handleClick(index)"
-        >
-          <template #cover>
-            <div style="height: 200px">
-              <img :src="item.imgUrl" :alt="item.title" />
-            </div>
-          </template>
-          {{ item.desc }}
-          {{ index }}
-        </n-card>
-      </n-gi>
-    </n-grid>
-    <n-flex justify="center">
-      <n-pagination v-model:page="page" :page-count="100" simple />
+    <n-flex vertical>
+      <n-text>活动类型:</n-text>
+      <n-radio-group
+        v-model:value="activityTypeRef"
+        name="radiobuttongroup1"
+        size="medium"
+        @update-value="handleRadioClick"
+      >
+        <n-radio-button value=""> 全部</n-radio-button>
+        <n-radio-button value="online"> 线上活动</n-radio-button>
+        <n-radio-button value="offline"> 线下活动</n-radio-button>
+      </n-radio-group>
+      <n-text>活动状态:</n-text>
+      <n-radio-group
+        v-model:value="activityStatusRef"
+        name="radiobuttongroup2"
+        @update-value="handleRadioClick2"
+        size="medium"
+      >
+        <n-radio-button value=""> 全部</n-radio-button>
+        <n-radio-button value="unstart"> 未开始</n-radio-button>
+        <n-radio-button value="starting"> 进行中</n-radio-button>
+        <n-radio-button value="ended"> 已结束</n-radio-button>
+      </n-radio-group>
+
+      <n-divider />
+      <n-grid x-gap="12" y-gap="8" :cols="3">
+        <n-gi v-for="(item, index) in activitiesRef">
+          <n-card
+            style="cursor: pointer"
+            :title="item.title"
+            @click="handleClick(item.id)"
+          >
+            <template #cover>
+              <div style="height: 200px">
+                <img :src="item.imgUrl" :alt="String(index)" />
+              </div>
+            </template>
+            {{ item.desc }}
+          </n-card>
+        </n-gi>
+      </n-grid>
     </n-flex>
-  </n-flex>
+    <template #footer>
+      <n-flex justify="center">
+        <n-pagination
+          :page="page"
+          :page-count="pages"
+          @update:page="handleUpdatePage"
+          simple
+        />
+      </n-flex>
+    </template>
+  </n-card>
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import { message } from "@/plugins/naive-ui-discrete-api.ts";
 import router from "@/router";
+import { restfulApi } from "@/axios";
 
-const activityTypeRef = ref<"all" | "onlineEnvent" | "offlineEnvent">("all");
-const activityStatusRef = ref<"all" | "onlineEnvent" | "offlineEnvent">("all");
-const activitiesRef = ref([
-  {
-    title: "我们为什么要读书1",
-    desc: "我哪知道读书长知识",
-    imgUrl: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
-  },
-  {
-    title: "防震减灾1",
-    desc: "防震减灾安全演练",
-    imgUrl: "https://i.loli.net/2019/03/17/5c8db80696ca5.png",
-  },
-  {
-    title: "我们为什么要读书1",
-    desc: "读书长知识",
-    imgUrl: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
-  },
-  {
-    title: "防震减灾1",
-    desc: "防震减灾安全演练",
-    imgUrl: "https://i.loli.net/2019/03/17/5c8db80696ca5.png",
-  },
-  {
-    title: "我们为什么要读书1",
-    desc: "读书那么好",
-    imgUrl: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
-  },
-  {
-    title: "防震减灾1",
-    desc: "防震减灾安全演练",
-    imgUrl: "https://i.loli.net/2019/03/17/5c8db80696ca5.png",
-  },
-]);
+const activityTypeRef = ref<"" | "online" | "offline">("");
+const activityStatusRef = ref<"" | "unstart" | "starting" | "ended">("");
+const activitiesRef = ref();
+const page = ref(1);
+const pages = ref(1);
 
-function handleClick(index: any) {
-  message.info(`${index}点击了`);
-  router.push({ path: `/activity/detail` });
+function fetchActivities(pageNo, activityType: String, activityStatus: String) {
+  restfulApi
+    .get("/activity/page", {
+      current: pageNo,
+      size: 6,
+      activityType: activityType,
+      activityStatus: activityStatus,
+      auditStatus: 1,
+    })
+    .then((res) => {
+      page.value = res.data.current;
+      pages.value = res.data.pages;
+      activitiesRef.value = res.data.records.map((item) => ({
+        id: item.id,
+        title: item.activityName,
+        desc: item.activityBrief,
+        imgUrl: item.activityImg,
+      }));
+    });
+}
+
+fetchActivities(1, "", "");
+
+function handleClick(id: any) {
+  router.push({ path: `/activity/detail/${id}` });
+}
+
+function handleRadioClick(type) {
+  fetchActivities(1, type, activityStatusRef.value);
+}
+
+function handleUpdatePage(pageNo) {
+  fetchActivities(pageNo, activityTypeRef.value, activityStatusRef.value);
+}
+
+function handleRadioClick2(status) {
+  fetchActivities(1, activityTypeRef.value, status);
 }
 </script>
 <style scoped>

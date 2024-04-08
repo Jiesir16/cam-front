@@ -3,8 +3,8 @@ import { NButton, NIcon } from "naive-ui";
 import { LayersOutline, TrashOutline } from "@vicons/ionicons5";
 
 export const getTableColumns = (
-  openEditModal: Function,
   deleteItem: Function,
+  openAuditModal: Function,
 ) => [
   {
     title: "活动名称",
@@ -36,36 +36,56 @@ export const getTableColumns = (
     key: "actions",
     align: "center",
     render(row) {
-      return [
-        h(
-          NButton,
-          {
-            text: true,
-            type: "info",
-            onClick: () => openEditModal(row),
-          },
-          {
-            default: () => [
-              h(NIcon, null, { default: () => h(LayersOutline) }),
-              " Edit",
-            ],
-          },
-        ),
-        h(
-          NButton,
-          {
-            text: true,
-            type: "error",
-            onClick: () => deleteItem(row.id),
-          },
-          {
-            default: () => [
-              h(NIcon, null, { default: () => h(TrashOutline) }),
-              " Delete",
-            ],
-          },
-        ),
-      ];
+      if (row.auditStatus === "0") {
+        return [
+          h(
+            NButton,
+            {
+              text: true,
+              type: "info",
+              onClick: () => openAuditModal(row),
+              vShow: row.auditStatus === 0,
+            },
+            {
+              default: () => [
+                h(NIcon, null, { default: () => h(LayersOutline) }),
+                " 审核",
+              ],
+            },
+          ),
+          h(
+            NButton,
+            {
+              text: true,
+              type: "error",
+              onClick: () => deleteItem(row.id),
+            },
+            {
+              default: () => [
+                h(NIcon, null, { default: () => h(TrashOutline) }),
+                " Delete",
+              ],
+            },
+          ),
+        ];
+      } else {
+        return [
+          h(
+            NButton,
+            {
+              text: true,
+              type: "error",
+              onClick: () => deleteItem(row.id),
+            },
+            {
+              default: () => [
+                h(NIcon, null, { default: () => h(TrashOutline) }),
+                " Delete",
+              ],
+            },
+          ),
+        ];
+      }
     },
   },
 ];

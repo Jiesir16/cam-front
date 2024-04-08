@@ -14,13 +14,13 @@ export interface LoginUserInfo {
   userType: string;
   roleName?: string;
   email?: string;
-  token: string;
 }
 
 export const useUsersStore = defineStore("users", {
   state: () => ({
     users: [],
     loginUserInfo: <LoginUserInfo>{},
+    token: null,
   }),
   actions: {
     async fetchUsers(params) {
@@ -37,6 +37,9 @@ export const useUsersStore = defineStore("users", {
     resetUserStore() {
       this.$reset();
     },
+    setToken(token) {
+      this.token = token;
+    },
     removeLoginUserInfo() {
       console.log("removeLoginUserInfo 用户信息");
       localStorage.removeItem("__persisted__users");
@@ -45,6 +48,6 @@ export const useUsersStore = defineStore("users", {
   },
   persist: {
     storage: sessionStorage,
-    paths: ["loginUserInfo"],
+    paths: ["loginUserInfo", "token"],
   },
 });

@@ -1,6 +1,10 @@
 <template>
   <n-flex style="height: 100dvh; width: 100dvw" align="center" justify="center">
-    <n-card title="登录/注册" class="container" style="width: 600px">
+    <n-card
+      title="登录/注册"
+      class="container"
+      style="width: 500px; background-color: #ffffff"
+    >
       <n-tabs
         default-value="signIn"
         size="large"
@@ -185,15 +189,15 @@ function handleSubmit() {
           username: data.username,
           name: data.name,
           account: data.account,
-          sex: data.sex === 1 ? "男" : "女",
+          sex: data.sex,
           grade: data.grade,
           department: data.department,
           profession: data.profession,
           userClass: data.userClass,
           userType: data.userType,
           email: data.email,
-          token: res.headers["authorization"],
         });
+        usersStore.setToken(res.headers["authorization"]);
         usePermsStore().fetchAllMenus();
         message.success("登录成功");
         router.push({ name: "home" });

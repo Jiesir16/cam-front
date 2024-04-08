@@ -25,7 +25,7 @@ const http = axios.create({
 http.interceptors.request.use(
   (config) => {
     // 可以在这里为请求添加认证 token 等
-    config.headers.Authorization = useUsersStore().loginUserInfo.token;
+    config.headers.Authorization = useUsersStore().token;
     return config;
   },
   (error) => {

@@ -11,171 +11,138 @@
         v-for="(item, index) in carouselsRef"
       >
         <img
-          alt=""
+          :alt="String(index)"
           class="carousel-img"
-          @click="handleClick(index)"
+          @click="handleClick(item.id)"
           :src="item.imgUrl"
         />
       </n-carousel-item>
     </n-carousel>
   </n-flex>
 
-  <n-flex style="margin: 12px; width: 80%" justify="center" align="center">
-    <n-tabs type="line" animated :tabs-padding="12">
-      <n-tab-pane
-        name="onLineActivity"
-        tab="线上活动"
-        display-directive="show:lazy"
-      >
+  <n-flex
+    vertical
+    style="margin: 12px; width: 80%; min-height: 450px"
+    justify="start"
+    align="center"
+  >
+    <n-tabs
+      type="line"
+      animated
+      :tabs-padding="12"
+      default-value="online"
+      @update:value="handleUpdateValue"
+    >
+      <n-tab-pane name="online" tab="线上活动" display-directive="show:lazy">
         <n-grid x-gap="12" y-gap="8" :cols="3">
-          <n-gi v-for="(item, index) in onlineEnevtRefs">
+          <n-gi v-for="(item, index) in activitiesRef">
             <n-card
               style="cursor: pointer"
               :title="item.title"
-              @click="handleClick(index)"
+              @click="handleClick(item.id)"
             >
               <template #cover>
                 <div style="height: 200px">
-                  <img :src="item.imgUrl" :alt="item.title" />
+                  <img :src="item.imgUrl" :alt="String(index)" />
                 </div>
               </template>
               {{ item.desc }}
-              {{ index }}
             </n-card>
           </n-gi>
         </n-grid>
       </n-tab-pane>
-      <n-tab-pane name="offLineActivity" tab="线下活动">
+      <n-tab-pane name="offline" tab="线下活动">
         <n-grid x-gap="12" y-gap="8" :cols="3">
-          <n-gi v-for="(item, index) in offlineActivityRefs">
+          <n-gi v-for="(item, index) in activitiesRef">
             <n-card
               style="cursor: pointer"
               :title="item.title"
-              @click="handleClick(index)"
+              @click="handleClick(item.id)"
             >
               <template #cover>
                 <div style="height: 200px">
-                  <img :src="item.imgUrl" :alt="item.title" />
+                  <img :src="item.imgUrl" :alt="String(index)" />
                 </div>
               </template>
               {{ item.desc }}
-              {{ index }}
             </n-card>
           </n-gi>
         </n-grid>
       </n-tab-pane>
     </n-tabs>
-  </n-flex>
-  <n-flex justify="center" align="center">
-    <a href="/discover">查看更多...</a>
+    <n-flex justify="center" align="center">
+      <a href="/discover">查看更多...</a>
+    </n-flex>
   </n-flex>
 </template>
 
 <script setup lang="ts">
 import { message } from "@/plugins/naive-ui-discrete-api.ts";
 import { ref } from "vue";
+import router from "@/router";
+import { restfulApi } from "@/axios";
 
 interface GridItem {
+  id: number | null;
   title?: string | undefined;
   desc?: string | null | undefined;
   imgUrl?: string | undefined;
 }
 
-const onlineEnevtRefs = ref<Array<GridItem>>([
-  {
-    title: "我们为什么要读书",
-    desc: "读书长知识",
-    imgUrl: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
-  },
-  {
-    title: "防震减灾",
-    desc: "防震减灾安全演练",
-    imgUrl: "https://i.loli.net/2019/03/17/5c8db80696ca5.png",
-  },
-  {
-    title: "我们为什么要读书",
-    desc: "读书长知识",
-    imgUrl: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
-  },
-  {
-    title: "防震减灾",
-    desc: "防震减灾安全演练",
-    imgUrl: "https://i.loli.net/2019/03/17/5c8db80696ca5.png",
-  },
-  {
-    title: "我们为什么要读书",
-    desc: "读书那么好",
-    imgUrl: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
-  },
-  {
-    title: "防震减灾",
-    desc: "防震减灾安全演练",
-    imgUrl: "https://i.loli.net/2019/03/17/5c8db80696ca5.png",
-  },
-]);
-const offlineActivityRefs = ref<Array<GridItem>>([
-  {
-    title: "我们为什么要读书1",
-    desc: "我哪知道读书长知识",
-    imgUrl: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
-  },
-  {
-    title: "防震减灾1",
-    desc: "防震减灾安全演练",
-    imgUrl: "https://i.loli.net/2019/03/17/5c8db80696ca5.png",
-  },
-  {
-    title: "我们为什么要读书1",
-    desc: "读书长知识",
-    imgUrl: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
-  },
-  {
-    title: "防震减灾1",
-    desc: "防震减灾安全演练",
-    imgUrl: "https://i.loli.net/2019/03/17/5c8db80696ca5.png",
-  },
-  {
-    title: "我们为什么要读书1",
-    desc: "读书那么好",
-    imgUrl: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
-  },
-  {
-    title: "防震减灾1",
-    desc: "防震减灾安全演练",
-    imgUrl: "https://i.loli.net/2019/03/17/5c8db80696ca5.png",
-  },
-]);
+const activitiesRef = ref<Array<GridItem>>();
 
-const carouselsRef = ref<Array<GridItem>>([
-  {
-    title: "1111",
-    desc: "1111",
-    imgUrl:
-      "https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel1.jpeg",
-  },
-  {
-    title: "2222",
-    desc: "2222",
-    imgUrl:
-      "https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel2.jpeg",
-  },
-  {
-    title: "3333",
-    desc: "3333",
-    imgUrl:
-      "https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel3.jpeg",
-  },
-  {
-    title: "4444",
-    desc: "4444",
-    imgUrl:
-      "https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel4.jpeg",
-  },
-]);
+const carouselsRef = ref<Array<GridItem>>();
 
-function handleClick(index: any) {
-  message.info(`${index}点击了`);
+function handleClick(id: any) {
+  message.info(`${id}点击了`);
+  router.push({ path: `/activity/detail/${id}` });
 }
+
+async function fetchCarousels() {
+  await restfulApi.get("/activity/carousels").then((res) => {
+    carouselsRef.value = res.data.map((item) => ({
+      id: item.id,
+      title: item.activityName,
+      desc: item.activityBrief,
+      imgUrl: item.activityImg,
+    }));
+  });
+  await restfulApi
+    .get("/activity/page", {
+      current: 1,
+      size: 6,
+      activityType: "online",
+      auditStatus: 1,
+    })
+    .then((res) => {
+      activitiesRef.value = res.data.records.map((item) => ({
+        id: item.id,
+        title: item.activityName,
+        desc: item.activityBrief,
+        imgUrl: item.activityImg,
+      }));
+    });
+}
+
+function handleUpdateValue(tableName: String) {
+  restfulApi
+    .get("/activity/page", {
+      current: 1,
+      size: 6,
+      activityType: tableName,
+      auditStatus: 1,
+    })
+    .then((res) => {
+      activitiesRef.value = res.data.records.map((item) => ({
+        id: item.id,
+        title: item.activityName,
+        desc: item.activityBrief,
+        imgUrl: item.activityImg,
+      }));
+    });
+}
+
+fetchCarousels();
 </script>
 
 <style lang="scss">

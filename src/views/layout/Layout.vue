@@ -193,7 +193,8 @@ function handleDropClick(key: string | number, option: DropdownOption) {
     handelSignOut();
   }
   if ("profile" === key) {
-    router.push({ name: "system:profile" });
+    window.location.href = "/dashboard/profile";
+    //    router.push({ name: "system:profile" });
   }
 }
 

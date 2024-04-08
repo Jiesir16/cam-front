@@ -106,7 +106,7 @@
 import { ref } from "vue";
 import { message } from "@/plugins/naive-ui-discrete-api.ts";
 import { renderTab } from "@/utils";
-import { useUsersStore } from "../../stores/modules/users.ts";
+import { useUsersStore } from "@/stores/modules/users.ts";
 
 interface GridItem {
   title?: string | undefined;
