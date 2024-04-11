@@ -94,7 +94,6 @@ const activitiesRef = ref<Array<GridItem>>();
 const carouselsRef = ref<Array<GridItem>>();
 
 function handleClick(id: any) {
-  message.info(`${id}点击了`);
   router.push({ path: `/activity/detail/${id}` });
 }
 

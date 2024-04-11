@@ -10,30 +10,20 @@
         返回上一级
       </n-button>
     </n-flex>
-    <n-card
-      :segmented="{
+    <n-card :segmented="{
         content: true,
         footer: 'soft',
-      }"
-      style="background-color: #ffffff"
-    >
+      }" style="background-color: #ffffff">
       <template #header>{{ activityInfo.activityName }}</template>
       <template #header-extra>
         <n-flex>
           <n-rate readonly allow-half :default-value="activityRateRef" />
-          <n-gradient-text type="warning"
-            >{{ activityRateRef }}分
+          <n-gradient-text type="warning">{{ activityRateRef }}分
           </n-gradient-text>
         </n-flex>
       </template>
       <n-flex vertical align="center" justify="center">
-        <n-image
-          lazy
-          object-fit="fill"
-          width="1200px"
-          height="300px"
-          :src="activityInfo.activityImg"
-        />
+        <n-image lazy object-fit="fill" width="1200px" height="300px" :src="activityInfo.activityImg" />
         <n-divider>简介</n-divider>
         <n-text>{{ activityInfo.activityBrief }}</n-text>
         <n-divider>地址</n-divider>
@@ -77,25 +67,23 @@
   </n-flex>
   <n-card style="width: 80dvw" title="评论:">
     <n-flex vertical justify="start">
-      <n-input
-        v-model:value="commentRef"
-        type="textarea"
-        placeholder="请输入评论"
-      />
+      <n-input v-model:value="commentRef" type="textarea" placeholder="请输入评论" />
       <n-flex align="center" justify="end">
         <n-button @click="handleComment">评论</n-button>
       </n-flex>
       <n-divider></n-divider>
-      <n-card v-for="item in activityCommentsRef">
+      <n-card v-for="item in activityCommentsRef" embedded>
         <n-flex vertical justify="start">
           <n-flex justify="space-between">
             <n-flex align="center">
               <n-avatar :src="item.url" />
-              <n-text strong>{{ item.username }}:</n-text>
+              <n-text strong>{{ item.username }}</n-text>
             </n-flex>
-            <n-text>{{ item.commentTime }}</n-text>
+            <n-flex justify="center" align="center">
+              <n-text>{{ item.commentTime }}</n-text>
+            </n-flex>
           </n-flex>
-          <div>
+          <div style="margin-left: 45px;">
             <n-text> {{ item.comment }}</n-text>
           </div>
           <n-collapse>
@@ -105,36 +93,26 @@
             <template #header-extra> 回复</template>
             <n-collapse-item>
               <n-flex vertical>
-                <n-input
-                  type="textarea"
-                  v-model:value="replyContentRef"
-                  placeholder="请输入回复内容"
-                />
+                <n-input type="textarea" v-model:value="replyContentRef" placeholder="请输入回复内容" />
                 <n-flex align="center" justify="end">
-                  <n-button @click="handleReply(item.id, item.id)"
-                    >提交
+                  <n-button @click="handleReply(item.id, item.userId)">提交
                   </n-button>
                 </n-flex>
               </n-flex>
             </n-collapse-item>
           </n-collapse>
-          <n-card
-            embedded
-            style="margin: 0 20px"
-            v-for="subItem in item.replys"
-          >
+          <n-card embedded style="margin: 0 20px" v-for="subItem in item.replys">
             <n-flex vertical justify="start">
               <n-flex justify="space-between">
                 <n-flex align="center">
                   <n-avatar :src="subItem.url" />
-                  <n-text strong>{{ subItem.username }}:</n-text>
+                  <n-text strong>{{ subItem.username }}</n-text>
                 </n-flex>
                 <n-text>{{ subItem.commentTime }}</n-text>
               </n-flex>
               <n-text>
                 回复
-                <n-gradient-text strong
-                  >{{ subItem.targetUsername }}
+                <n-gradient-text strong>{{ subItem.targetUsername }}
                 </n-gradient-text>
                 : {{ subItem.comment }}
               </n-text>
@@ -145,14 +123,9 @@
                 <template #header-extra> 回复</template>
                 <n-collapse-item>
                   <n-flex vertical>
-                    <n-input
-                      type="textarea"
-                      v-model:value="replyContentRef"
-                      placeholder="请输入回复内容"
-                    />
+                    <n-input type="textarea" v-model:value="replyContentRef" placeholder="请输入回复内容" />
                     <n-flex align="center" justify="end">
-                      <n-button @click="handleReply(item.id, item.userId)"
-                        >提交
+                      <n-button @click="handleReply(item.id, subItem.replyUserId)">提交
                       </n-button>
                     </n-flex>
                   </n-flex>
@@ -191,9 +164,9 @@ const activityInfo = ref({
   activityType: null,
   activityAddition: null,
 });
-const activityIdRef = ref(null);
-const isFavorite = ref(false);
-const isEnroll = ref(false);
+const activityIdRef = ref<any>(null);
+const isFavorite = ref();
+const isEnroll = ref();
 
 async function fetchActivityById() {
   let paramId = useRoute().params.id;
@@ -207,26 +180,29 @@ async function fetchActivityById() {
 }
 
 function fetchCommets() {
-  restfulApi.get("/comment/comments", { activityId: 1 }).then((res) => {
-    console.log("pinlun", res.data);
-    activityCommentsRef.value = res.data.map((item) => ({
-      id: item.id,
-      url: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
-      userId: item.userId,
-      username: item.username,
-      commentTime: item.time,
-      comment: item.content,
-      replys: item.replies.map((reply) => ({
-        id: reply.id,
-        replyId: reply.replyId,
+  restfulApi
+    .get("/comment/comments", { activityId: activityIdRef.value })
+    .then((res) => {
+      console.log("pinlun", res.data);
+      activityCommentsRef.value = res.data.map((item) => ({
+        id: item.id,
         url: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
-        username: reply.replyUsername,
-        targetUsername: reply.replyTargetUsername,
-        commentTime: reply.replyTime,
-        comment: reply.replyContent,
-      })),
-    }));
-  });
+        userId: item.userId, // 评论的用户ID
+        username: item.username,
+        commentTime: item.time,
+        comment: item.content,
+        replys: item.replies.map((reply) => ({
+          id: reply.id, // 评论ID
+          replyId: reply.replyId, // 评论回复的
+          replyUserId: reply.replyUserId, // 评论回复的
+          url: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
+          username: reply.replyUsername,
+          targetUsername: reply.replyTargetUsername,
+          commentTime: reply.replyTime,
+          comment: reply.replyContent,
+        })),
+      }));
+    });
 }
 
 const commentRef = ref(null);

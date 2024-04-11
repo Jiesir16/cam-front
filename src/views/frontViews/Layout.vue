@@ -121,7 +121,7 @@ const permsStore = usePermsStore();
 function handelSignOut() {
   usersStore.resetUserStore();
   permsStore.resetCurrentPerms();
-  router.push({ name: "front:home" });
+  router.push({ name: "login" });
 }
 
 function handleSelected(key: string) {

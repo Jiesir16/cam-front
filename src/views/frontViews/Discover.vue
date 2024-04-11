@@ -45,7 +45,7 @@
           >
             <template #cover>
               <div style="height: 200px">
-                <img :src="item.imgUrl" :alt="String(index)" />
+                <img :src="item.imgUrl" :alt="String(index)" loading="lazy" />
               </div>
             </template>
             {{ item.desc }}

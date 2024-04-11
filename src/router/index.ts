@@ -25,6 +25,7 @@ const routes = [
         component: () => import("@/views/frontViews/HomePage.vue"),
         meta: {
           desc: "主页",
+          title: "校园活动",
         },
       },
       {
@@ -55,7 +56,7 @@ const routes = [
   },
   {
     path: "/login",
-    name: "Login",
+    name: "login",
     component: Login,
   },
   {

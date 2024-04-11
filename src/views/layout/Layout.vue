@@ -201,7 +201,7 @@ function handleDropClick(key: string | number, option: DropdownOption) {
 function handelSignOut() {
   usersStore.resetUserStore();
   permsStore.resetCurrentPerms();
-  router.push({ name: "Login" });
+  router.push({ name: "login" });
 }
 
 const collapsed = ref(false);

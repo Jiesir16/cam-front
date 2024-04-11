@@ -158,6 +158,8 @@ const deleteItem = (id: number) => {
 const openAuditModal = (row) => {
   auditInfo.value = {
     id: row.id,
+    auditComment: null,
+    auditStatus: null
   };
   auditModalShowRef.value = true;
 };
@@ -165,6 +167,7 @@ const columns = getTableColumns(deleteItem,openAuditModal);
 
 // 分页按钮
 function handlePageChange(currentPage: number) {
+  console.log("[currentPage]",currentPage);
   fetchActivities({
     current: currentPage,
     ...searchParams.value,
@@ -173,7 +176,7 @@ function handlePageChange(currentPage: number) {
 
 function fetchActivities(param) {
   console.log("获取活动", param);
-  activityApi.read(paginationRef, searchParams.value, tableData, loading);
+  activityApi.read(paginationRef, param, tableData, loading);
 }
 
 fetchActivities(searchParams.value);

@@ -104,7 +104,7 @@
 import { reactive, ref } from "vue";
 import { LockClosedOutline, PersonOutline } from "@vicons/ionicons5";
 import { restfulApi } from "@/axios";
-import { useMessage } from "naive-ui";
+import { useMessage, useNotification } from "naive-ui";
 import { useUsersStore } from "@/stores/modules/users.ts";
 import { useRouter } from "vue-router";
 import { usePermsStore } from "@/stores/modules/perms.ts";
@@ -176,7 +176,7 @@ function handlePasswordInput() {
 
 const usersStore = useUsersStore();
 const router = useRouter();
-
+const notification = useNotification();
 function handleSubmit() {
   formRef.value.validate(async (error) => {
     if (!error) {
@@ -199,8 +199,14 @@ function handleSubmit() {
         });
         usersStore.setToken(res.headers["authorization"]);
         usePermsStore().fetchAllMenus();
-        message.success("登录成功");
-        router.push({ name: "home" });
+
+        notification["success"]({
+          content: "登录成功",
+          meta: "欢迎回来",
+          duration: 2500,
+          keepAliveOnHover: true,
+        });
+        router.push({ name: "front:home" });
       });
     }
   });

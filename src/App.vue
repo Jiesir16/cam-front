@@ -4,9 +4,11 @@
     :theme-overrides="themeOverrides"
   >
     <n-message-provider>
-      <n-loading-bar-provider>
-        <router-view />
-      </n-loading-bar-provider>
+      <n-notification-provider>
+        <n-loading-bar-provider>
+          <router-view />
+        </n-loading-bar-provider>
+      </n-notification-provider>
     </n-message-provider>
   </n-config-provider>
 </template>
@@ -20,11 +22,11 @@ const designStore = useDesignSettingStore();
 
 const themeOverrides: GlobalThemeOverrides = {
   common: {
-//    primaryColor: "#FF0000",
-//    primaryColorHover: "#FF0000",
+    //    primaryColor: "#FF0000",
+    //    primaryColorHover: "#FF0000",
   },
   Button: {
-//    textColor: "#FF0000",
+    //    textColor: "#FF0000",
   },
 };
 
