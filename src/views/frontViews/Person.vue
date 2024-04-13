@@ -29,7 +29,7 @@
           <n-tabs type="line" animated :tabs-padding="12">
             <n-tab-pane
               name="collectedActivity"
-              :tab="renderTab('i-HomeOutline', '收藏的活动')"
+              :tab="renderTab('i-BookmarkOutline', '收藏的活动')"
               display-directive="show:lazy"
             >
               <n-grid x-gap="12" y-gap="8" :cols="3">
@@ -52,7 +52,7 @@
             </n-tab-pane>
             <n-tab-pane
               name="participatedEvent"
-              :tab="renderTab('i-HomeOutline', '参与过的活动')"
+              :tab="renderTab('i-TicketOutline', '参与过的活动')"
               display-directive="show:lazy"
             >
               <n-grid x-gap="12" y-gap="8" :cols="3">
@@ -75,7 +75,7 @@
             </n-tab-pane>
             <n-tab-pane
               name="publishedActivity"
-              :tab="renderTab('i-HomeOutline', '发布过的活动')"
+              :tab="renderTab('i-SendOutline', '发布过的活动')"
               display-directive="show:lazy"
             >
               <n-grid x-gap="12" y-gap="8" :cols="3">

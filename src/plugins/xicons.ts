@@ -11,6 +11,9 @@ import {
   SettingsOutline,
   Aperture,
   HeartOutline,
+  BookmarkOutline,
+  TicketOutline,
+  SendOutline,
 } from "@vicons/ionicons5";
 
 import { DataVis1, UserRole } from "@vicons/carbon";
@@ -27,6 +30,9 @@ const xicons = [
   ListSharp,
   Aperture,
   HeartOutline,
+  BookmarkOutline,
+  TicketOutline,
+  SendOutline,
   //  carbon start ===========
   UserRole,
   DataVis1,
