@@ -1,6 +1,13 @@
 <template>
-  <n-flex vertical align="center" justify="start">
-    <n-card style="max-width: 90%; background-color: #ffffff">
+  <n-flex vertical align="center">
+    <n-card
+      style="
+        max-width: 80%;
+        background-color: #ffffff;
+        padding: 20px;
+        min-height: 85dvh;
+      "
+    >
       <n-flex vertical>
         <n-flex vertical align="center">
           <img
@@ -26,14 +33,21 @@
         </n-flex>
 
         <n-flex style="min-height: 61dvh">
-          <n-tabs type="line" animated :tabs-padding="12">
+          <n-tabs
+            type="line"
+            animated
+            :tabs-padding="12"
+            default-value="collected"
+            :value="selectedRef"
+            @update:value="handleChangeTab"
+          >
             <n-tab-pane
-              name="collectedActivity"
+              name="collected"
               :tab="renderTab('i-BookmarkOutline', '收藏的活动')"
               display-directive="show:lazy"
             >
               <n-grid x-gap="12" y-gap="8" :cols="3">
-                <n-gi v-for="(item, index) in collectedActivitiesRef">
+                <n-gi v-for="(item, index) in activitiesRef">
                   <n-card
                     style="cursor: pointer"
                     :title="item.title"
@@ -51,12 +65,12 @@
               </n-grid>
             </n-tab-pane>
             <n-tab-pane
-              name="participatedEvent"
+              name="enrolled"
               :tab="renderTab('i-TicketOutline', '参与过的活动')"
               display-directive="show:lazy"
             >
               <n-grid x-gap="12" y-gap="8" :cols="3">
-                <n-gi v-for="(item, index) in participatedActivitiesRef">
+                <n-gi v-for="(item, index) in activitiesRef">
                   <n-card
                     style="cursor: pointer"
                     :title="item.title"
@@ -74,12 +88,12 @@
               </n-grid>
             </n-tab-pane>
             <n-tab-pane
-              name="publishedActivity"
+              name="published"
               :tab="renderTab('i-SendOutline', '发布过的活动')"
               display-directive="show:lazy"
             >
               <n-grid x-gap="12" y-gap="8" :cols="3">
-                <n-gi v-for="(item, index) in publishedActivitiesRef">
+                <n-gi v-for="(item, index) in activitiesRef">
                   <n-card
                     style="cursor: pointer"
                     :title="item.title"
@@ -99,6 +113,16 @@
           </n-tabs>
         </n-flex>
       </n-flex>
+      <template #footer>
+        <n-flex justify="center">
+          <n-pagination
+            :page="page"
+            :page-count="pages"
+            @update:page="handleUpdatePage"
+            simple
+          />
+        </n-flex>
+      </template>
     </n-card>
   </n-flex>
 </template>
@@ -107,6 +131,7 @@ import { ref } from "vue";
 import { message } from "@/plugins/naive-ui-discrete-api.ts";
 import { renderTab } from "@/utils";
 import { useUsersStore } from "@/stores/modules/users.ts";
+import { restfulApi } from "@/axios";
 
 interface GridItem {
   title?: string | undefined;
@@ -114,84 +139,42 @@ interface GridItem {
   imgUrl?: string | undefined;
 }
 
-const collectedActivitiesRef = ref<Array<GridItem>>([
-  {
-    title: "我们为什么要读书",
-    desc: "读书长知识",
-    imgUrl: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
-  },
-  {
-    title: "防震减灾",
-    desc: "防震减灾安全演练",
-    imgUrl: "https://i.loli.net/2019/03/17/5c8db80696ca5.png",
-  },
-]);
-const participatedActivitiesRef = ref<Array<GridItem>>([
-  {
-    title: "我们为什么要读书1",
-    desc: "我哪知道读书长知识",
-    imgUrl: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
-  },
-  {
-    title: "防震减灾1",
-    desc: "防震减灾安全演练",
-    imgUrl: "https://i.loli.net/2019/03/17/5c8db80696ca5.png",
-  },
-  {
-    title: "我们为什么要读书1",
-    desc: "读书长知识",
-    imgUrl: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
-  },
-  {
-    title: "防震减灾1",
-    desc: "防震减灾安全演练",
-    imgUrl: "https://i.loli.net/2019/03/17/5c8db80696ca5.png",
-  },
-  {
-    title: "我们为什么要读书1",
-    desc: "读书那么好",
-    imgUrl: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
-  },
-  {
-    title: "防震减灾1",
-    desc: "防震减灾安全演练",
-    imgUrl: "https://i.loli.net/2019/03/17/5c8db80696ca5.png",
-  },
-]);
-const publishedActivitiesRef = ref<Array<GridItem>>([
-  {
-    title: "我们为什么要读书1",
-    desc: "我哪知道读书长知识",
-    imgUrl: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
-  },
-  {
-    title: "防震减灾1",
-    desc: "防震减灾安全演练",
-    imgUrl: "https://i.loli.net/2019/03/17/5c8db80696ca5.png",
-  },
-  {
-    title: "我们为什么要读书1",
-    desc: "读书长知识",
-    imgUrl: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
-  },
-  {
-    title: "防震减灾1",
-    desc: "防震减灾安全演练",
-    imgUrl: "https://i.loli.net/2019/03/17/5c8db80696ca5.png",
-  },
-  {
-    title: "我们为什么要读书1",
-    desc: "读书那么好",
-    imgUrl: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
-  },
-  {
-    title: "防震减灾1",
-    desc: "防震减灾安全演练",
-    imgUrl: "https://i.loli.net/2019/03/17/5c8db80696ca5.png",
-  },
-]);
+const page = ref(1);
+const pages = ref(1);
+const selectedRef = ref<String>();
+const activitiesRef = ref<Array<GridItem>>([]);
+
+function handleUpdatePage(pageNo) {
+  pageNo = pageNo ? pageNo : 1;
+  handleChangeTab(selectedRef.value, pageNo);
+}
 
 function handleClick(index: any) {
   message.info(`${index}点击了`);
 }
+
+function handleChangeTab(tableName: any, pageNo?: number) {
+  if ("collected" === tableName) {
+    fetchActivities({ size: 6, current: pageNo, collected: true });
+  } else if ("enrolled" === tableName) {
+    fetchActivities({ size: 6, current: pageNo, enrolled: true });
+  } else if ("published" === tableName) {
+    fetchActivities({ size: 6, current: pageNo, published: true });
+  }
+}
+
+function fetchActivities(queryParam) {
+  restfulApi.get("/activity/page", queryParam).then((res) => {
+    page.value = res.data.current;
+    pages.value = res.data.pages;
+    activitiesRef.value = res.data.records.map((item) => ({
+      id: item.id,
+      title: item.activityName,
+      desc: item.activityBrief,
+      imgUrl: item.activityImg,
+    }));
+  });
+}
+
+handleUpdatePage(selectedRef.value);
 </script>

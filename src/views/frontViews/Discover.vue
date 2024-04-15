@@ -4,7 +4,6 @@
     style="
       max-width: 80%;
       background-color: #ffffff;
-      height: 100%;
       padding: 20px;
       min-height: 85dvh;
       min-width: 100dvh;
