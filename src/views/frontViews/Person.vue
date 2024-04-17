@@ -1,7 +1,7 @@
 <template>
   <n-card
     style="
-      max-width: 1383px;
+      max-width: 1388px;
       background-color: #ffffff;
       padding: 20px;
       min-height: 85dvh;
@@ -50,7 +50,7 @@
                 <n-card
                   style="cursor: pointer"
                   :title="item.title"
-                  @click="handleClick(index)"
+                  @click="handleClick(item.id)"
                 >
                   <template #cover>
                     <div style="height: 200px">
@@ -73,7 +73,7 @@
                 <n-card
                   style="cursor: pointer"
                   :title="item.title"
-                  @click="handleClick(index)"
+                  @click="handleClick(item.id)"
                 >
                   <template #cover>
                     <div style="height: 200px">
@@ -96,7 +96,7 @@
                 <n-card
                   style="cursor: pointer"
                   :title="item.title"
-                  @click="handleClick(index)"
+                  @click="handleClick(item.id)"
                 >
                   <template #cover>
                     <div style="height: 200px">
@@ -126,10 +126,10 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import { message } from "@/plugins/naive-ui-discrete-api.ts";
 import { renderTab } from "@/utils";
 import { useUsersStore } from "@/stores/modules/users.ts";
 import { restfulApi } from "@/axios";
+import router from "@/router";
 
 interface GridItem {
   title?: string | undefined;
@@ -148,8 +148,8 @@ function handleUpdatePage(pageNo) {
   handleChangeTab(selectedRef.value, pageNo);
 }
 
-function handleClick(index: any) {
-  message.info(`${index}点击了`);
+function handleClick(id: any) {
+  router.push({ path: `/activity/detail/${id}` });
 }
 
 function handleChangeTab(tableName: any, pageNo?: number) {

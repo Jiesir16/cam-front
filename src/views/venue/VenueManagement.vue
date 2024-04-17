@@ -1,0 +1,197 @@
+<template>
+  <n-flex justify="space-between" align="center" style="padding: 0 24px">
+    <n-flex style="height: 50px" align="center">
+      <n-gradient-text :size="22" type="success">场地管理</n-gradient-text>
+    </n-flex>
+
+    <n-flex>
+      <n-button @click="openCreateModal" ghost round type="primary">
+        <n-icon>
+          <PersonAddOutline />
+        </n-icon>
+        新增场地
+      </n-button>
+    </n-flex>
+  </n-flex>
+  <n-flex vertical style="margin: 12px; padding: 24px">
+    <n-form @submit.prevent="onSearch" ref="searchForm" inline>
+      <n-form-item label="场地名称">
+        <n-input
+          v-model:value="searchParams.permCode"
+          placeholder="请输入场地名称"
+        />
+      </n-form-item>
+      <n-form-item label="场地名称">
+        <n-input
+          v-model:value="searchParams.permName"
+          placeholder="请输入场地名称"
+        />
+      </n-form-item>
+      <n-form-item>
+        <n-button type="primary" attr-type="submit">搜索</n-button>
+      </n-form-item>
+      <n-form-item>
+        <n-button @click="onReset">重置</n-button>
+      </n-form-item>
+    </n-form>
+
+    <!-- 数据表格 -->
+    <n-data-table
+      remote
+      :bordered="true"
+      :single-line="false"
+      :columns="columns"
+      :data="tableData"
+      :pagination="paginationRef"
+      @update:page="handlePageChange"
+      :loading="loading"
+      resizable
+    />
+    <PermissionEditModal
+      v-model:show="showEditModal"
+      v-model:permissionInfo="currentPermission"
+      @edit="editPermission"
+      @create="createPermission"
+      @update:show="handleShow"
+    />
+  </n-flex>
+</template>
+
+<script setup lang="ts">
+import { reactive, ref } from "vue";
+import { getTableColumns } from "./venueTableColumns";
+import { PersonAddOutline } from "@vicons/ionicons5";
+import permissionApi, {
+  Permission,
+  PermissionSearchParams,
+} from "@/views/system/permission/permissionApi";
+import PermissionEditModal from "./VenueEditModal.vue";
+import { useMessage } from "naive-ui";
+
+const message = useMessage();
+const searchParams = ref<PermissionSearchParams>({
+  permCode: null,
+  permName: null,
+});
+
+function onSearch() {
+  fetchVenues(searchParams.value);
+}
+
+function onReset() {
+  searchParams.value = { permCode: null, permName: null };
+  fetchVenues(searchParams.value);
+}
+
+// modal start
+
+const showEditModal = ref<boolean>(false);
+
+const currentPermission = ref<Permission>({
+  id: null,
+  parentId: null,
+  permCode: null,
+  permName: null,
+  description: null,
+});
+
+function handleShow(value: boolean) {
+  showEditModal.value = value;
+}
+
+function editPermission(perm: Permission) {
+  permissionApi
+    .update(perm)
+    .then(() => {
+      message.success("更新成功");
+      fetchVenues({ permCode: null, permName: null });
+    })
+    .catch(() => {
+      message.success("更新失败");
+    });
+  showEditModal.value = false;
+}
+
+function createPermission(perm: Permission) {
+  permissionApi
+    .create(perm)
+    .then(() => {
+      message.success("新增成功");
+      fetchVenues({ permCode: null, permName: null });
+    })
+    .catch(() => {
+      message.success("新增失败");
+    });
+  showEditModal.value = false;
+}
+
+function openCreateModal() {
+  currentPermission.value = {
+    permCode: null,
+    parentId: null,
+    permName: null,
+    description: null,
+  };
+  showEditModal.value = true;
+}
+
+// modal end
+
+const tableData = ref([]);
+const loading = ref(false);
+
+interface PageParam {
+  page: number;
+  pageCount: number;
+  pageSize: number;
+  prefix: any;
+}
+
+const paginationRef = reactive<PageParam>({
+  page: 1,
+  pageCount: 1,
+  pageSize: 10,
+  prefix: ({ itemCount }) => {
+    return `Total is ${itemCount}.`;
+  },
+});
+
+const openEditModal = (row: Permission) => {
+  showEditModal.value = true;
+  currentPermission.value = {
+    id: row.id,
+    parentId: row.parentId,
+    permCode: row.permCode,
+    permName: row.permName,
+    description: row.description,
+  };
+};
+const deleteItem = (id: number) => {
+  permissionApi
+    .delete(id)
+    .then(() => {
+      message.success("删除成功");
+      fetchVenues({ permCode: null, permName: null });
+    })
+    .catch(() => {
+      message.success("删除失败");
+    });
+};
+
+const columns = getTableColumns(openEditModal, deleteItem);
+
+// 分页按钮
+function handlePageChange(currentPage: number) {
+  fetchVenues({
+    current: currentPage,
+    ...searchParams.value,
+  });
+}
+
+function fetchVenues(param) {
+  console.log("获取场地", param);
+  permissionApi.read(paginationRef, searchParams.value, tableData, loading);
+}
+
+fetchVenues(searchParams.value);
+</script>

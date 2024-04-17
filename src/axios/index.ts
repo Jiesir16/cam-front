@@ -12,7 +12,7 @@ import { useUsersStore } from "@/stores/modules/users.ts";
 //message.success("123");
 
 // 环境变量中定义的 API 主机地址和基路径
-const API_HOST = "http://10.211.55.2:8888";
+const API_HOST = "http://localhost:8888";
 const API_BASE_PATH = "/api/v1";
 
 // 创建 Axios 实例

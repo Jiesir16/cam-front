@@ -129,6 +129,14 @@ const routes = [
         },
         children: [
           {
+            path: "/dashboard/venue",
+            name: "activity:venue",
+            component: () => import("@/views/venue/VenueManagement.vue"),
+            meta: {
+              desc: "场地管理",
+            },
+          },
+          {
             path: "/dashboard/activity/info",
             name: "activity:info",
             component: () => import("@/views/activity/ActivityManagement.vue"),

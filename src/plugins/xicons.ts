@@ -14,9 +14,10 @@ import {
   BookmarkOutline,
   TicketOutline,
   SendOutline,
+  NavigateOutline,
 } from "@vicons/ionicons5";
 
-import { DataVis1, UserRole } from "@vicons/carbon";
+import { DataVis1, UserRole ,Building} from "@vicons/carbon";
 
 const xicons = [
   AccessibilityOutline,
@@ -33,9 +34,11 @@ const xicons = [
   BookmarkOutline,
   TicketOutline,
   SendOutline,
+  NavigateOutline,
   //  carbon start ===========
   UserRole,
   DataVis1,
+  Building,
 ];
 
 export function setupXIcons(app: App<Element>) {

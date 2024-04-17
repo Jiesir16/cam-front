@@ -1,10 +1,18 @@
 <template>
-  <n-flex style="height: 100dvh; width: 100dvw" align="center" justify="center">
-    <n-card
-      title="登录/注册"
-      class="container"
-      style="width: 500px; background-color: #ffffff"
-    >
+<ul class="background">
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+</ul>
+  <n-flex class="login-background" align="center" justify="center">
+    <n-card title="登录/注册" class="container">
       <n-tabs
         default-value="signIn"
         size="large"
@@ -177,6 +185,7 @@ function handlePasswordInput() {
 const usersStore = useUsersStore();
 const router = useRouter();
 const notification = useNotification();
+
 function handleSubmit() {
   formRef.value.validate(async (error) => {
     if (!error) {
@@ -222,11 +231,128 @@ async function handleSignUp() {
 
 <style>
 .container {
-  width: 80%; /* 容器宽度为 80% */
+  width: 500px;
   margin: 0 auto; /* 水平居中 */
   padding: 20px; /* 内边距 */
-  background-color: rgba(255, 255, 255, 0.5); /* 容器背景颜色，使用透明度 */
-  border-radius: 10px; /* 圆角边框 */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* 阴影效果 */
+  background-color: rgba(255, 255, 255, 0.9); /* 容器背景颜色，使用透明度 */
+  border-radius: 17px; /* 圆角边框 */
+  box-shadow: rgba(142, 142, 142, 0.19) 0 6px 15px 0; /* 阴影效果 */
+  backdrop-filter: blur(4.5px);
+  -webkit-backdrop-filter: blur(4.5px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  -webkit-box-shadow: rgba(142, 142, 142, 0.19) 0 6px 15px 0;
+  -webkit-border-radius: 17px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.login-background {
+  height: 100dvh;
+  width: 100dvw;
+}
+
+
+@keyframes animate {
+  0%{
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+    border-radius: 0;
+  }
+  100%{
+    transform: translateY(-1000px) rotate(720deg);
+    opacity: 0;
+    border-radius: 50%;
+  }
+}
+
+.background {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  background: #98cce2;
+  overflow: hidden;
+}
+.background li {
+  position: absolute;
+  display: block;
+  list-style: none;
+  width: 20px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  animation: animate 16s linear infinite;
+}
+
+.background li:nth-child(0) {
+  left: 1%;
+  width: 105px;
+  height: 105px;
+  bottom: -105px;
+  animation-delay: 1s;
+}
+.background li:nth-child(1) {
+  left: 48%;
+  width: 156px;
+  height: 156px;
+  bottom: -156px;
+  animation-delay: 2s;
+}
+.background li:nth-child(2) {
+  left: 21%;
+  width: 191px;
+  height: 191px;
+  bottom: -191px;
+  animation-delay: 3s;
+}
+.background li:nth-child(3) {
+  left: 68%;
+  width: 112px;
+  height: 112px;
+  bottom: -112px;
+  animation-delay: 4s;
+}
+.background li:nth-child(4) {
+  left: 86%;
+  width: 101px;
+  height: 101px;
+  bottom: -101px;
+  animation-delay: 7s;
+}
+.background li:nth-child(5) {
+  left: 85%;
+  width: 130px;
+  height: 130px;
+  bottom: -130px;
+  animation-delay: 9s;
+}
+.background li:nth-child(6) {
+  left: 45%;
+  width: 123px;
+  height: 123px;
+  bottom: -123px;
+  animation-delay: 11s;
+}
+.background li:nth-child(7) {
+  left: 44%;
+  width: 111px;
+  height: 111px;
+  bottom: -111px;
+  animation-delay: 21s;
+}
+.background li:nth-child(8) {
+  left: 42%;
+  width: 143px;
+  height: 143px;
+  bottom: -143px;
+  animation-delay: 17s;
+}
+.background li:nth-child(9) {
+  left: 13%;
+  width: 135px;
+  height: 135px;
+  bottom: -135px;
+  animation-delay: 43s;
 }
 </style>

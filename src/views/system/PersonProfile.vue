@@ -11,14 +11,27 @@
     >
       <n-grid :cols="24" :x-gap="12">
         <n-form-item-gi :span="12" label="ID" v-show="false">
-          <n-input v-model:value="activityInfo.id" disabled />
+          <n-input-number v-model:value="activityInfo.id" disabled />
         </n-form-item-gi>
+        <n-form-item-gi :span="24" label="头像">
+          <n-upload
+            action="/api/v1/media/upload"
+            @finish="handleFinish"
+            :headers="{ Authorization: useUsersStore().token }"
+            v-model:file-list="fileList"
+            list-type="image-card"
+            :max="Number(1)"
+          >
+            点击上传
+          </n-upload>
+        </n-form-item-gi>
+
         <n-form-item-gi :span="12" label="用户名">
           <n-input v-model:value="activityInfo.username" disabled />
         </n-form-item-gi>
         <n-form-item-gi :span="12" label="学号">
           <n-input
-            :disabled="usersStore.loginUserInfo.account"
+            :disabled="Boolean(usersStore.loginUserInfo.account)"
             placeholder="请输入学号"
             v-model:value="activityInfo.account"
           />
@@ -42,7 +55,7 @@
           </n-radio-group>
         </n-form-item-gi>
         <n-form-item-gi :span="12" label="年级">
-          <n-input
+          <n-input-number
             v-model:value="activityInfo.grade"
             placeholder="请输入年级"
           />
@@ -60,7 +73,7 @@
           />
         </n-form-item-gi>
         <n-form-item-gi :span="12" label="班级">
-          <n-input
+          <n-input-number
             v-model:value="activityInfo.userClass"
             placeholder="请输入班级"
           />
@@ -77,9 +90,11 @@ import { useUsersStore } from "@/stores/modules/users.ts";
 import { restfulApi } from "@/axios";
 import { message } from "@/plugins/naive-ui-discrete-api.ts";
 import { ref } from "vue";
+import { UploadFileInfo } from "naive-ui";
 
 const usersStore = useUsersStore();
 const activityInfo = ref();
+const fileList = ref();
 
 function fetchProfile() {
   activityInfo.value = {
@@ -111,5 +126,18 @@ function handleSubmit() {
       email: data.email,
     });
   });
+}
+
+function handleFinish({
+  file,
+  event,
+}: {
+  file: UploadFileInfo;
+  event?: ProgressEvent<XMLHttpRequest>;
+}) {
+  console.log("[handleFinish]", file, event);
+  if (event && event.target && event.target) {
+    file.url = event.target.response;
+  }
 }
 </script>
