@@ -1,16 +1,16 @@
 <template>
-<ul class="background">
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-</ul>
+  <ul class="background">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+  </ul>
   <n-flex class="login-background" align="center" justify="center">
     <n-card title="登录/注册" class="container">
       <n-tabs
@@ -125,8 +125,8 @@ const rules = {
 };
 const formRef = ref();
 const formInline = reactive({
-  username: null,
-  password: null,
+  username: "admin",
+  password: "123456",
 });
 
 const signUpRef = ref();
@@ -250,14 +250,13 @@ async function handleSignUp() {
   width: 100dvw;
 }
 
-
 @keyframes animate {
-  0%{
+  0% {
     transform: translateY(0) rotate(0deg);
     opacity: 1;
     border-radius: 0;
   }
-  100%{
+  100% {
     transform: translateY(-1000px) rotate(720deg);
     opacity: 0;
     border-radius: 50%;
@@ -275,6 +274,7 @@ async function handleSignUp() {
   background: #98cce2;
   overflow: hidden;
 }
+
 .background li {
   position: absolute;
   display: block;
@@ -292,6 +292,7 @@ async function handleSignUp() {
   bottom: -105px;
   animation-delay: 1s;
 }
+
 .background li:nth-child(1) {
   left: 48%;
   width: 156px;
@@ -299,6 +300,7 @@ async function handleSignUp() {
   bottom: -156px;
   animation-delay: 2s;
 }
+
 .background li:nth-child(2) {
   left: 21%;
   width: 191px;
@@ -306,6 +308,7 @@ async function handleSignUp() {
   bottom: -191px;
   animation-delay: 3s;
 }
+
 .background li:nth-child(3) {
   left: 68%;
   width: 112px;
@@ -313,6 +316,7 @@ async function handleSignUp() {
   bottom: -112px;
   animation-delay: 4s;
 }
+
 .background li:nth-child(4) {
   left: 86%;
   width: 101px;
@@ -320,6 +324,7 @@ async function handleSignUp() {
   bottom: -101px;
   animation-delay: 7s;
 }
+
 .background li:nth-child(5) {
   left: 85%;
   width: 130px;
@@ -327,6 +332,7 @@ async function handleSignUp() {
   bottom: -130px;
   animation-delay: 9s;
 }
+
 .background li:nth-child(6) {
   left: 45%;
   width: 123px;
@@ -334,6 +340,7 @@ async function handleSignUp() {
   bottom: -123px;
   animation-delay: 11s;
 }
+
 .background li:nth-child(7) {
   left: 44%;
   width: 111px;
@@ -341,6 +348,7 @@ async function handleSignUp() {
   bottom: -111px;
   animation-delay: 21s;
 }
+
 .background li:nth-child(8) {
   left: 42%;
   width: 143px;
@@ -348,6 +356,7 @@ async function handleSignUp() {
   bottom: -143px;
   animation-delay: 17s;
 }
+
 .background li:nth-child(9) {
   left: 13%;
   width: 135px;

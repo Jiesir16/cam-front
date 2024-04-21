@@ -115,9 +115,12 @@
         </n-layout-header>
 
         <!-- 内容区域：侧边栏和主内容 -->
-        <n-flex item style="flex: 1; background-color: #eeeeee">
+        <n-flex
+          item
+          style="min-height: 92dvh; background-color: #eeeeee; padding: 12px"
+        >
           <!-- 主内容区 -->
-          <n-layout>
+          <n-layout style="padding: 12px">
             <n-layout-content>
               <router-view />
             </n-layout-content>
