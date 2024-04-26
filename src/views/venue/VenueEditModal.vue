@@ -4,31 +4,48 @@
       <template #header>权限信息</template>
       <n-form ref="editForm">
         <!-- 表单内容，例如： -->
-        <n-form-item label="权限编码">
+        <n-form-item label="场地名称">
           <n-input
-            v-model:value="permissionInfo.permCode"
+            v-model:value="venueInfo.venueName"
             placeholder="请输入权限编码"
-            :disabled="permissionInfo.id!=null"
-            />
+            :disabled="venueInfo.id != null"
+          />
         </n-form-item>
-        <n-form-item label="权限名称">
+        <n-form-item label="场地类型">
           <n-input
-            v-model:value="permissionInfo.permName"
+            v-model:value="venueInfo.venueType"
             placeholder="请输入权限名称"
-            />
+          />
         </n-form-item>
-        <n-form-item label="父节点ID">
-          <n-input-number
-            :show-button="false"
-            v-model:value="permissionInfo.parentId"
-            placeholder="请输入父节点ID"
-            />
-        </n-form-item>
-        <n-form-item label="权限描述">
+        <n-form-item label="场地位置">
           <n-input
-            v-model:value="permissionInfo.description"
+            v-model:value="venueInfo.venueLocation"
+            placeholder="请输入权限名称"
+          />
+        </n-form-item>
+        <n-form-item label="场地状态">
+          <n-input
+            v-model:value="venueInfo.venueStatus"
             placeholder="请输入权限描述"
-            />
+          />
+        </n-form-item>
+        <n-form-item label="开放时间">
+          <n-input
+            v-model:value="venueInfo.openTime"
+            placeholder="请输入权限描述"
+          />
+        </n-form-item>
+        <n-form-item label="详情">
+          <n-input
+            v-model:value="venueInfo.venueDetail"
+            placeholder="请输入权限描述"
+          />
+        </n-form-item>
+        <n-form-item label="场地图片">
+          <n-input
+            v-model:value="venueInfo.venueImg"
+            placeholder="请输入权限描述"
+          />
         </n-form-item>
         <!-- 其他表单项 -->
       </n-form>
@@ -43,11 +60,11 @@
 </template>
 
 <script setup lang="ts">
-import { Permission } from "@/views/system/permission/permissionApi";
+import { VenueInfo } from "@/views/venue/venueApi";
 
 export interface Props {
   show?: boolean;
-  permissionInfo: Permission;
+  venueInfo: VenueInfo;
 }
 
 // 定义组件属性
@@ -61,10 +78,10 @@ function handleSubmit() {
     "[Modal子组件] 触发表单提交, 发送给父组件[edit事件、更新show属性的事件]",
   );
   console.log("props.value", props);
-  if (props.permissionInfo.id) {
-    emit("edit", { ...props.permissionInfo });
+  if (props.venueInfo.id) {
+    emit("edit", { ...props.venueInfo });
   } else {
-    emit("create", { ...props.permissionInfo });
+    emit("create", { ...props.venueInfo });
   }
   emit("update:show", false);
 }

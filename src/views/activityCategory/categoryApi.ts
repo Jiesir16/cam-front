@@ -1,31 +1,26 @@
 import { restfulApi } from "@/axios";
 import { message } from "@/plugins/naive-ui-discrete-api";
 
-export interface VenueInfo {
+export interface CategoryInfo {
   id?: number | null;
-  venueName?: number | null;
-  venueType?: String | null;
-  venueLocation?: String | null;
-  venueStatus?: String | null;
-  openTime?: String | null;
-  venueDetail?: String | null;
-  venueImg?: String | null;
+  categoryCode?: number | null;
+  categoryName?: String | null;
 }
 
-export interface VenueSearchParams {
-  permCode: String | null;
-  permName: String | null;
+export interface CategorySearchParams {
+  categoryCode: String | null;
+  categoryName: String | null;
 }
 
 export default {
-  create: (data: VenueInfo) => restfulApi.post("/venue", data),
+  create: (data: CategoryInfo) => restfulApi.post("/activity/category", data),
   read: async (
     pagination: {
       page: number;
       pageCount?: number;
       itemCount?: number;
     },
-    searchParams: VenueSearchParams,
+    searchParams: CategorySearchParams,
     tableDataRef,
     loading,
   ) => {
@@ -36,7 +31,7 @@ export default {
     };
     loading.value = true;
     restfulApi
-      .get("/venue", { ...params })
+      .get("/activity/category", { ...params })
       .then((response) => {
         setTimeout(() => {
           pagination.itemCount = response.data.total;
@@ -55,6 +50,6 @@ export default {
         message.error("系统异常,请联系管理员");
       });
   },
-  update: (data: VenueInfo) => restfulApi.patch(`/venue/${data.id}`, data),
-  delete: (id: number) => restfulApi.delete(`/venue/${id}`),
+  update: (data: CategoryInfo) => restfulApi.patch(`/activity/category/${data.id}`, data),
+  delete: (id: number) => restfulApi.delete(`/activity/category/${id}`),
 };

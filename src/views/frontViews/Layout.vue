@@ -90,6 +90,11 @@ const menusOptions = [
     key: "front:person",
     icon: renderIcon("i-Aperture"),
   },
+  {
+    label: "留言与反馈",
+    key: "front:feedback",
+    icon: renderIcon("i-Rss"),
+  },
 ];
 
 const dropdownOptions = ref([

@@ -1,7 +1,7 @@
 <template>
   <n-flex justify="space-between" align="center" style="padding: 0 24px">
     <n-flex style="height: 50px" align="center">
-      <n-gradient-text :size="22" type="success">场地管理</n-gradient-text>
+      <n-gradient-text :size="22" type="success">活动种类管理</n-gradient-text>
     </n-flex>
 
     <n-flex>
@@ -9,21 +9,21 @@
         <n-icon>
           <PersonAddOutline />
         </n-icon>
-        新增场地
+        新增种类
       </n-button>
     </n-flex>
   </n-flex>
   <n-flex vertical style="margin: 12px; padding: 24px">
     <n-form @submit.prevent="onSearch" ref="searchForm" inline>
-      <n-form-item label="场地名称">
+      <n-form-item label="活动种类名称">
         <n-input
-          v-model:value="searchParams.permCode"
+          v-model:value="searchParams.categoryName"
           placeholder="请输入场地名称"
         />
       </n-form-item>
-      <n-form-item label="场地名称">
+      <n-form-item label="活动种类编码">
         <n-input
-          v-model:value="searchParams.permName"
+          v-model:value="searchParams.categoryCode"
           placeholder="请输入场地名称"
         />
       </n-form-item>
@@ -47,9 +47,9 @@
       :loading="loading"
       resizable
     />
-    <VenueEditModal
+    <CategoryEditModal
       v-model:show="showEditModal"
-      v-model:venueInfo="currentVenue"
+      v-model:category-info="currentCategory"
       @edit="editVenue"
       @create="createVenue"
       @update:show="handleShow"
@@ -59,52 +59,50 @@
 
 <script setup lang="ts">
 import { reactive, ref } from "vue";
-import { getTableColumns } from "./venueTableColumns";
+import { getTableColumns } from "./categoryTableColumns";
 import { PersonAddOutline } from "@vicons/ionicons5";
-import venueApi, { VenueInfo, VenueSearchParams } from "@/views/venue/venueApi";
+import venueApi, {
+  CategoryInfo,
+  CategorySearchParams,
+} from "@/views/activityCategory/categoryApi";
 import { useMessage } from "naive-ui";
-import VenueEditModal from "@/views/venue/VenueEditModal.vue";
+import CategoryEditModal from "@/views/activityCategory/CategoryEditModal.vue";
 
 const message = useMessage();
-const searchParams = ref<VenueSearchParams>({
-  permCode: null,
-  permName: null,
+const searchParams = ref<CategorySearchParams>({
+  categoryCode: null,
+  categoryName: null,
 });
 
 function onSearch() {
-  fetchVenues(searchParams.value);
+  fetchCategories(searchParams.value);
 }
 
 function onReset() {
-  searchParams.value = { permCode: null, permName: null };
-  fetchVenues(searchParams.value);
+  searchParams.value = { categoryCode: null, categoryName: null };
+  fetchCategories(searchParams.value);
 }
 
 // modal start
 
 const showEditModal = ref<boolean>(false);
 
-const currentVenue = ref<VenueInfo>({
+const currentCategory = ref<CategoryInfo>({
   id: null,
-  venueName: null,
-  venueType: null,
-  venueLocation: null,
-  venueStatus: null,
-  openTime: null,
-  venueDetail: null,
-  venueImg: null,
+  categoryCode: null,
+  categoryName: null,
 });
 
 function handleShow(value: boolean) {
   showEditModal.value = value;
 }
 
-function editVenue(perm: VenueInfo) {
+function editVenue(perm: CategoryInfo) {
   venueApi
     .update(perm)
     .then(() => {
       message.success("更新成功");
-      fetchVenues({ permCode: null, permName: null });
+      fetchCategories({ permCode: null, permName: null });
     })
     .catch(() => {
       message.success("更新失败");
@@ -112,12 +110,12 @@ function editVenue(perm: VenueInfo) {
   showEditModal.value = false;
 }
 
-function createVenue(venue: VenueInfo) {
+function createVenue(venue: CategoryInfo) {
   venueApi
     .create(venue)
     .then(() => {
       message.success("新增成功");
-      fetchVenues({ permCode: null, permName: null });
+      fetchCategories({ permCode: null, permName: null });
     })
     .catch(() => {
       message.success("新增失败");
@@ -126,15 +124,10 @@ function createVenue(venue: VenueInfo) {
 }
 
 function openCreateModal() {
-  currentVenue.value = {
+  currentCategory.value = {
     id: null,
-    venueName: null,
-    venueType: null,
-    venueLocation: null,
-    venueStatus: null,
-    openTime: null,
-    venueDetail: null,
-    venueImg: null,
+    categoryCode: null,
+    categoryName: null,
   };
   showEditModal.value = true;
 }
@@ -160,17 +153,12 @@ const paginationRef = reactive<PageParam>({
   },
 });
 
-const openEditModal = (row: VenueInfo) => {
+const openEditModal = (row: CategoryInfo) => {
   showEditModal.value = true;
-  currentVenue.value = {
+  currentCategory.value = {
     id: row.id,
-    venueName: row.venueName,
-    venueType: row.venueType,
-    venueLocation: row.venueLocation,
-    venueStatus: row.venueStatus,
-    openTime: row.openTime,
-    venueDetail: row.venueDetail,
-    venueImg: row.venueImg,
+    categoryCode: row.categoryCode,
+    categoryName: row.categoryName,
   };
 };
 const deleteItem = (id: number) => {
@@ -178,7 +166,7 @@ const deleteItem = (id: number) => {
     .delete(id)
     .then(() => {
       message.success("删除成功");
-      fetchVenues({ permCode: null, permName: null });
+      fetchCategories({ permCode: null, permName: null });
     })
     .catch(() => {
       message.success("删除失败");
@@ -189,16 +177,16 @@ const columns = getTableColumns(openEditModal, deleteItem);
 
 // 分页按钮
 function handlePageChange(currentPage: number) {
-  fetchVenues({
+  fetchCategories({
     current: currentPage,
     ...searchParams.value,
   });
 }
 
-function fetchVenues(param) {
+function fetchCategories(param) {
   console.log("获取场地", param);
   venueApi.read(paginationRef, searchParams.value, tableData, loading);
 }
 
-fetchVenues(searchParams.value);
+fetchCategories(searchParams.value);
 </script>

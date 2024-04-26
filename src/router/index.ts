@@ -52,6 +52,14 @@ const routes = [
           desc: "个人主页",
         },
       },
+      {
+        path: "/feedback",
+        name: "front:feedback",
+        component: () => import("@/views/frontViews/Feedback.vue"),
+        meta: {
+        desc: "留言与反馈",
+        },
+      },
     ],
   },
   {
@@ -142,6 +150,15 @@ const routes = [
             component: () => import("@/views/activity/ActivityManagement.vue"),
             meta: {
               desc: "活动信息",
+            },
+          },
+          {
+            path: "/dashboard/activity/type",
+            name: "activity:type",
+            component: () =>
+              import("@/views/activityCategory/CategoryManagement.vue"),
+            meta: {
+              desc: "活动类型",
             },
           },
           {

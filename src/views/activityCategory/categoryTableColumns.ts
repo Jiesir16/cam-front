@@ -7,33 +7,13 @@ export const getTableColumns = (
   deleteItem: Function,
 ) => [
   {
-    title: "场地名称",
-    key: "venueName",
+    title: "类型名称",
+    key: "categoryName",
     align: "center",
   },
   {
-    title: "场地类型",
-    key: "venueType",
-    align: "center",
-  },
-  {
-    title: "场地位置",
-    key: "venueLocation",
-    align: "center",
-  },
-  {
-    title: "场地状态",
-    key: "venueStatus",
-    align: "center",
-  },
-  {
-    title: "开放时间",
-    key: "openTime",
-    align: "center",
-  },
-  {
-    title: "场地图片",
-    key: "venueImg",
+    title: "类型编码",
+    key: "categoryCode",
     align: "center",
   },
   {
