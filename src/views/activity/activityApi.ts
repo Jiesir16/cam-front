@@ -12,7 +12,8 @@ export interface Activity {
   enrollDeadline?: String | null;
   activityBrief?: String | null;
   enrollment?: number | null;
-  dateTimeRange?: Array<number| null> | null;
+  dateTimeRange?: Array<number | null> | null;
+  imgUrl?: String | null;
 }
 
 export interface PermissionSearchParams {

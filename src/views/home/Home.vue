@@ -53,7 +53,7 @@
         </n-card>
       </n-gi>
       <n-gi :span="24">
-        <n-card title="场地预定统计">
+        <n-card title="场地预订统计">
           <v-chart class="chart" :option="venueBookingOption" />
         </n-card>
       </n-gi>

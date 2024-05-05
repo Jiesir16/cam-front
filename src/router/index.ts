@@ -57,7 +57,7 @@ const routes = [
         name: "front:feedback",
         component: () => import("@/views/frontViews/Feedback.vue"),
         meta: {
-        desc: "留言与反馈",
+          desc: "留言与反馈",
         },
       },
     ],
@@ -167,6 +167,38 @@ const routes = [
             component: () => import("@/views/activity/ActivityApply.vue"),
             meta: {
               desc: "活动申请",
+            },
+          },
+          {
+            path: "/dashboard/activity/audit",
+            name: "activity:audit",
+            component: () => import("@/views/activity/Audit.vue"),
+            meta: {
+              desc: "活动审核",
+            },
+          },
+          {
+            path: "/dashboard/venue/reserve",
+            name: "venue:reserve",
+            component: () => import("@/views/venue/VenueReserve.vue"),
+            meta: {
+              desc: "场地预订",
+            },
+          },
+          {
+            path: "/dashboard/venue/reserve/detail/:id",
+            name: "venue:reserve:detail",
+            component: () => import("@/views/venue/VenueCalender.vue"),
+            meta: {
+              desc: "场地预订详情",
+            },
+          },
+          {
+            path: "/dashboard/system/password/reset",
+            name: "system:password:reset",
+            component: () => import("@/views/system/ResetPassword.vue"),
+            meta: {
+              desc: "重置密码",
             },
           },
         ],

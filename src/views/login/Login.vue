@@ -195,6 +195,7 @@ function handleSubmit() {
         let data = res.data;
         usersStore.setLoginUserInfo({
           id: data.id,
+          avatarUrl: data.avatarUrl,
           username: data.username,
           name: data.name,
           account: data.account,

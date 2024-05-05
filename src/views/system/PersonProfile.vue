@@ -94,13 +94,22 @@ import { UploadFileInfo } from "naive-ui";
 
 const usersStore = useUsersStore();
 const activityInfo = ref();
-const fileList = ref();
+const fileList = ref<Array<UploadFileInfo>>([]);
 
 function fetchProfile() {
   activityInfo.value = {
     ...usersStore.loginUserInfo,
     sex: String(usersStore.loginUserInfo.sex),
   };
+  fileList.value.push({
+    id: "123",
+    name: "123",
+    batchId: "123",
+    percentage: 100,
+    status: "finished",
+    url: usersStore.loginUserInfo.avatarUrl,
+  });
+
   console.log(activityInfo.value);
 }
 
@@ -112,8 +121,11 @@ function handleSubmit() {
   };
   restfulApi.put("/user", data).then((res) => {
     message.success("更新成功");
+    let avatarUrlTmp = fileList.value.map((item) => item.url).pop();
+    console.log("asd", avatarUrlTmp);
     usersStore.setLoginUserInfo({
       id: data.id,
+      avatarUrl: String(avatarUrlTmp),
       username: data.username,
       name: data.name,
       account: data.account,

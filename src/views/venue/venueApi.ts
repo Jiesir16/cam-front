@@ -1,5 +1,6 @@
 import { restfulApi } from "@/axios";
 import { message } from "@/plugins/naive-ui-discrete-api";
+import {UploadFileInfo} from "naive-ui";
 
 export interface VenueInfo {
   id?: number | null;
@@ -7,14 +8,21 @@ export interface VenueInfo {
   venueType?: String | null;
   venueLocation?: String | null;
   venueStatus?: String | null;
-  openTime?: String | null;
+  availableTimeStart?: String | null;
+  availableTimeEnd?: String | null;
+  contactPerson?: String | null;
+  contactEmail?: String | null;
+  contactPhone?: String | null;
   venueDetail?: String | null;
-  venueImg?: String | null;
+  capacity?: number | null;
+  venueImg: string | null | undefined;
+  fileList?: Array<UploadFileInfo>;
 }
 
 export interface VenueSearchParams {
-  permCode: String | null;
-  permName: String | null;
+  venueName: String | null;
+  venueType?: String | null;
+  venueStatus: String | null;
 }
 
 export default {
@@ -31,7 +39,7 @@ export default {
   ) => {
     let params = {
       current: pagination.page,
-      size: 10,
+      size: 5,
       ...searchParams,
     };
     loading.value = true;

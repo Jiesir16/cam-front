@@ -1,7 +1,7 @@
 import { h } from "vue";
 import { NButton, NIcon, NImage } from "naive-ui";
-import { TrashOutline } from "@vicons/ionicons5";
-import { Edit } from "@vicons/carbon";
+import { LayersOutline } from "@vicons/ionicons5";
+
 const formatStatus = (status) => {
   if (status === "open") {
     return "开放中";
@@ -11,19 +11,20 @@ const formatStatus = (status) => {
     return status;
   }
 };
-export const getTableColumns = (
-  openEditModal: Function,
-  deleteItem: Function,
-) => [
+export const getTableColumns = (reserve: Function) => [
   {
     title: "场地名称",
     key: "venueName",
     align: "center",
-    fixed: "left",
   },
   {
     title: "场地类型",
     key: "venueType",
+    align: "center",
+  },
+  {
+    title: "场地位置",
+    key: "venueLocation",
     align: "center",
   },
   {
@@ -33,11 +34,6 @@ export const getTableColumns = (
     render(row) {
       return formatStatus(row.venueStatus);
     },
-  },
-  {
-    title: "场地位置",
-    key: "venueLocation",
-    align: "center",
   },
   {
     title: "开放开始时间",
@@ -78,27 +74,15 @@ export const getTableColumns = (
         h(NImage, {
           text: true,
           src: row.venueImg,
-          lazy: true,
           width: 100,
         }),
       ];
     },
   },
   {
-    title: "创建时间",
-    key: "createTime",
-    align: "center",
-  },
-  {
-    title: "修改时间",
-    key: "updateTime",
-    align: "center",
-  },
-  {
     title: "操作",
     key: "actions",
     align: "center",
-    fixed: "right",
     render(row) {
       return [
         h(
@@ -106,26 +90,12 @@ export const getTableColumns = (
           {
             text: true,
             type: "info",
-            onClick: () => openEditModal(row),
+            onClick: () => reserve(row.id),
           },
           {
             default: () => [
-              h(NIcon, null, { default: () => h(Edit) }),
-              " 编辑",
-            ],
-          },
-        ),
-        h(
-          NButton,
-          {
-            text: true,
-            type: "error",
-            onClick: () => deleteItem(row.id),
-          },
-          {
-            default: () => [
-              h(NIcon, null, { default: () => h(TrashOutline) }),
-              " 删除",
+              h(NIcon, null, { default: () => h(LayersOutline) }),
+              "预订",
             ],
           },
         ),

@@ -3,6 +3,7 @@ import { restfulApi } from "@/axios";
 
 export interface LoginUserInfo {
   id?: number;
+  avatarUrl?: string;
   username: string;
   name?: string;
   account: string;

@@ -77,8 +77,9 @@
               >
                 <n-avatar
                   size="large"
+                  object-fit="contain"
                   round
-                  src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"
+                  :src="usersStore.loginUserInfo.avatarUrl"
                 />
               </n-dropdown>
               <n-switch
@@ -129,6 +130,18 @@
       </n-layout>
     </n-layout>
   </n-flex>
+
+  <n-modal
+    v-model:show="showModal"
+    :mask-closable="false"
+    preset="dialog"
+    title="退出登录"
+    content="你确认退出登录吗?"
+    positive-text="是"
+    negative-text="否"
+    @positive-click="onPositiveClick"
+    @negative-click="onNegativeClick"
+  />
 </template>
 
 <script setup lang="ts">
@@ -160,6 +173,15 @@ const permsStore = usePermsStore();
 const designStore = useDesignSettingStore();
 
 const menusOptions = computed(() => usePermsStore().menus);
+
+const showModal = ref(false);
+
+function onPositiveClick() {
+  handelSignOut();
+}
+
+function onNegativeClick() {}
+
 const dropdownOptions = [
   {
     label: "用户资料",
@@ -193,7 +215,7 @@ permsStore.fetchAllMenus();
 function handleDropClick(key: string | number, option: DropdownOption) {
   console.log("[Layout] key is ", key, "option is ", option);
   if ("signOut" === key) {
-    handelSignOut();
+    showModal.value = true;
   }
   if ("profile" === key) {
     window.location.href = "/dashboard/profile";

@@ -77,7 +77,6 @@
 </template>
 
 <script setup lang="ts">
-import { message } from "@/plugins/naive-ui-discrete-api.ts";
 import { ref } from "vue";
 import router from "@/router";
 import { restfulApi } from "@/axios";
@@ -109,7 +108,7 @@ async function fetchCarousels() {
   await restfulApi
     .get("/activity/page", {
       current: 1,
-      size: 6,
+      size: 9,
       activityType: "online",
       auditStatus: 1,
     })
@@ -127,7 +126,7 @@ function handleUpdateValue(tableName: String) {
   restfulApi
     .get("/activity/page", {
       current: 1,
-      size: 6,
+      size: 9,
       activityType: tableName,
       auditStatus: 1,
     })
