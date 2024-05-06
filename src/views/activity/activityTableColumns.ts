@@ -17,6 +17,11 @@ export const getTableColumns = (
     align: "center",
   },
   {
+    title: "活动封面",
+    key: "activityImg",
+    align: "center",
+  },
+  {
     title: "活动开始时间",
     key: "beginDatetime",
     align: "center",

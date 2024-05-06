@@ -24,20 +24,25 @@
                 />
               </n-form-item-gi>
               <n-form-item-gi
-                path="feedbackInfo.feedbackComment"
+                path="feedbackInfo.feedbackContent"
                 :span="24"
                 label="问题与建议描述:"
               >
                 <n-input
                   type="textarea"
-                  v-model:value="feedbackInfo.feedbackComment"
+                  v-model:value="feedbackInfo.feedbackContent"
                   placeholder="请输入问题与建议描述"
                 ></n-input>
               </n-form-item-gi>
             </n-grid>
           </n-form>
           <n-flex vertical align="center">
-            <n-button type="primary" style="width: 180px" size="large">
+            <n-button
+              type="primary"
+              style="width: 180px"
+              size="large"
+              @click="handleSubmit"
+            >
               提交与反馈
             </n-button>
           </n-flex>
@@ -47,37 +52,98 @@
 
     <n-card title="留言板" size="huge" style="min-width: 80dvw">
       <n-card v-for="item in feedbackInfos">
-        <n-text> {{ item.value }}</n-text>
+        <n-flex justify="space-between">
+          <n-flex justify="start" align="center">
+            <n-tag round :bordered="false" type="default">
+              {{ item.feedbackType }}
+              <template #icon>
+                <n-icon :component="AlbumsOutline" />
+              </template>
+            </n-tag>
+            <n-text> {{ item.feedbackContent }}</n-text>
+          </n-flex>
+          <n-text> {{ item.createTime }}</n-text>
+        </n-flex>
       </n-card>
     </n-card>
   </n-flex>
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
+import { restfulApi } from "@/axios";
+import { useMessage } from "naive-ui";
+import { AlbumsOutline } from "@vicons/ionicons5";
 
+const message = useMessage();
 const options = [
   {
     label: "功能欠缺/不好用",
-    value: "001",
+    value: 1,
   },
   {
     label: "页面效果",
-    value: "002",
+    value: 2,
   },
   {
     label: "一点建议",
-    value: "003",
+    value: 3,
   },
   {
     label: "其他方面",
-    value: "004",
+    value: 4,
   },
 ];
 
 const feedbackInfo = ref({
   feedbackType: null,
-  feedbackComment: null,
+  feedbackContent: null,
 });
 
-const feedbackInfos = ref([{ value: "123" }]);
+interface FeedbackInfo {
+  feedbackContent: String | null;
+  feedbackType: String | null;
+  createTime: String | null;
+}
+
+const feedbackInfos = ref<Array<FeedbackInfo>>([]);
+
+async function handleSubmit() {
+  await restfulApi
+    .post("/feedback", feedbackInfo.value)
+    .then(() => {
+      message.success("提交成功");
+    })
+    .catch(() => {
+      message.success("提交失败");
+    });
+  fetchFeedbackInfos();
+}
+
+function fetchFeedbackInfos() {
+  restfulApi.get("/feedback/all", {}).then((res) => {
+    feedbackInfos.value = res.data.map((item) => ({
+      ...item,
+      feedbackType: converterType(item.feedbackType),
+    }));
+  });
+}
+
+const converterType = (value: String) => {
+  switch (value) {
+    case "1": {
+      return "功能欠缺/不好用";
+    }
+    case "2": {
+      return "页面效果";
+    }
+    case "3": {
+      return "一点建议";
+    }
+    case "4": {
+      return "其他方面";
+    }
+  }
+};
+
+fetchFeedbackInfos();
 </script>

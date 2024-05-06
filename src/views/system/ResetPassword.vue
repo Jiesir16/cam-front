@@ -1,21 +1,21 @@
 <template>
   <n-flex>
-    <n-form ref="resetForm" label-align="left" :rules="resetFormRules">
+    <n-form ref="resetForm" label-align="left" :rules="resetFormRules" :model="resetInfo">
       <n-grid :cols="24" :x-gap="12">
         <n-form-item-gi label="旧密码:" path="oldPassword" :span="6">
-          <n-input v-model:value="resetInfo.oldPassword"></n-input>
+          <n-input type="password" v-model:value="resetInfo.oldPassword" placeholder="请输入原密码"></n-input>
         </n-form-item-gi>
         <n-form-item-gi :span="6"></n-form-item-gi>
         <n-form-item-gi :span="6"></n-form-item-gi>
         <n-form-item-gi :span="6"></n-form-item-gi>
         <n-form-item-gi label="新密码:" path="newPassword" :span="6">
-          <n-input v-model:value="resetInfo.newPassword"></n-input>
+          <n-input type="password" v-model:value="resetInfo.newPassword" placeholder="请输入密码"></n-input>
         </n-form-item-gi>
         <n-form-item-gi :span="6"></n-form-item-gi>
         <n-form-item-gi :span="6"></n-form-item-gi>
         <n-form-item-gi :span="6"></n-form-item-gi>
         <n-form-item-gi label="重复新密码:" path="reNewPassword" :span="6">
-          <n-input v-model:value="resetInfo.reNewPassword"></n-input>
+          <n-input type="password" v-model:value="resetInfo.reNewPassword" placeholder="请输入密码"></n-input>
         </n-form-item-gi>
         <n-form-item-gi :span="6"></n-form-item-gi>
         <n-form-item-gi :span="6"></n-form-item-gi>
@@ -29,7 +29,7 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import { useMessage } from "naive-ui";
+import {FormItemRule, useMessage} from "naive-ui";
 import { restfulApi } from "@/axios";
 
 const message = useMessage();
@@ -45,38 +45,30 @@ const resetFormRules = {
       required: true,
       message: "请输入旧密码",
       trigger: ["input", "blur"],
-      validator(rule: FormItemRule, value: string) {
-        console.log("3123123123", value,rule);
-        if (value.length < 6) {
-          return new Error("密码不应该小于6位");
-        }
-      },
     },
+    { min: 6, message: '密码至少为6个字符' }
   ],
   newPassword: [
     {
       required: true,
       message: "请输入新密码",
-      validator(value: string) {
-        
-        if (value.length < 6) {
-          return new Error("密码不应该小于6位");
-        }
-      },
       trigger: ["input", "blur"],
     },
+    { min: 6, message: '密码至少为6个字符' }
   ],
   reNewPassword: [
     {
       required: true,
       message: "请二次输入新密码",
-      validator(value: string) {
+      validate(value: string) {
+        console.log("请二次输入新密码",value)
         if (value.length < 6) {
           return new Error("密码不应该小于6位");
         }
       },
       trigger: ["input", "blur"],
     },
+    { min: 6, message: '密码至少为6个字符' }
   ],
 };
 const resetForm = ref();

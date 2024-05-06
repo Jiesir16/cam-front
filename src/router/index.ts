@@ -130,6 +130,14 @@ const routes = [
         ],
       },
       {
+        path: "/dashboard/feedback",
+        name: "feedback",
+        component: () => import("@/views/feedback/FeedBackManagement.vue"),
+        meta: {
+          desc: "liuyanyufankui",
+        },
+      },
+      {
         path: "/dashboard/activity",
         name: "activity",
         meta: {
