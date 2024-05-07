@@ -1,10 +1,8 @@
 import { h } from "vue";
-import { NButton, NIcon } from "naive-ui";
-import { TrashOutline } from "@vicons/ionicons5";
+import { NButton, NIcon, NPopconfirm } from "naive-ui";
+import { CloseOutline } from "@vicons/carbon";
 
-export const getTableColumns = (
-  deleteItem: Function,
-) => [
+export const getTableColumns = (handleUnEnroll: Function) => [
   {
     title: "活动名称",
     key: "activityName",
@@ -39,17 +37,28 @@ export const getTableColumns = (
     render(row) {
       return [
         h(
-          NButton,
+          NPopconfirm,
           {
-            text: true,
-            type: "info",
-            onClick: () => deleteItem(row.id),
+            negativeText: "否",
+            positiveText: "是",
+            onPositiveClick: () => handleUnEnroll(row),
           },
           {
-            default: () => [
-              h(NIcon, null, { default: () => h(TrashOutline) }),
-              " 取消报名",
-            ],
+            default: () => "确定取消吗？",
+            trigger: () =>
+              h(
+                NButton,
+                {
+                  text: true,
+                  type: "info",
+                },
+                {
+                  default: () => [
+                    h(NIcon, null, { default: () => h(CloseOutline) }),
+                    " 取消报名",
+                  ],
+                },
+              ),
           },
         ),
       ];

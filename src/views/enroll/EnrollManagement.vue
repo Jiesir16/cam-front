@@ -1,19 +1,27 @@
 <template>
   <n-flex justify="space-between" align="center" style="padding: 0 24px">
     <n-flex style="height: 50px" align="center">
-      <n-gradient-text :size="22" type="success"
-        >liuyanyufankui管理
+      <n-gradient-text :size="22" type="success">
+        活动报名管理
       </n-gradient-text>
     </n-flex>
   </n-flex>
   <n-flex vertical style="margin: 12px; padding: 24px">
     <n-form @submit.prevent="onSearch" ref="searchForm">
       <n-grid :cols="24" :x-gap="12">
-        <n-form-item-gi label="weitileixing" :span="4">
-          <n-select
-            v-model:value="searchParams.feedbackType"
-            :options="feedbackTypeOptions"
-            placeholder="请选择"
+        <n-form-item-gi label="活动名称" :span="4">
+          <n-input
+            v-model:value="searchParams.activityName"
+            placeholder="请输入活动名称"
+          />
+        </n-form-item-gi>
+        <n-form-item-gi label="姓名" :span="4">
+          <n-input v-model:value="searchParams.name" placeholder="请输入姓名" />
+        </n-form-item-gi>
+        <n-form-item-gi label="学号" :span="4">
+          <n-input
+            v-model:value="searchParams.account"
+            placeholder="请输入学号"
           />
         </n-form-item-gi>
         <n-form-item-gi :span="1">
@@ -21,6 +29,11 @@
         </n-form-item-gi>
         <n-form-item-gi :span="1">
           <n-button @click="onReset">重置</n-button>
+        </n-form-item-gi>
+        <n-form-item-gi :span="8">
+        </n-form-item-gi>
+        <n-form-item-gi :span="1">
+          <n-button @click="handleExport" type="info">导出报名名单</n-button>
         </n-form-item-gi>
       </n-grid>
     </n-form>
@@ -44,21 +57,18 @@
 import { reactive, ref } from "vue";
 import { getTableColumns } from "./enrollTableColumns";
 import { useMessage } from "naive-ui";
-import feedbackApi, {
-  FeedbackSearchParams,
-} from "@/views/feedback/feedbackApi.ts";
+import enrollApi, {
+  EnrollInfo,
+  EnrollSearchParams,
+} from "@/views/enroll/enrollApi.ts";
+import { restfulApi } from "@/axios";
 
 const message = useMessage();
 
-const feedbackTypeOptions = ref([
-  { label: "功能欠缺/不好用", value: "1" },
-  { label: "页面效果", value: "2" },
-  { label: "一点建议", value: "3" },
-  { label: "其他方面", value: "4" },
-]);
-
-const searchParams = ref<FeedbackSearchParams>({
-  feedbackType: null,
+const searchParams = ref<EnrollSearchParams>({
+  activityName: null,
+  name: null,
+  account: null,
 });
 
 function onSearch() {
@@ -66,7 +76,7 @@ function onSearch() {
 }
 
 function onReset() {
-  searchParams.value = { feedbackType: null };
+  searchParams.value = { activityName: null, name: null, account: null };
   fetchEnrolls(searchParams.value);
 }
 
@@ -89,19 +99,23 @@ const paginationRef = reactive<PageParam>({
   },
 });
 
-const deleteItem = (id: number) => {
-  feedbackApi
-    .delete(id)
+const handleUnEnroll = (row: EnrollInfo) => {
+  enrollApi
+    .unEnroll(row)
     .then(() => {
-      message.success("删除成功");
+      message.success("取消成功");
       fetchEnrolls({ permCode: null, permName: null });
     })
     .catch(() => {
-      message.success("删除失败");
+      message.success("取消失败");
     });
 };
 
-const columns = getTableColumns(deleteItem);
+const columns = getTableColumns(handleUnEnroll);
+
+function handleExport() {
+  restfulApi.downloadExcel("/enroll/export", searchParams.value );
+}
 
 // 分页按钮
 function handlePageChange(currentPage: number) {
@@ -113,7 +127,7 @@ function handlePageChange(currentPage: number) {
 
 function fetchEnrolls(param) {
   console.log("获取场地", param);
-  feedbackApi.read(paginationRef, param, tableData, loading);
+  enrollApi.read(paginationRef, param, tableData, loading);
 }
 
 fetchEnrolls(searchParams.value);

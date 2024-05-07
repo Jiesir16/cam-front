@@ -2,14 +2,14 @@
   <n-flex justify="space-between" align="center" style="padding: 0 24px">
     <n-flex style="height: 50px" align="center">
       <n-gradient-text :size="22" type="success"
-        >liuyanyufankui管理
+        >留言与反馈管理
       </n-gradient-text>
     </n-flex>
   </n-flex>
   <n-flex vertical style="margin: 12px; padding: 24px">
     <n-form @submit.prevent="onSearch" ref="searchForm">
       <n-grid :cols="24" :x-gap="12">
-        <n-form-item-gi label="weitileixing" :span="4">
+        <n-form-item-gi label="问题类型" :span="4">
           <n-select
             v-model:value="searchParams.feedbackType"
             :options="feedbackTypeOptions"

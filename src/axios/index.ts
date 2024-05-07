@@ -79,6 +79,24 @@ const restfulApi = {
   put: (url: string, data: object) => http.put(url, data),
   patch: (url: string, data: object) => http.patch(url, data),
   delete: (url: string) => http.delete(url),
+  downloadExcel: (url: string, params?: object) => {
+    return http.get(url, { params, responseType: "blob" }).then((res) => {
+      // 下载处理逻辑
+      const filename = res.headers["content-disposition"];
+      const blob = new Blob([res.data]);
+      const downloadElement = document.createElement("a");
+      // URL.createObjectURL()方法会根据传入的参数创建一个指向该参数对象的URL. 这个URL的生命仅存在于它被创建的这个文档里. 新的对象URL指向执行的File对象或者是Blob对象.
+      const href = window.URL.createObjectURL(blob);
+      downloadElement.href = href;
+      let enCodeFileName = filename.split("filename=")[1];
+      downloadElement.download = decodeURIComponent(enCodeFileName);
+      document.body.appendChild(downloadElement);
+      downloadElement.click();
+      document.body.removeChild(downloadElement);
+      // URL.revokeObjectURL()方法会释放一个通过URL.createObjectURL()创建的对象URL. 当你要已经用过了这个对象URL,然后要让浏览器知道这个URL已经不再需要指向对应的文件的时候,就需要调用这个方法.
+      window.URL.revokeObjectURL(href);
+    });
+  },
 };
 
 export { restfulApi };

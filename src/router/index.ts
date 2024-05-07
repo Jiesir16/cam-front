@@ -134,7 +134,7 @@ const routes = [
         name: "feedback",
         component: () => import("@/views/feedback/FeedBackManagement.vue"),
         meta: {
-          desc: "liuyanyufankui",
+          desc: "留言与反馈",
         },
       },
       {
@@ -178,11 +178,19 @@ const routes = [
             },
           },
           {
-            path: "/dashboard/activity/audit",
+            path: "/dashboard/activity/audit/:id",
             name: "activity:audit",
             component: () => import("@/views/activity/Audit.vue"),
             meta: {
               desc: "活动审核",
+            },
+          },
+          {
+            path: "/dashboard/activity/enroll",
+            name: "activity:enroll",
+            component: () => import("@/views/enroll/EnrollManagement.vue"),
+            meta: {
+              desc: "活动报名管理",
             },
           },
           {

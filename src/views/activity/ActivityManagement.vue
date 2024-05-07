@@ -42,41 +42,6 @@
       resizable
     />
   </n-flex>
-
-  <n-modal :show="auditModalShowRef">
-    <n-card closable @close="handleClose" style="width: 500px">
-      <template #header>活动审核</template>
-      <n-form ref="editForm" label-align="left">
-        <n-input-number v-model:value="auditInfo.id" v-show="false" />
-        <!-- 表单内容，例如： -->
-        <n-form-item label="审核意见:">
-          <n-input
-            v-model:value="auditInfo.auditComment"
-            placeholder="请输入审核意见"
-          />
-        </n-form-item>
-        <n-form-item label="审核结果:">
-          <n-radio-group
-            v-model:value="auditInfo.auditStatus"
-            name="auditStatusGroup"
-          >
-            <n-flex>
-              <n-radio value="1"> 通过</n-radio>
-              <n-radio value="2"> 拒绝</n-radio>
-            </n-flex>
-          </n-radio-group>
-        </n-form-item>
-
-        <!-- 其他表单项 -->
-      </n-form>
-      <template #action>
-        <n-flex justify="end">
-          <n-button @click="handleClose">取消</n-button>
-          <n-button @click="handleSubmit" type="primary">提交</n-button>
-        </n-flex>
-      </template>
-    </n-card>
-  </n-modal>
 </template>
 
 <script setup lang="ts">
@@ -109,22 +74,7 @@ function handleApply() {
 
 const tableData = ref([]);
 const loading = ref(false);
-const auditInfo = ref({ id: null, auditComment: null, auditStatus: null });
-const auditModalShowRef = ref(false);
 
-function handleClose() {
-  auditModalShowRef.value = false;
-  auditInfo.value = { id: null, auditComment: null, auditStatus: null };
-}
-
-function handleSubmit() {
-  auditModalShowRef.value = false;
-
-  restfulApi.post("/activity/audit", { ...auditInfo.value }).then((res) => {
-    message.success("审批成功");
-    auditInfo.value = { id: null, auditComment: null, auditStatus: null };
-  });
-}
 
 
 interface PageParam {
@@ -155,19 +105,14 @@ const deleteItem = (id: number) => {
     });
 };
 
-const openAuditModal = (row) => {
-  auditInfo.value = {
-    id: row.id,
-    auditComment: null,
-    auditStatus: null
-  };
-  auditModalShowRef.value = true;
+const handleAudit = (row) => {
+  router.push({ path: `/dashboard/activity/audit/${row.id}` });
 };
-const columns = getTableColumns(deleteItem,openAuditModal);
+const columns = getTableColumns(deleteItem, handleAudit);
 
 // 分页按钮
 function handlePageChange(currentPage: number) {
-  console.log("[currentPage]",currentPage);
+  console.log("[currentPage]", currentPage);
   fetchActivities({
     current: currentPage,
     ...searchParams.value,

@@ -1,38 +1,31 @@
 import { restfulApi } from "@/axios";
 import { message } from "@/plugins/naive-ui-discrete-api";
 
-export interface Activity {
+export interface EnrollInfo {
   id?: number | null;
-  activityName: String | null;
-  activityAddress: String | null;
-  activityType: String | null;
-  activityAddition?: String | null;
-  beginDatetime?: String | null;
-  endDatetime?: String | null;
-  enrollDeadline?: String | null;
-  activityBrief?: String | null;
-  enrollment?: number | null;
-  venueId?: number | null;
-  contactPerson?: String | null;
-  contactPhone?: String | null;
-  dateTimeRange?: Array<number | null> | null;
-  imgUrl?: String | null;
+  userId?: number | null;
+  activityId?: number | null;
+  activityName?: String | null;
+  name?: String | null;
+  email?: String | null;
+  createTime?: String | null;
 }
 
-export interface PermissionSearchParams {
-  permCode: String | null;
-  permName: String | null;
+export interface EnrollSearchParams {
+  activityName: null;
+  name: null;
+  account: null;
 }
 
 export default {
-  create: (data: Activity) => restfulApi.post("/activity", data),
+  create: (data: EnrollInfo) => restfulApi.post("/enroll", data),
   read: async (
     pagination: {
       page: number;
       pageCount?: number;
       itemCount?: number;
     },
-    searchParams: PermissionSearchParams,
+    searchParams: EnrollSearchParams,
     tableDataRef,
     loading,
   ) => {
@@ -43,7 +36,7 @@ export default {
     };
     loading.value = true;
     restfulApi
-      .get("/activity/page", { ...params })
+      .get("/enroll", { ...params })
       .then((response) => {
         setTimeout(() => {
           pagination.itemCount = response.data.total;
@@ -62,6 +55,7 @@ export default {
         message.error("系统异常,请联系管理员");
       });
   },
-  update: (data: Activity) => restfulApi.patch(`/activity/${data.id}`, data),
-  delete: (id: number) => restfulApi.delete(`/activity/${id}`),
+  unEnroll: (data: EnrollInfo) => restfulApi.put(`/enroll`, data),
+  update: (data: EnrollInfo) => restfulApi.patch(`/enroll/${data.id}`, data),
+  delete: (id: number) => restfulApi.delete(`/enroll/${id}`),
 };
