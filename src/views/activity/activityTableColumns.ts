@@ -1,6 +1,7 @@
 import { h } from "vue";
-import { NButton, NIcon, NPopconfirm, NImage } from "naive-ui";
+import { NButton, NIcon, NImage, NPopconfirm, NTag } from "naive-ui";
 import { LayersOutline, TrashOutline } from "@vicons/ionicons5";
+
 const formatType = (type) => {
   if (type === "online") {
     return "线上活动";
@@ -8,6 +9,70 @@ const formatType = (type) => {
     return "线下活动";
   } else {
     return type;
+  }
+};
+const formatAuditStatus = (auditStatus) => {
+  switch (auditStatus) {
+    case "0": {
+      return h(
+        NTag,
+        {
+          style: {
+            marginRight: "6px",
+          },
+          type: "info",
+          bordered: false,
+        },
+        {
+          default: () => "待审核",
+        },
+      );
+    }
+    case "1": {
+      return h(
+        NTag,
+        {
+          style: {
+            marginRight: "6px",
+          },
+          type: "success",
+          bordered: false,
+        },
+        {
+          default: () => "审核通过",
+        },
+      );
+    }
+    case "2": {
+      return h(
+        NTag,
+        {
+          style: {
+            marginRight: "6px",
+          },
+          type: "error",
+          bordered: false,
+        },
+        {
+          default: () => "审核拒绝",
+        },
+      );
+    }
+    default: {
+      return h(
+        NTag,
+        {
+          style: {
+            marginRight: "6px",
+          },
+          type: "info",
+          bordered: false,
+        },
+        {
+          default: () => auditStatus,
+        },
+      );
+    }
   }
 };
 export const getTableColumns = (
@@ -71,6 +136,14 @@ export const getTableColumns = (
     title: "活动结束时间",
     key: "endDatetime",
     align: "center",
+  },
+  {
+    title: "审核状态",
+    key: "auditStatus",
+    align: "center",
+    render({ auditStatus }) {
+      return formatAuditStatus(auditStatus);
+    },
   },
   {
     title: "操作",

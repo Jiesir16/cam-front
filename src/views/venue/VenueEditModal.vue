@@ -45,11 +45,21 @@
           <n-form-item-gi label="开放开始时间" :span="12">
             <n-time-picker
               v-model:formatted-value="venueInfo.availableTimeStart"
+              :hours="
+                Array.from({ length: 22 - 6 + 1 }, (_, index) => index + 6)
+              "
+              :minutes="[0, 30]"
+              :seconds="[0]"
             />
           </n-form-item-gi>
           <n-form-item-gi label="开放结束时间" :span="12">
             <n-time-picker
               v-model:formatted-value="venueInfo.availableTimeEnd"
+              :hours="
+                Array.from({ length: 22 - 6 + 1 }, (_, index) => index + 6)
+              "
+              :minutes="[0, 30]"
+              :seconds="[0]"
             />
           </n-form-item-gi>
           <n-form-item-gi label="可容纳人数" :span="12">

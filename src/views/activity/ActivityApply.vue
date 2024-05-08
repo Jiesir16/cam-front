@@ -24,7 +24,7 @@
           >
             <n-flex>
               <n-radio value="online"> 线上活动</n-radio>
-              <n-radio value="onffline"> 线下活动</n-radio>
+              <n-radio value="offline"> 线下活动</n-radio>
             </n-flex>
           </n-radio-group>
         </n-form-item-gi>

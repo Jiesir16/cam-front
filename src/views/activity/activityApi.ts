@@ -13,6 +13,8 @@ export interface Activity {
   activityBrief?: String | null;
   enrollment?: number | null;
   venueId?: number | null;
+  venueName?: String | null;
+  categoryName?: String | null;
   contactPerson?: String | null;
   contactPhone?: String | null;
   dateTimeRange?: Array<number | null> | null;
