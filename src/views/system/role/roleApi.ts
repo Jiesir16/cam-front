@@ -2,7 +2,7 @@ import {restfulApi} from "@/axios";
 import {message} from "@/plugins/naive-ui-discrete-api";
 
 export interface Role {
-    id?: Number | null;
+    id?: number | null;
     roleCode: String | null;
     roleName: String | null;
     permissionIds?: Array<number>;

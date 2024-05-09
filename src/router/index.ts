@@ -7,7 +7,7 @@ import UserView from "@/views/system/user/UserManagement.vue";
 import RoleView from "@/views/system/role/RoleManagement.vue";
 import PermissionView from "@/views/system/permission/PermissionManagement.vue";
 import Forbidden from "@/views/403.vue";
-import { loadingBar } from "@/plugins/naive-ui-discrete-api";
+import {loadingBar, notification} from "@/plugins/naive-ui-discrete-api";
 import { useUsersStore } from "@/stores/modules/users.ts";
 
 const routes = [
@@ -243,14 +243,27 @@ router.beforeEach((to, from, next) => {
   const usersStore = useUsersStore();
 
   const isAuthorization = Boolean(usersStore.token);
+  if (isAuthorization && checkUserInfo() && to.path !== "/dashboard/profile") {
+    console.log("[router] 用户登个人信息未维护");
+    next({
+      path: "/dashboard/profile",
+    });
+    notification["error"]({
+      content: "个人信息维护",
+      meta: "个人信息未维护，请维护个人信息后使用本系统",
+      duration: 5000,
+      keepAliveOnHover: true,
+    });
+    return;
+  }
   // 未登录
-  if (to.path !== "/login" && to.path !== "/" && !isAuthorization) {
+  if (!isAuthorization && to.path !== "/login" && to.path !== "/") {
     console.log("[router] 用户未登录,跳转登录页");
     next("/login");
     return;
   }
   // 登录了，去login页面禁止去login页面
-  if (to.path === "/login" && isAuthorization) {
+  if (isAuthorization && to.path === "/login") {
     console.log("[router] 用户登录了,禁止跳转登录页");
     next({
       path: from.path !== "/login" ? from.path : "/dashboard/home",
@@ -263,5 +276,15 @@ router.afterEach(() => {
   loadingBar.finish();
   return true;
 });
+
+function checkUserInfo(): boolean {
+  const usersStore = useUsersStore();
+  let currentUserInfo = usersStore.loginUserInfo;
+  return (
+    currentUserInfo.account === null ||
+    currentUserInfo.name === null ||
+    currentUserInfo.email === null
+  );
+}
 
 export default router;

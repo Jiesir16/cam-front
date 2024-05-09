@@ -121,7 +121,7 @@ const activityInfo = ref<Activity>({
 function fetchActivityInfo() {
   let activityId = useRoute().params.id;
   activityIdRef.value = Number(activityId);
-  restfulApi.get(`/activity/detail/${activityId}`).then((res) => {
+  restfulApi.get(`/activity/audit/detail/${activityId}`).then((res) => {
     let data = res.data;
     activityInfo.value = {
       id: data.id,

@@ -34,10 +34,23 @@
             :options="venues"
             v-model:value="activityInfo.venueId"
             placeholder="请选择"
+            @update:value="handleUpdateValue"
+          />
+        </n-form-item-gi>
+        <n-form-item-gi :span="6">
+          <n-text style="color: red">{{ venueInfo }}</n-text>
+        </n-form-item-gi>
+        <n-form-item-gi path="dateTimeRange" :span="12" label="活动起止时间">
+          <n-date-picker
+            type="datetimerange"
+            start-placeholder="活动开始时间"
+            end-placeholder="活动截止时间"
+            v-model:value="activityInfo.dateTimeRange"
+            clearable
           />
         </n-form-item-gi>
         <n-form-item-gi path="activityCategory" :span="6" label="活动种类">
-          <n-select :options="categories" placeholder="请选择" />
+          <n-select :options="categories" v-model:value="activityInfo.activityCategory" placeholder="请选择" />
         </n-form-item-gi>
 
         <n-form-item-gi path="enrollment" :span="6" label="可报名人数">
@@ -46,21 +59,11 @@
             placeholder="请输入可报名人数"
           />
         </n-form-item-gi>
-        <n-form-item-gi path="enrollDeadline" :span="6" label="报名截止时间">
+        <n-form-item-gi path="enrollDeadline" :span="12" label="报名截止时间">
           <n-date-picker
             placeholder="报名截止时间"
             v-model:value-format="activityInfo.enrollDeadline"
             type="datetime"
-            clearable
-          />
-        </n-form-item-gi>
-
-        <n-form-item-gi path="dateTimeRange" :span="12" label="活动起止时间">
-          <n-date-picker
-            type="datetimerange"
-            start-placeholder="活动开始时间"
-            end-placeholder="活动截止时间"
-            v-model:value="activityInfo.dateTimeRange"
             clearable
           />
         </n-form-item-gi>
@@ -108,7 +111,7 @@
           </n-alert>
         </n-form-item-gi>
 
-        <n-form-item-gi path="activityAddition" :span="12" label="附加信息">
+        <n-form-item-gi path="activityAddition" :span="24" label="附加信息">
           <n-input
             type="textarea"
             v-model:value="activityInfo.activityAddition"
@@ -128,7 +131,7 @@
 import { ref } from "vue";
 import { Activity } from "@/views/activity/activityApi.ts";
 import { useUsersStore } from "@/stores/modules/users.ts";
-import { UploadFileInfo } from "naive-ui";
+import { SelectOption, UploadFileInfo } from "naive-ui";
 import { restfulApi } from "@/axios";
 import { message } from "@/plugins/naive-ui-discrete-api.ts";
 import router from "@/router";
@@ -136,10 +139,13 @@ import { AlertCircleOutline } from "@vicons/ionicons5";
 
 const fileList = ref<Array<UploadFileInfo>>([]);
 
+const venueInfo = ref();
+
 const activityInfo = ref<Activity>({
   activityName: null,
   activityAddress: null,
   venueId: null,
+  activityCategory: null,
   activityType: null,
   activityBrief: null,
   activityAddition: null,
@@ -164,7 +170,7 @@ const activityApplyFormRules = {
       type: "array",
       required: true,
       trigger: ["blur", "change"],
-      message: "请输入 datetimeValue",
+      message: "请输入活动起止时间",
     },
   ],
 };
@@ -195,11 +201,14 @@ async function handleSubmit() {
       await restfulApi.post("/activity", param).then(() => {
         message.success("申请成功");
         router.push({ name: "activity:info" });
-      }).catch(() => {
-        router.push({ name: "activity:info" });
       });
     }
   });
+}
+
+function handleUpdateValue(value: string, option: SelectOption) {
+  console.log(value, option);
+  venueInfo.value = `可容纳人数:${option.data.capacity}`;
 }
 
 async function fetchSelectBox() {
@@ -207,6 +216,7 @@ async function fetchSelectBox() {
     venues.value = res.data.map((item) => ({
       label: item.venueName,
       value: item.id,
+      data: item,
     }));
   });
   await restfulApi.get("/activity/category/listAll").then((res) => {

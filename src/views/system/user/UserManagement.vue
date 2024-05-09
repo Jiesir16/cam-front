@@ -45,8 +45,8 @@
       resizable
     />
     <UserEditModal
-      v-model:show1="showEditModal"
-      v-model:user1="currentUser"
+      v-model:show="showEditModal"
+      v-model:user-model-info="currentUser"
       @edit="editUser"
       @create="createUser"
       @update:show="handleShow"
@@ -79,7 +79,21 @@ function onReset() {
 // 模态框 start
 const showEditModal = ref(false);
 
-const currentUser = ref<User>({ id: null, username: null, email: null });
+const currentUser = ref<User>({
+  id: null,
+  username: null,
+  email: null,
+  avatarUrl: null,
+  phone: null,
+  account: null,
+  name: null,
+  sex: null,
+  grade: null,
+  department: null,
+  profession: null,
+  userClass: null,
+  userType: null,
+});
 
 function editUser(user) {
   console.log("[用户列表父组件] 收到Modal发送的edit事件", user);
@@ -150,13 +164,23 @@ const updateActivationStatus = (id: number, activated: boolean) => {
   });
 };
 
-const openEditModal = (row) => {
+const openEditModal = (row: User) => {
   showEditModal.value = true;
   currentUser.value = {
     id: row.id,
     username: row.username,
     email: row.email,
-    roleIds: row.roles.map((role) => role.id),
+    roleIds: row.roles?.map((role) => role.id),
+    avatarUrl: row.avatarUrl,
+    phone: row.phone,
+    account: row.account,
+    name: row.name,
+    sex: row.sex,
+    grade: row.grade,
+    department: row.department,
+    profession: row.profession,
+    userClass: row.userClass,
+    userType: row.userType,
   };
   console.log("editItem", row);
 };

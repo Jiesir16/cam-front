@@ -9,6 +9,7 @@ import {
   NBreadcrumb,
   NBreadcrumbItem,
   NButton,
+  NCalendar,
   NCard,
   NCarousel,
   NCarouselItem,
@@ -58,6 +59,7 @@ import {
   NNotificationProvider,
   NPageHeader,
   NPagination,
+  NPopconfirm,
   NPopover,
   NProgress,
   NRadio,
@@ -85,7 +87,6 @@ import {
   NTree,
   NTreeSelect,
   NUpload,
-  NCalendar,
 } from "naive-ui";
 
 // https://www.naiveui.com/en-US/os-theme/docs/import-on-demand
@@ -176,6 +177,7 @@ const naive = create({
     NFormItemGi,
     NFormItemRow,
     NCalendar,
+    NPopconfirm,
   ],
 });
 

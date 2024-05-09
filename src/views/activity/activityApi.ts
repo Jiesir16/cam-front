@@ -15,6 +15,7 @@ export interface Activity {
   venueId?: number | null;
   venueName?: String | null;
   categoryName?: String | null;
+  activityCategory?: String | null;
   contactPerson?: String | null;
   contactPhone?: String | null;
   dateTimeRange?: Array<number | null> | null;

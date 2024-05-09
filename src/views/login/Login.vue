@@ -213,7 +213,7 @@ function handleSubmit() {
         notification["success"]({
           content: "登录成功",
           meta: "欢迎回来",
-          duration: 2500,
+          duration: 1500,
           keepAliveOnHover: true,
         });
         router.push({ name: "front:home" });
@@ -226,6 +226,9 @@ async function handleSignUp() {
   await restfulApi.post("/auth/signUp", signUpForm).then((res) => {
     console.log("注册响应", res);
     message.success("注册成功");
+    signUpForm.username = null;
+    signUpForm.password = null;
+    signUpForm.reenteredPassword = null;
   });
 }
 </script>

@@ -1,5 +1,5 @@
 import { h } from "vue";
-import { NButton, NIcon, NSwitch, NTag } from "naive-ui";
+import { NButton, NIcon, NImage, NSwitch, NTag } from "naive-ui";
 import { LayersOutline, TrashOutline } from "@vicons/ionicons5";
 
 export const getTableColumns = (
@@ -7,6 +7,21 @@ export const getTableColumns = (
   openEditModal: Function,
   deleteItem: Function,
 ) => [
+  {
+    title: "头像",
+    key: "avatarUrl",
+    align: "center",
+    render({ avatarUrl }) {
+      return [
+        h(NImage, {
+          text: true,
+          src: avatarUrl,
+          lazy: true,
+          width: 45,
+        }),
+      ];
+    },
+  },
   {
     title: "用户名",
     key: "username",
