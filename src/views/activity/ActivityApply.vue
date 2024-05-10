@@ -29,17 +29,20 @@
           </n-radio-group>
         </n-form-item-gi>
 
-        <n-form-item-gi path="activityVenue" :span="6" label="活动场地">
-          <n-select
-            :options="venues"
-            v-model:value="activityInfo.venueId"
-            placeholder="请选择"
-            @update:value="handleUpdateValue"
-          />
-        </n-form-item-gi>
-        <n-form-item-gi :span="6">
-          <n-text style="color: red">{{ venueInfo }}</n-text>
-        </n-form-item-gi>
+        <template v-if="activityInfo.activityType === 'offline'">
+          <n-form-item-gi path="activityVenue" :span="6" label="活动场地">
+                    <n-select
+                      :options="venues"
+                      v-model:value="activityInfo.venueId"
+                      placeholder="请选择"
+                      @update:value="handleUpdateValue"
+                    />
+                  </n-form-item-gi>
+                  <n-form-item-gi :span="6">
+                    <n-text style="color: red">{{ venueInfo }}</n-text>
+                  </n-form-item-gi>
+        </template>
+
         <n-form-item-gi path="dateTimeRange" :span="12" label="活动起止时间">
           <n-date-picker
             type="datetimerange"

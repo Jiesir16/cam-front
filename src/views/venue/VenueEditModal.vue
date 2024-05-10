@@ -2,9 +2,9 @@
   <n-modal :show="show">
     <n-card closable @close="handleClose" style="width: 900px">
       <template #header>权限信息</template>
-      <n-form ref="editForm">
+      <n-form ref="editForm" :rules="venueInfoRules" :model="venueInfo">
         <n-grid :cols="24" :x-gap="24">
-          <n-form-item-gi path="activityName" :span="12" label="场地名称">
+          <n-form-item-gi path="venueName" :span="12" label="场地名称">
             <n-input
               v-model:value="venueInfo.venueName"
               placeholder="请输入场地名称"
@@ -42,7 +42,11 @@
               点击上传
             </n-upload>
           </n-form-item-gi>
-          <n-form-item-gi label="开放开始时间" :span="12">
+          <n-form-item-gi
+            label="开放开始时间"
+            path="availableTimeStart"
+            :span="12"
+          >
             <n-time-picker
               v-model:formatted-value="venueInfo.availableTimeStart"
               :hours="
@@ -52,7 +56,11 @@
               :seconds="[0]"
             />
           </n-form-item-gi>
-          <n-form-item-gi label="开放结束时间" :span="12">
+          <n-form-item-gi
+            label="开放结束时间"
+            path="availableTimeEnd"
+            :span="12"
+          >
             <n-time-picker
               v-model:formatted-value="venueInfo.availableTimeEnd"
               :hours="
@@ -68,25 +76,25 @@
               placeholder="请输入可容纳人数"
             />
           </n-form-item-gi>
-          <n-form-item-gi label="联系人" :span="12">
+          <n-form-item-gi label="联系人" path="contactPerson" :span="12">
             <n-input
               v-model:value="venueInfo.contactPerson"
               placeholder="请输入联系人"
             />
           </n-form-item-gi>
-          <n-form-item-gi label="联系人邮箱" :span="12">
+          <n-form-item-gi label="联系人邮箱" path="contactEmail" :span="12">
             <n-input
               v-model:value="venueInfo.contactEmail"
               placeholder="请输入联系人邮箱"
             />
           </n-form-item-gi>
-          <n-form-item-gi label="联系人手机号" :span="12">
+          <n-form-item-gi label="联系人手机号" path="contactPhone" :span="12">
             <n-input
               v-model:value="venueInfo.contactPhone"
               placeholder="请输入联系人手机号"
             />
           </n-form-item-gi>
-          <n-form-item-gi label="场地详情" :span="24">
+          <n-form-item-gi label="场地详情" path="venueDetail" :span="24">
             <n-input
               type="textarea"
               v-model:value="venueInfo.venueDetail"
@@ -122,6 +130,36 @@ const props = defineProps<Props>();
 // 定义发送事件
 const emit = defineEmits(["update:show", "edit", "create"]);
 
+const venueInfoRules = {
+  venueName: [
+    { required: true, message: "请输入场地名称", trigger: ["blur", "input"] },
+  ],
+  venueType: [
+    { required: true, message: "请选择场地类型", trigger: ["blur", "input"] },
+  ],
+  venueLocation: [
+    { required: true, message: "请输入场地地址", trigger: ["blur", "input"] },
+  ],
+  venueStatus: [
+    { required: true, message: "请选择场地状态", trigger: ["blur", "input"] },
+  ],
+  availableTimeStart: [
+    { required: true, message: "请选择开放时间", trigger: ["blur", "input"] },
+  ],
+  venueDetail: [
+    { required: true, message: "请选择关闭时间", trigger: ["blur", "input"] },
+  ],
+  contactPerson: [
+    { required: true, message: "请输入联系人", trigger: ["blur", "input"] },
+  ],
+  contactPhone: [
+    { required: true, message: "请输入手机号", trigger: ["blur", "input"] },
+  ],
+  availableTimeEnd: [
+    { required: true, message: "请输入场地详情", trigger: ["blur", "input"] },
+  ],
+};
+
 function handleFinish({
   file,
   event,
@@ -140,23 +178,29 @@ const venueStatusOptions = ref([
   { label: "已关闭", value: "closed" },
 ]);
 
+const editForm = ref();
+
 function handleSubmit() {
   console.log(
     "[Modal子组件] 触发表单提交, 发送给父组件[edit事件、更新show属性的事件]",
   );
   console.log("props.value", props);
-  if (props.venueInfo.id) {
-    emit("edit", {
-      ...props.venueInfo,
-      venueImg: props.venueInfo.fileList?.map((item) => item.url).pop(),
-    });
-  } else {
-    emit("create", {
-      ...props.venueInfo,
-      venueImg: props.venueInfo.fileList?.map((item) => item.url).pop(),
-    });
-  }
-  emit("update:show", false);
+  editForm.value.validate(async (error) => {
+    if (!error) {
+      if (props.venueInfo.id) {
+        emit("edit", {
+          ...props.venueInfo,
+          venueImg: props.venueInfo.fileList?.map((item) => item.url).pop(),
+        });
+      } else {
+        emit("create", {
+          ...props.venueInfo,
+          venueImg: props.venueInfo.fileList?.map((item) => item.url).pop(),
+        });
+      }
+      emit("update:show", false);
+    }
+  });
 }
 
 function handleCancel() {

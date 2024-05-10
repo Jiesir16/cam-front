@@ -47,6 +47,7 @@
         </n-form-item-gi>
         <n-form-item-gi :span="12" path="phone" label="手机号:">
           <n-input
+            maxlength="11"
             v-model:value="profileInfo.phone"
             placeholder="请输入手机号"
           />
@@ -127,6 +128,9 @@ const profileInfoRules = {
   email: [
     { required: true, message: "请输入邮箱", trigger: ["blur", "input"] },
   ],
+  phone: [
+    { pattern: /^1[3456789]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' }
+  ]
 };
 
 const showModalRef = ref(false);
@@ -139,12 +143,14 @@ async function onPositiveClick() {
   showModalRef.value = false;
   profileInfoFormRef.value.validate(async (error) => {
     if (!error) {
+      let avatarUrlTmp = fileList.value.map((item) => item.url).pop();
       let data = {
         ...profileInfo.value,
+        avatarUrl: String(avatarUrlTmp),
       };
       await restfulApi.put("/user", data).then(() => {
         message.success("更新成功");
-        let avatarUrlTmp = fileList.value.map((item) => item.url).pop();
+
         console.log("asd", avatarUrlTmp);
         usersStore.setLoginUserInfo({
           id: data.id,
@@ -153,6 +159,7 @@ async function onPositiveClick() {
           name: data.name,
           account: data.account,
           sex: data.sex,
+          phone: data.phone,
           grade: data.grade,
           department: data.department,
           profession: data.profession,

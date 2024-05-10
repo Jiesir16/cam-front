@@ -27,7 +27,7 @@
         <n-divider>简介</n-divider>
         <n-text>{{ activityInfo.activityBrief }}</n-text>
         <n-divider>地址</n-divider>
-        <n-text>{{ activityInfo.activityAddress }}</n-text>
+        <n-text>{{ activityInfo.venueLocation }}</n-text>
         <n-divider>描述</n-divider>
         <n-text>{{ activityInfo.activityAddition }}</n-text>
       </n-flex>
@@ -160,7 +160,7 @@ const activityInfo = ref({
   activityName: null,
   activityImg: null,
   activityBrief: null,
-  activityAddress: null,
+  venueLocation: null,
   activityType: null,
   activityAddition: null,
 });
@@ -212,7 +212,7 @@ function handleComment() {
     content: commentRef.value,
     activityId: activityIdRef.value,
   };
-  restfulApi.post("/comment", data).then((res) => {
+  restfulApi.post("/comment", data).then(() => {
     message.success("评论成功");
     commentRef.value = null;
     fetchCommets();
@@ -223,7 +223,7 @@ function toggleFavorite() {
   let data = {
     activityId: activityIdRef.value,
   };
-  restfulApi.post("/collection", data).then((res) => {
+  restfulApi.post("/collection", data).then(() => {
     message.success("收藏成功");
     isFavorite.value = true;
   });
@@ -233,7 +233,7 @@ function toggleEnroll() {
   let data = {
     activityId: activityIdRef.value,
   };
-  restfulApi.post("/enroll", data).then((res) => {
+  restfulApi.post("/enroll", data).then(() => {
     message.success("报名成功");
     isEnroll.value = true;
   });
@@ -247,7 +247,7 @@ function handleReply(commentId, targetUserId) {
     replyCommentId: commentId,
     replyTargetId: targetUserId,
   };
-  restfulApi.post("/reply", data).then((res) => {
+  restfulApi.post("/reply", data).then(() => {
     message.success("回复成功");
     replyContentRef.value = null;
     fetchCommets();

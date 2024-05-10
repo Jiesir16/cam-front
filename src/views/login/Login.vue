@@ -200,6 +200,7 @@ function handleSubmit() {
           name: data.name,
           account: data.account,
           sex: data.sex,
+          phone: data.phone,
           grade: data.grade,
           department: data.department,
           profession: data.profession,

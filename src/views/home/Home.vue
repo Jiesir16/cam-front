@@ -7,12 +7,12 @@
             <n-avatar
               round
               style="height: 60px; width: 60px"
-              src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"
+              :src="useUsersStore().loginUserInfo.avatarUrl"
               size="large"
             ></n-avatar>
             <n-flex vertical justify="space-between" style="margin-left: 12px">
               <n-text>Hello, {{ useUsersStore().loginUserInfo.name }}</n-text>
-              <n-text>当前角色: 超级管理员</n-text>
+              <!--<n-text>当前角色: 超级管理员</n-text>-->
             </n-flex>
           </n-flex>
           <n-flex vertical>

@@ -8,6 +8,7 @@ export interface LoginUserInfo {
   name?: string;
   account: string;
   sex: string;
+  phone: string;
   grade: string;
   department: string;
   profession: string;
