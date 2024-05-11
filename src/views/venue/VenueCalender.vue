@@ -11,14 +11,36 @@
         <n-card class="grid-style" :title="item.dateStr">
           <n-flex vertical>
             <n-button @click="handleClick(item.dateStr, item.hours)"
-            >预约
+              >预约
             </n-button>
-            <span v-for="x in item.reserveList">
-              <n-badge dot :color="x.color" style="margin-right: 5px"
-                >{{ x.status ? `占用` : `空闲` }}
-              </n-badge>
-              <n-text>{{ x.startTime }} ~ {{ x.endTime }}</n-text>
-            </span>
+            <div v-for="x in item.reserveList">
+              <n-flex>
+                <n-badge dot :color="x.color" style="margin-right: 5px"
+                  >{{ x.status ? `占用` : `空闲` }}
+                </n-badge>
+                <n-text>{{ x.startTime }} ~ {{ x.endTime }}</n-text>
+                <template
+                  v-if="useUsersStore().loginUserInfo.id === x.reserveUserId"
+                >
+                  <n-tooltip placement="bottom" trigger="hover">
+                    <template #trigger>
+                      <n-button
+                        @click="handleUnReserve(x.reserveId)"
+                        text
+                        style="color: yellowgreen; font-size: 16px"
+                      >
+                        <template #icon>
+                          <n-icon>
+                            <StarFilled />
+                          </n-icon>
+                        </template>
+                      </n-button>
+                    </template>
+                    <span> 点击取消预定 </span>
+                  </n-tooltip>
+                </template>
+              </n-flex>
+            </div>
           </n-flex>
         </n-card>
       </n-gi>
@@ -60,6 +82,18 @@
       </template>
     </n-card>
   </n-modal>
+  <n-input-number v-model:value="modalReserveId" v-show="false" />
+  <n-modal
+    v-model:show="ackModal"
+    :mask-closable="false"
+    preset="dialog"
+    title="取消预定"
+    content="是否取消预定吗?"
+    positive-text="是"
+    negative-text="否"
+    @positive-click="onPositiveClick"
+    @negative-click="onNegativeClick"
+  />
 </template>
 
 <script setup lang="ts">
@@ -67,10 +101,12 @@ import { ref } from "vue";
 import { useMessage } from "naive-ui";
 import { useRoute } from "vue-router";
 import { restfulApi } from "@/axios";
-import router from "@/router";
+import { StarFilled } from "@vicons/carbon";
+import { useUsersStore } from "@/stores/modules/users.ts";
 
 const message = useMessage();
 const show = ref(false);
+const ackModal = ref(false);
 
 const timeSelectBox = ref({
   reserveDate: null,
@@ -80,194 +116,8 @@ const timeSelectBox = ref({
 const venueIdRef = ref();
 const venueName = ref("图书馆");
 const hoursRef = ref<Array<number>>();
-const calenderDataRef = ref([
-  {
-    reserveList: [
-      {
-        startTime: "08:00:00",
-        endTime: "10:00:00",
-        color: "#b22222",
-        status: true,
-      },
-      {
-        startTime: "10:00:00",
-        endTime: "12:00:00",
-        color: "#b22222",
-        status: true,
-      },
-    ],
-    dateStr: "2024-05-04",
-    hours: [8, 18],
-  },
-  {
-    reserveList: [
-      {
-        startTime: "14:00:00",
-        endTime: "18:00:00",
-        color: "#b22222",
-        status: true,
-      },
-      {
-        startTime: "14:00:00",
-        endTime: "18:00:00",
-        color: "#32cd32",
-        status: false,
-      },
-    ],
-    options: [
-      { label: "14:00:00", value: "14:00:00" },
-      { label: "15:00:00", value: "15:00:00" },
-      { label: "16:00:00", value: "16:00:00" },
-      { label: "17:00:00", value: "17:00:00" },
-      { label: "18:00:00", value: "18:00:00" },
-    ],
-    dateStr: "2024-05-05",
-  },
-  {
-    reserveList: [
-      {
-        startTime: "14:00:00",
-        endTime: "18:00:00",
-        color: "#b22222",
-        status: true,
-      },
-      {
-        startTime: "14:00:00",
-        endTime: "18:00:00",
-        color: "#32cd32",
-        status: false,
-      },
-    ],
-    options: [
-      { label: "14:00:00", value: "14:00:00" },
-      { label: "15:00:00", value: "15:00:00" },
-      { label: "16:00:00", value: "16:00:00" },
-      { label: "17:00:00", value: "17:00:00" },
-      { label: "18:00:00", value: "18:00:00" },
-    ],
-    dateStr: "2024-05-06",
-  },
-  {
-    reserveList: [
-      {
-        startTime: "14:00:00",
-        endTime: "18:00:00",
-        color: "#b22222",
-        status: true,
-      },
-      {
-        startTime: "14:00:00",
-        endTime: "18:00:00",
-        color: "#32cd32",
-        status: false,
-      },
-    ],
-    options: [
-      { label: "14:00:00", value: "14:00:00" },
-      { label: "15:00:00", value: "15:00:00" },
-      { label: "16:00:00", value: "16:00:00" },
-      { label: "17:00:00", value: "17:00:00" },
-      { label: "18:00:00", value: "18:00:00" },
-    ],
-    dateStr: "2024-05-07",
-  },
-  {
-    reserveList: [
-      {
-        startTime: "14:00:00",
-        endTime: "18:00:00",
-        color: "#b22222",
-        status: true,
-      },
-      {
-        startTime: "14:00:00",
-        endTime: "18:00:00",
-        color: "#32cd32",
-        status: false,
-      },
-    ],
-    options: [
-      { label: "14:00:00", value: "14:00:00" },
-      { label: "15:00:00", value: "15:00:00" },
-      { label: "16:00:00", value: "16:00:00" },
-      { label: "17:00:00", value: "17:00:00" },
-      { label: "18:00:00", value: "18:00:00" },
-    ],
-    dateStr: "2024-05-08",
-  },
-  {
-    reserveList: [
-      {
-        startTime: "14:00:00",
-        endTime: "18:00:00",
-        color: "#b22222",
-        status: true,
-      },
-      {
-        startTime: "14:00:00",
-        endTime: "18:00:00",
-        color: "#32cd32",
-        status: false,
-      },
-    ],
-    options: [
-      { label: "14:00:00", value: "14:00:00" },
-      { label: "15:00:00", value: "15:00:00" },
-      { label: "16:00:00", value: "16:00:00" },
-      { label: "17:00:00", value: "17:00:00" },
-      { label: "18:00:00", value: "18:00:00" },
-    ],
-    dateStr: "2024-05-09",
-  },
-  {
-    reserveList: [
-      {
-        startTime: "14:00:00",
-        endTime: "18:00:00",
-        color: "#b22222",
-        status: true,
-      },
-      {
-        startTime: "14:00:00",
-        endTime: "18:00:00",
-        color: "#32cd32",
-        status: false,
-      },
-    ],
-    options: [
-      { label: "14:00:00", value: "14:00:00" },
-      { label: "15:00:00", value: "15:00:00" },
-      { label: "16:00:00", value: "16:00:00" },
-      { label: "17:00:00", value: "17:00:00" },
-      { label: "18:00:00", value: "18:00:00" },
-    ],
-    dateStr: "2024-05-10",
-  },
-  {
-    reserveList: [
-      {
-        startTime: "14:00:00",
-        endTime: "18:00:00",
-        color: "#b22222",
-        status: true,
-      },
-      {
-        startTime: "14:00:00",
-        endTime: "18:00:00",
-        color: "#32cd32",
-        status: false,
-      },
-    ],
-    options: [
-      { label: "14:00:00", value: "14:00:00" },
-      { label: "15:00:00", value: "15:00:00" },
-      { label: "16:00:00", value: "16:00:00" },
-      { label: "17:00:00", value: "17:00:00" },
-      { label: "18:00:00", value: "18:00:00" },
-    ],
-    dateStr: "2024-05-11",
-  },
-]);
+const calenderDataRef = ref([]);
+const modalReserveId = ref();
 
 function handleClick(dateStr: String, hours: Array<number>) {
   console.log("dateStr", dateStr);
@@ -285,19 +135,16 @@ function handleCancel() {
   show.value = false;
 }
 
-function handleSubmit() {
-  restfulApi
+async function handleSubmit() {
+  await restfulApi
     .post("/venue/reserve", {
       ...timeSelectBox.value,
       venueId: venueIdRef.value,
     })
     .then(() => {
       message.success("预约成功");
-      router.go(-1);
-    })
-    .catch(() => {
-      message.success("预约失败");
-      router.go(-1);
+      show.value = false;
+      fetchReserveData();
     });
 }
 
@@ -306,9 +153,13 @@ function handleClose() {
 }
 
 function fetchInitData() {
-  let paramId = useRoute().params.id;
+  const paramId = useRoute().params.id;
   venueIdRef.value = paramId;
-  message.info(`${paramId}进来了`);
+  fetchReserveData();
+}
+
+function fetchReserveData() {
+  let paramId = venueIdRef.value;
   restfulApi.get(`/venue/reserve/${paramId}`).then((res) => {
     calenderDataRef.value = res.data.map((item) => ({
       reserveList: item.reserveList,
@@ -318,10 +169,28 @@ function fetchInitData() {
   });
 }
 
+function onNegativeClick() {
+  modalReserveId.value = null;
+  ackModal.value = false;
+}
+
+function handleUnReserve(reserveId) {
+  modalReserveId.value = reserveId;
+  ackModal.value = true;
+}
+
+function onPositiveClick() {
+
+  restfulApi.put("/venue/reserve", { id: modalReserveId.value }).then(() => {
+    message.success("取消成功");
+    fetchReserveData();
+  });
+}
+
 fetchInitData();
 </script>
 <style>
 .grid-style {
-  height: 208px;
+  height: 308px;
 }
 </style>

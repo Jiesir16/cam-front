@@ -58,7 +58,6 @@
                     </div>
                   </template>
                   {{ item.desc }}
-                  {{ index }}
                 </n-card>
               </n-gi>
             </n-grid>
@@ -81,7 +80,6 @@
                     </div>
                   </template>
                   {{ item.desc }}
-                  {{ index }}
                 </n-card>
               </n-gi>
             </n-grid>
@@ -104,7 +102,6 @@
                     </div>
                   </template>
                   {{ item.desc }}
-                  {{ index }}
                 </n-card>
               </n-gi>
             </n-grid>

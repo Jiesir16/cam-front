@@ -147,15 +147,14 @@ const tableData = ref([]);
 
 // 删除用户
 const deleteItem = (id: number) => {
-  userApi.delete(id).then((reponse) => {
-    console.log("删除响应", reponse);
+  userApi.delete(id).then((_) => {
+    fetchUsers({});
   });
 };
 
 // 更新状态
 const updateActivationStatus = (id: number, activated: boolean) => {
-  userApi.update({ id, activated }).then((reponse) => {
-    console.log("更新响应", reponse);
+  userApi.update({ id, activated }).then(() => {
     // 刷新列表
     fetchUsers({
       current: paginationRef.page,

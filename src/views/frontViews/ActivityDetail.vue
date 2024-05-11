@@ -10,20 +10,30 @@
         返回上一级
       </n-button>
     </n-flex>
-    <n-card :segmented="{
+    <n-card
+      :segmented="{
         content: true,
         footer: 'soft',
-      }" style="background-color: #ffffff">
+      }"
+      style="background-color: #ffffff"
+    >
       <template #header>{{ activityInfo.activityName }}</template>
       <template #header-extra>
         <n-flex>
           <n-rate readonly allow-half :default-value="activityRateRef" />
-          <n-gradient-text type="warning">{{ activityRateRef }}分
+          <n-gradient-text type="warning"
+            >{{ activityRateRef }}分
           </n-gradient-text>
         </n-flex>
       </template>
       <n-flex vertical align="center" justify="center">
-        <n-image lazy object-fit="fill" width="1200px" height="300px" :src="activityInfo.activityImg" />
+        <n-image
+          lazy
+          object-fit="fill"
+          width="1200px"
+          height="300px"
+          :src="activityInfo.activityImg"
+        />
         <n-divider>简介</n-divider>
         <n-text>{{ activityInfo.activityBrief }}</n-text>
         <n-divider>地址</n-divider>
@@ -33,32 +43,67 @@
       </n-flex>
       <template #action>
         <n-flex align="center" justify="center">
-          <n-button @click="toggleFavorite" :disabled="isFavorite">
-            <template v-if="!isFavorite" #icon>
-              <n-icon color="#ff5555">
-                <HeartOutline />
-              </n-icon>
-            </template>
-            <template v-else #icon>
-              <n-icon color="#ff5555">
-                <Heart />
-              </n-icon>
-            </template>
-            {{ isFavorite ? "已收藏" : "收藏" }}
-          </n-button>
-          <n-button @click="toggleEnroll" :disabled="isEnroll">
-            <template v-if="!isEnroll" #icon>
-              <n-icon color="#ff5555">
-                <HandRightOutline />
-              </n-icon>
-            </template>
-            <template v-else #icon>
-              <n-icon color="#ff5555">
-                <HandRight />
-              </n-icon>
-            </template>
-            {{ isEnroll ? "已报名" : "我要报名" }}
-          </n-button>
+          <template v-if="!isFavorite">
+            <n-tooltip placement="top" trigger="hover">
+              <template #trigger>
+                <n-button @click="toggleFavorite">
+                  <template #icon>
+                    <n-icon color="#ff5555">
+                      <HeartOutline />
+                    </n-icon>
+                  </template>
+                  收藏
+                </n-button>
+              </template>
+              <span> 点击收藏 </span>
+            </n-tooltip>
+          </template>
+          <template v-else>
+            <n-tooltip placement="top" trigger="hover">
+              <template #trigger>
+                <n-button @click="toggleUnFavorite">
+                  <template #icon>
+                    <n-icon color="#ff5555">
+                      <Heart />
+                    </n-icon>
+                  </template>
+                  已收藏
+                </n-button>
+              </template>
+              <span> 点击取消收藏 </span>
+            </n-tooltip>
+          </template>
+          <template v-if="!isEnroll">
+            <n-tooltip placement="top" trigger="hover">
+              <template #trigger>
+                <n-button @click="toggleEnroll">
+                  <template #icon>
+                    <n-icon color="#ff5555">
+                      <HandRightOutline />
+                    </n-icon>
+                  </template>
+                  我要报名
+                </n-button>
+              </template>
+              <span> 点击报名 </span>
+            </n-tooltip>
+          </template>
+          <template v-else>
+            <n-tooltip placement="top" trigger="hover">
+              <template #trigger>
+                <n-button @click="toggleUnEnroll">
+                  <template #icon>
+                    <n-icon color="#ff5555">
+                      <HandRight />
+                    </n-icon>
+                  </template>
+                  已报名
+                </n-button>
+              </template>
+              <span> 点击取消报名 </span>
+            </n-tooltip>
+          </template>
+
           <n-button disabled>活动作品</n-button>
         </n-flex>
       </template>
@@ -67,7 +112,11 @@
   </n-flex>
   <n-card style="width: 80dvw" title="评论:">
     <n-flex vertical justify="start">
-      <n-input v-model:value="commentRef" type="textarea" placeholder="请输入评论" />
+      <n-input
+        v-model:value="commentRef"
+        type="textarea"
+        placeholder="请输入评论"
+      />
       <n-flex align="center" justify="end">
         <n-button @click="handleComment">评论</n-button>
       </n-flex>
@@ -83,7 +132,7 @@
               <n-text>{{ item.commentTime }}</n-text>
             </n-flex>
           </n-flex>
-          <div style="margin-left: 45px;">
+          <div style="margin-left: 45px">
             <n-text> {{ item.comment }}</n-text>
           </div>
           <n-collapse>
@@ -93,15 +142,24 @@
             <template #header-extra> 回复</template>
             <n-collapse-item>
               <n-flex vertical>
-                <n-input type="textarea" v-model:value="replyContentRef" placeholder="请输入回复内容" />
+                <n-input
+                  type="textarea"
+                  v-model:value="replyContentRef"
+                  placeholder="请输入回复内容"
+                />
                 <n-flex align="center" justify="end">
-                  <n-button @click="handleReply(item.id, item.userId)">提交
+                  <n-button @click="handleReply(item.id, item.userId)"
+                    >提交
                   </n-button>
                 </n-flex>
               </n-flex>
             </n-collapse-item>
           </n-collapse>
-          <n-card embedded style="margin: 0 20px" v-for="subItem in item.replys">
+          <n-card
+            embedded
+            style="margin: 0 20px"
+            v-for="subItem in item.replys"
+          >
             <n-flex vertical justify="start">
               <n-flex justify="space-between">
                 <n-flex align="center">
@@ -112,7 +170,8 @@
               </n-flex>
               <n-text>
                 回复
-                <n-gradient-text strong>{{ subItem.targetUsername }}
+                <n-gradient-text strong
+                  >{{ subItem.targetUsername }}
                 </n-gradient-text>
                 : {{ subItem.comment }}
               </n-text>
@@ -123,9 +182,15 @@
                 <template #header-extra> 回复</template>
                 <n-collapse-item>
                   <n-flex vertical>
-                    <n-input type="textarea" v-model:value="replyContentRef" placeholder="请输入回复内容" />
+                    <n-input
+                      type="textarea"
+                      v-model:value="replyContentRef"
+                      placeholder="请输入回复内容"
+                    />
                     <n-flex align="center" justify="end">
-                      <n-button @click="handleReply(item.id, subItem.replyUserId)">提交
+                      <n-button
+                        @click="handleReply(item.id, subItem.replyUserId)"
+                        >提交
                       </n-button>
                     </n-flex>
                   </n-flex>
@@ -229,6 +294,16 @@ function toggleFavorite() {
   });
 }
 
+function toggleUnFavorite() {
+  let data = {
+    activityId: activityIdRef.value,
+  };
+  restfulApi.put("/collection", data).then(() => {
+    message.success("取消成功");
+    isFavorite.value = false;
+  });
+}
+
 function toggleEnroll() {
   let data = {
     activityId: activityIdRef.value,
@@ -236,6 +311,16 @@ function toggleEnroll() {
   restfulApi.post("/enroll", data).then(() => {
     message.success("报名成功");
     isEnroll.value = true;
+  });
+}
+
+function toggleUnEnroll() {
+  let data = {
+    activityId: activityIdRef.value,
+  };
+  restfulApi.put("/enroll", data).then(() => {
+    message.success("取消成功");
+    isEnroll.value = false;
   });
 }
 
