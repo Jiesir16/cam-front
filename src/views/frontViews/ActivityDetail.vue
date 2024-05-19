@@ -20,6 +20,9 @@
       <template #header>{{ activityInfo.activityName }}</template>
       <template #header-extra>
         <n-flex>
+          <n-gradient-text type="info"
+          >已报名{{ activityEnrollCount }}人
+          </n-gradient-text>
           <n-rate readonly allow-half :default-value="activityRateRef" />
           <n-gradient-text type="warning"
             >{{ activityRateRef }}分
@@ -219,6 +222,7 @@ import { restfulApi } from "@/axios";
 import { message } from "@/plugins/naive-ui-discrete-api.ts";
 
 const activityRateRef = ref(3.8);
+const activityEnrollCount = ref();
 
 const activityCommentsRef = ref();
 const activityInfo = ref({
@@ -240,6 +244,7 @@ async function fetchActivityById() {
     activityInfo.value = { ...res.data };
     isFavorite.value = res.data.favorite;
     isEnroll.value = res.data.enroll;
+    activityEnrollCount.value = res.data.enrollCount;
   });
   await fetchCommets();
 }
@@ -251,7 +256,7 @@ function fetchCommets() {
       console.log("pinlun", res.data);
       activityCommentsRef.value = res.data.map((item) => ({
         id: item.id,
-        url: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
+        url: item.avatarUrl,
         userId: item.userId, // 评论的用户ID
         username: item.username,
         commentTime: item.time,
@@ -260,7 +265,7 @@ function fetchCommets() {
           id: reply.id, // 评论ID
           replyId: reply.replyId, // 评论回复的
           replyUserId: reply.replyUserId, // 评论回复的
-          url: "https://i.loli.net/2019/05/13/5cd920648ee6175003.jpg",
+          url: reply.replyAvatarUrl,
           username: reply.replyUsername,
           targetUsername: reply.replyTargetUsername,
           commentTime: reply.replyTime,

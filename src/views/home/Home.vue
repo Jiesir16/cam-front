@@ -27,15 +27,11 @@
         <n-card class="card-style">
           <n-row>
             <n-col :span="12">
-              <n-statistic label="发布活动" :value="10">
-                <template #prefix>
-                  <n-icon></n-icon>
-                </template>
-                <template #suffix> / 23</template>
+              <n-statistic label="活动数量" :value="activityCount">
               </n-statistic>
             </n-col>
             <n-col :span="12">
-              <n-statistic label="活跃用户"> 3</n-statistic>
+              <n-statistic label="活跃用户" :value="userCount"></n-statistic>
             </n-col>
           </n-row>
         </n-card>
@@ -76,6 +72,7 @@ import {
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 import { provide, ref } from "vue";
+import { restfulApi } from "@/axios";
 
 use([
   CanvasRenderer,
@@ -89,6 +86,16 @@ use([
 ]);
 
 provide(THEME_KEY, "light");
+
+const activityCount = ref<number>();
+const userCount = ref<number>();
+
+const a1 = ref<number>(0);
+const a2 = ref<number>(0);
+const a3 = ref<number>(0);
+const a4 = ref<number>(0);
+const a5 = ref<number>(0);
+const a6 = ref<number>(0);
 
 const option = ref({
   title: {
@@ -118,12 +125,12 @@ const option = ref({
       radius: "55%",
       center: ["50%", "60%"],
       data: [
-        { value: 335, name: "文化艺术类" },
-        { value: 310, name: "体育健身类" },
-        { value: 234, name: "志愿服务类" },
-        { value: 135, name: "休闲娱乐类" },
-        { value: 1548, name: "学术类" },
-        { value: 2548, name: "其他" },
+        { value: a1, name: "文化艺术类" },
+        { value: a2, name: "体育健身类" },
+        { value: a3, name: "志愿服务类" },
+        { value: a4, name: "休闲娱乐类" },
+        { value: a5, name: "学术类" },
+        { value: a6, name: "其他" },
       ],
       emphasis: {
         itemStyle: {
@@ -201,6 +208,21 @@ const venueBookingOption = ref({
     },
   ],
 });
+
+function fetchInitData() {
+  restfulApi.get("/activity/count").then((res) => {
+    activityCount.value = res.data.activityCount;
+    userCount.value = res.data.userCount;
+    a1.value = res.data.activityCount1;
+    a2.value = res.data.activityCount2;
+    a3.value = res.data.activityCount3;
+    a4.value = res.data.activityCount4;
+    a5.value = res.data.activityCount5;
+    a6.value = res.data.activityCount6;
+  });
+}
+
+fetchInitData();
 </script>
 
 <style lang="scss" scoped>
