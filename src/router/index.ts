@@ -7,7 +7,7 @@ import UserView from "@/views/system/user/UserManagement.vue";
 import RoleView from "@/views/system/role/RoleManagement.vue";
 import PermissionView from "@/views/system/permission/PermissionManagement.vue";
 import Forbidden from "@/views/403.vue";
-import {loadingBar, notification} from "@/plugins/naive-ui-discrete-api";
+import { loadingBar, notification } from "@/plugins/naive-ui-discrete-api";
 import { useUsersStore } from "@/stores/modules/users.ts";
 
 const routes = [
@@ -175,6 +175,14 @@ const routes = [
             component: () => import("@/views/activity/ActivityApply.vue"),
             meta: {
               desc: "活动申请",
+            },
+          },
+          {
+            path: "/dashboard/activity/detail/:id",
+            name: "activity:detail",
+            component: () => import("@/views/activity/ActivityDetail.vue"),
+            meta: {
+              desc: "活动详情",
             },
           },
           {

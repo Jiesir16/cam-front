@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { restfulApi } from "@/axios";
+import { Role } from "@/views/system/role/roleApi.ts";
 
 export interface LoginUserInfo {
   id?: number;
@@ -15,6 +16,7 @@ export interface LoginUserInfo {
   userClass: string;
   userType: string;
   roleName?: string;
+  roles?: Array<Role>;
   email?: string;
 }
 
@@ -35,6 +37,7 @@ export const useUsersStore = defineStore("users", {
     setLoginUserInfo(userInfo: LoginUserInfo) {
       console.log("user store userInfo", userInfo);
       this.loginUserInfo = userInfo;
+
     },
     resetUserStore() {
       this.$reset();

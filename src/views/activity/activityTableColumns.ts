@@ -78,6 +78,7 @@ const formatAuditStatus = (auditStatus) => {
 export const getTableColumns = (
   deleteItem: Function,
   openAuditModal: Function,
+  handleDetail: Function,
 ) => [
   {
     title: "活动名称",
@@ -146,6 +147,11 @@ export const getTableColumns = (
     },
   },
   {
+    title: "审核意见",
+    key: "auditComment",
+    align: "center",
+  },
+  {
     title: "操作",
     key: "actions",
     align: "center",
@@ -165,6 +171,21 @@ export const getTableColumns = (
               default: () => [
                 h(NIcon, null, { default: () => h(LayersOutline) }),
                 " 审核",
+              ],
+            },
+          ),
+          h(
+            NButton,
+            {
+              text: true,
+              type: "info",
+              onClick: () => handleDetail(row),
+              vShow: row.auditStatus === 0,
+            },
+            {
+              default: () => [
+                h(NIcon, null, { default: () => h(LayersOutline) }),
+                " 详情",
               ],
             },
           ),
@@ -202,6 +223,21 @@ export const getTableColumns = (
         ];
       } else {
         return [
+          h(
+            NButton,
+            {
+              text: true,
+              type: "info",
+              onClick: () => handleDetail(row),
+              vShow: row.auditStatus === 0,
+            },
+            {
+              default: () => [
+                h(NIcon, null, { default: () => h(LayersOutline) }),
+                " 详情",
+              ],
+            },
+          ),
           h(
             NPopconfirm,
             {

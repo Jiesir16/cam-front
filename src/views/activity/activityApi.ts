@@ -46,7 +46,7 @@ export default {
     };
     loading.value = true;
     restfulApi
-      .get("/activity/page", { ...params })
+      .get("/activity/admin/page", { ...params })
       .then((response) => {
         setTimeout(() => {
           pagination.itemCount = response.data.total;

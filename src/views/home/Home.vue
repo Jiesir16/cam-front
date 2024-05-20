@@ -12,7 +12,7 @@
             ></n-avatar>
             <n-flex vertical justify="space-between" style="margin-left: 12px">
               <n-text>Hello, {{ useUsersStore().loginUserInfo.name }}</n-text>
-              <!--<n-text>当前角色: 超级管理员</n-text>-->
+              <n-text>当前角色: {{ useUsersStore().loginUserInfo.roles?.map(role => role.roleName) }}</n-text>
             </n-flex>
           </n-flex>
           <n-flex vertical>

@@ -108,7 +108,11 @@ const deleteItem = (id: number) => {
 const handleAudit = (row) => {
   router.push({ path: `/dashboard/activity/audit/${row.id}` });
 };
-const columns = getTableColumns(deleteItem, handleAudit);
+
+const handleDetail = (row) => {
+  router.push({ path: `/dashboard/activity/detail/${row.id}` });
+};
+const columns = getTableColumns(deleteItem, handleAudit,handleDetail);
 
 // 分页按钮
 function handlePageChange(currentPage: number) {

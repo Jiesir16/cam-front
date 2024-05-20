@@ -207,6 +207,7 @@ function handleSubmit() {
           userClass: data.userClass,
           userType: data.userType,
           email: data.email,
+          roles: data.roles,
         });
         usersStore.setToken(res.headers["authorization"]);
         usePermsStore().fetchAllMenus();

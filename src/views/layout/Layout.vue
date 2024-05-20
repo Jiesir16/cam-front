@@ -96,19 +96,19 @@
                 </template>
               </n-switch>
               <n-flex vertical align="center" justify="center" style="gap: 2px">
-                <div>
+                <n-gradient-text type="info" style="font-size: 14px">
                   {{
                     useUsersStore().loginUserInfo.name
                       ? useUsersStore().loginUserInfo.name
                       : useUsersStore().loginUserInfo.username
                   }}
-                </div>
-                <div>
-                  {{
+                </n-gradient-text>
+                <n-text style="font-size: 12px">
+                  [{{
                     useUsersStore().loginUserInfo.profession +
                     useUsersStore().loginUserInfo.userClass
-                  }}班
-                </div>
+                  }}班]
+                </n-text>
               </n-flex>
               <!--<n-button text @click="changeTheme">切换主题</n-button>-->
             </n-flex>
