@@ -1,7 +1,9 @@
 <template>
   <n-flex justify="space-between" align="center" style="padding: 0 24px">
     <n-flex style="height: 50px" align="center">
-      <n-gradient-text :size="22" type="success">场地预订</n-gradient-text>
+      <n-gradient-text :size="22" type="success"
+        >场地预订申请记录</n-gradient-text
+      >
     </n-flex>
   </n-flex>
   <n-flex vertical style="margin: 12px; padding: 24px">
@@ -47,7 +49,9 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import { getTableColumns } from "./venueReserveColumns";
-import venueApi, { VenueSearchParams } from "@/views/venue/venueApi";
+import venueApi, {
+  VenueSearchParams,
+} from "@/views/venue/venueReserveAuditApi.ts";
 import router from "@/router";
 
 const venueStatusOptions = ref([

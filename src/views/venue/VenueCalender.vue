@@ -114,7 +114,7 @@ const timeSelectBox = ref({
   endTime: null,
 });
 const venueIdRef = ref();
-const venueName = ref("图书馆");
+const venueName = ref();
 const hoursRef = ref<Array<number>>();
 const calenderDataRef = ref([]);
 const modalReserveId = ref();
@@ -166,6 +166,9 @@ function fetchReserveData() {
       dateStr: item.reservationDate,
       hours: item.hourList,
     }));
+  });
+  restfulApi.get(`/venue/${paramId}`).then((res) => {
+    venueName.value = res.data.venueName;
   });
 }
 

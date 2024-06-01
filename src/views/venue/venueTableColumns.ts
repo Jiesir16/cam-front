@@ -1,6 +1,6 @@
 import { h } from "vue";
 import { NButton, NIcon, NImage } from "naive-ui";
-import { TrashOutline } from "@vicons/ionicons5";
+import { LayersOutline, TrashOutline } from "@vicons/ionicons5";
 import { Edit } from "@vicons/carbon";
 const formatStatus = (status) => {
   if (status === "open") {
@@ -14,6 +14,7 @@ const formatStatus = (status) => {
 export const getTableColumns = (
   openEditModal: Function,
   deleteItem: Function,
+  reserve: Function,
 ) => [
   {
     title: "场地名称",
@@ -101,6 +102,20 @@ export const getTableColumns = (
     fixed: "right",
     render(row) {
       return [
+        h(
+          NButton,
+          {
+            text: true,
+            type: "info",
+            onClick: () => reserve(row.id),
+          },
+          {
+            default: () => [
+              h(NIcon, null, { default: () => h(LayersOutline) }),
+              "预订记录",
+            ],
+          },
+        ),
         h(
           NButton,
           {

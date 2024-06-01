@@ -79,6 +79,7 @@ import { PersonAddOutline } from "@vicons/ionicons5";
 import venueApi, { VenueInfo, VenueSearchParams } from "@/views/venue/venueApi";
 import { useMessage } from "naive-ui";
 import VenueEditModal from "@/views/venue/VenueEditModal.vue";
+import router from "@/router";
 
 const message = useMessage();
 
@@ -87,6 +88,10 @@ const venueStatusOptions = ref([
   { label: "开放中", value: "open" },
   { label: "已关闭", value: "closed" },
 ]);
+
+function handleReserve(id: String) {
+  router.push({ path: `/dashboard/venue/reserve/detail/${id}` });
+}
 
 function onNegativeClick() {
   message.success("Cancel");
@@ -241,7 +246,7 @@ const deleteItem = (id: number) => {
     });
 };
 
-const columns = getTableColumns(openEditModal, deleteItem);
+const columns = getTableColumns(openEditModal, deleteItem, handleReserve);
 
 // 分页按钮
 function handlePageChange(currentPage: number) {
