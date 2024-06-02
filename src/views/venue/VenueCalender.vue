@@ -36,7 +36,7 @@
                         </template>
                       </n-button>
                     </template>
-                    <span> 点击取消预定 </span>
+                    <span> 您已预定 </span>
                   </n-tooltip>
                 </template>
               </n-flex>
@@ -142,7 +142,7 @@ async function handleSubmit() {
       venueId: venueIdRef.value,
     })
     .then(() => {
-      message.success("预约成功");
+      message.success("申请成功");
       show.value = false;
       fetchReserveData();
     });
@@ -178,8 +178,9 @@ function onNegativeClick() {
 }
 
 function handleUnReserve(reserveId) {
-  modalReserveId.value = reserveId;
-  ackModal.value = true;
+  // 暂时禁止取消
+//  modalReserveId.value = reserveId;
+//  ackModal.value = true;
 }
 
 function onPositiveClick() {

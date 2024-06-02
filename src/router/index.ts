@@ -210,6 +210,22 @@ const routes = [
             },
           },
           {
+            path: "/dashboard/venue/mine/reserve",
+            name: "venue:mine:reserve",
+            component: () => import("@/views/venue/MyVenueReserve.vue"),
+            meta: {
+              desc: "我的场地申请",
+            },
+          },
+          {
+            path: "/dashboard/venue/reserve/approve",
+            name: "venue:reserve:approve",
+            component: () => import("@/views/venueApprove/VenueReserveApprove.vue"),
+            meta: {
+              desc: "场地审批",
+            },
+          },
+          {
             path: "/dashboard/venue/reserve/detail/:id",
             name: "venue:reserve:detail",
             component: () => import("@/views/venue/VenueCalender.vue"),

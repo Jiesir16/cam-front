@@ -1,10 +1,10 @@
 <template>
   <n-flex justify="space-between" align="center" style="padding: 0 24px">
     <n-flex style="height: 50px" align="center">
-      <n-gradient-text :size="22" type="success"
-        >场地预订</n-gradient-text
-      >
+      <n-gradient-text :size="22" type="success">我的申请</n-gradient-text>
     </n-flex>
+
+    <n-flex></n-flex>
   </n-flex>
   <n-flex vertical style="margin: 12px; padding: 24px">
     <n-form @submit.prevent="onSearch" ref="searchForm">
@@ -13,13 +13,6 @@
           <n-input
             v-model:value="searchParams.venueName"
             placeholder="请输入场地名称"
-          />
-        </n-form-item-gi>
-        <n-form-item-gi label="场地状态" :span="4">
-          <n-select
-            v-model:value="searchParams.venueStatus"
-            :options="venueStatusOptions"
-            placeholder="请选择"
           />
         </n-form-item-gi>
         <n-form-item-gi :span="1">
@@ -40,37 +33,28 @@
       :data="tableData"
       :pagination="paginationRef"
       @update:page="handlePageChange"
+      :scroll-x="1800"
       :loading="loading"
       resizable
     />
+    <!--<n-modal-->
+    <!--  v-model:show="showModal"-->
+    <!--  :mask-closable="false"-->
+    <!--  preset="dialog"-->
+    <!--  title="删除"-->
+    <!--  content="是否确认删除"-->
+    <!--  positive-text="是"-->
+    <!--  negative-text="否"-->
+    <!--  @positive-click="onPositiveClick"-->
+    <!--  @negative-click="onNegativeClick"-->
+    <!--/>-->
   </n-flex>
 </template>
 
 <script setup lang="ts">
 import { reactive, ref } from "vue";
-import { getTableColumns } from "./venueReserveColumns";
-import venueApi, { VenueSearchParams } from "@/views/venue/venueApi";
-import router from "@/router";
-
-const venueStatusOptions = ref([
-  { label: "开放中", value: "open" },
-  { label: "已关闭", value: "closed" },
-]);
-
-const searchParams = ref<VenueSearchParams>({
-  venueName: null,
-  venueStatus: null,
-});
-
-function onSearch() {
-  fetchVenues(searchParams.value);
-}
-
-function onReset() {
-  searchParams.value = { venueName: null, venueStatus: null };
-  fetchVenues(searchParams.value);
-}
-
+import venueApi, { VenueInfo, VenueSearchParams } from "@/views/venue/myVenueReserveApi.ts";
+import { getTableColumns } from "./myVenueReserveTableColumns.ts";
 const tableData = ref([]);
 const loading = ref(false);
 
@@ -84,17 +68,39 @@ interface PageParam {
 const paginationRef = reactive<PageParam>({
   page: 1,
   pageCount: 1,
-  pageSize: 10,
+  pageSize: 5,
   prefix: ({ itemCount }) => {
     return `Total is ${itemCount}.`;
   },
 });
 
-function handleReserve(id: String) {
-  router.push({ path: `/dashboard/venue/reserve/detail/${id}` });
+const searchParams = ref<VenueSearchParams>({
+  venueName: null,
+  venueStatus: null,
+  venueType: null,
+});
+
+function onSearch() {
+  fetchVenues(searchParams.value);
 }
 
-const columns = getTableColumns(handleReserve);
+function onReset() {
+  searchParams.value = { venueName: null, venueStatus: null, venueType: null };
+  fetchVenues(searchParams.value);
+}
+
+const deleteItem = (id: number) => {
+  //  venueApi
+  //    .delete(id)
+  //    .then(() => {
+  //      message.success("删除成功");
+  //      fetchVenues({ permCode: null, permName: null });
+  //    })
+  //    .catch(() => {
+  //      message.success("删除失败");
+  //    });
+};
+const columns = getTableColumns(deleteItem);
 
 // 分页按钮
 function handlePageChange(currentPage: number) {
@@ -110,4 +116,5 @@ function fetchVenues(param) {
 }
 
 fetchVenues(searchParams.value);
+
 </script>

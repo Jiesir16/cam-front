@@ -95,7 +95,7 @@ export const getTableColumns = (reserve: Function) => [
           {
             default: () => [
               h(NIcon, null, { default: () => h(LayersOutline) }),
-              "预订",
+              "预订申请",
             ],
           },
         ),

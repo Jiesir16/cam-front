@@ -97,6 +97,16 @@ const a4 = ref<number>(0);
 const a5 = ref<number>(0);
 const a6 = ref<number>(0);
 
+const ac1 = ref<number>(0);
+const ac2 = ref<number>(0);
+const ac3 = ref<number>(0);
+const ac4 = ref<number>(0);
+const ac5 = ref<number>(0);
+const ac6 = ref<number>(0);
+
+const venueNames = ref<Array<string>>();
+const venueTotals = ref<Array<number>>();
+
 const option = ref({
   title: {
     text: "活动分类统计占比",
@@ -171,12 +181,12 @@ const enrollOption = ref({
       radius: "55%",
       center: ["50%", "60%"],
       data: [
-        { value: 35, name: "文化艺术类" },
-        { value: 310, name: "体育健身类" },
-        { value: 234, name: "志愿服务类" },
-        { value: 135, name: "休闲娱乐类" },
-        { value: 148, name: "学术类" },
-        { value: 1148, name: "其他" },
+        { value: ac1, name: "文化艺术类" },
+        { value: ac2, name: "体育健身类" },
+        { value: ac3, name: "志愿服务类" },
+        { value: ac4, name: "休闲娱乐类" },
+        { value: ac5, name: "学术类" },
+        { value: ac6, name: "其他" },
       ],
       emphasis: {
         itemStyle: {
@@ -196,14 +206,14 @@ const venueBookingOption = ref({
   },
   xAxis: {
     type: "category",
-    data: ["篮球场", "图书馆", "足球场", "会议室"],
+    data: venueNames,
   },
   yAxis: {
     type: "value",
   },
   series: [
     {
-      data: [120, 200, 150, 80, 70, 110, 130],
+      data: venueTotals,
       type: "bar",
     },
   ],
@@ -219,6 +229,16 @@ function fetchInitData() {
     a4.value = res.data.activityCount4;
     a5.value = res.data.activityCount5;
     a6.value = res.data.activityCount6;
+
+    ac1.value = res.data.activityCgyCount1;
+    ac2.value = res.data.activityCgyCount2;
+    ac3.value = res.data.activityCgyCount3;
+    ac4.value = res.data.activityCgyCount4;
+    ac5.value = res.data.activityCgyCount5;
+    ac6.value = res.data.activityCgyCount6;
+
+    venueNames.value = res.data.venueNames;
+    venueTotals.value = res.data.venueCounts;
   });
 }
 
