@@ -1,6 +1,6 @@
 import { h } from "vue";
-import { NButton, NIcon, NImage, NTag } from "naive-ui";
-import { TaskApproved} from "@vicons/carbon";
+import { NButton, NGradientText, NIcon, NImage, NTag } from "naive-ui";
+import { TaskApproved } from "@vicons/carbon";
 
 const formatAuditStatus = (auditStatus) => {
   switch (auditStatus) {
@@ -15,7 +15,7 @@ const formatAuditStatus = (auditStatus) => {
           bordered: false,
         },
         {
-          default: () => "待审核",
+          default: () => "待审批",
         },
       );
     }
@@ -30,7 +30,7 @@ const formatAuditStatus = (auditStatus) => {
           bordered: false,
         },
         {
-          default: () => "审核通过",
+          default: () => "审批通过",
         },
       );
     }
@@ -45,7 +45,7 @@ const formatAuditStatus = (auditStatus) => {
           bordered: false,
         },
         {
-          default: () => "审核拒绝",
+          default: () => "审批拒绝",
         },
       );
     }
@@ -66,9 +66,7 @@ const formatAuditStatus = (auditStatus) => {
     }
   }
 };
-export const getTableColumns = (
-    openModal: Function,
-) => [
+export const getTableColumns = (openModal: Function) => [
   {
     title: "场地名称",
     key: "venueName",
@@ -77,10 +75,10 @@ export const getTableColumns = (
   },
   {
     title: "审批状态",
-    key: "auditStatus",
+    key: "status",
     align: "center",
     render(row) {
-      return formatAuditStatus(row.auditStatus);
+      return formatAuditStatus(row.status);
     },
   },
   {
@@ -139,22 +137,50 @@ export const getTableColumns = (
     align: "center",
     fixed: "right",
     render(row) {
-      return [
-        h(
-          NButton,
-          {
-            text: true,
-            type: "info",
-            onClick: () => openModal(row.processId),
-          },
-          {
-            default: () => [
-              h(NIcon, null, { default: () => h(TaskApproved) }),
-              " 审核",
-            ],
-          },
-        ),
-      ];
+      if (row.status !== "0") {
+        return [
+          h(
+            NGradientText,
+            {
+              type: "success",
+            },
+            {
+              default: "已审批",
+            },
+          ),
+        ];
+      } else {
+        if (row.currentStep === row.stepNumber) {
+          return [
+            h(
+              NButton,
+              {
+                text: true,
+                type: "info",
+                onClick: () => openModal(row.processId),
+              },
+              {
+                default: () => [
+                  h(NIcon, null, { default: () => h(TaskApproved) }),
+                  " 审批",
+                ],
+              },
+            ),
+          ];
+        } else {
+          return [
+            h(
+              NGradientText,
+              {
+                type: "warning",
+              },
+              {
+                default: "等待前置审批",
+              },
+            ),
+          ];
+        }
+      }
     },
   },
 ];

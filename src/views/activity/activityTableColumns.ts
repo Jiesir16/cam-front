@@ -24,7 +24,7 @@ const formatAuditStatus = (auditStatus) => {
           bordered: false,
         },
         {
-          default: () => "待审核",
+          default: () => "待审批",
         },
       );
     }
@@ -39,7 +39,7 @@ const formatAuditStatus = (auditStatus) => {
           bordered: false,
         },
         {
-          default: () => "审核通过",
+          default: () => "审批通过",
         },
       );
     }
@@ -54,7 +54,7 @@ const formatAuditStatus = (auditStatus) => {
           bordered: false,
         },
         {
-          default: () => "审核拒绝",
+          default: () => "审批拒绝",
         },
       );
     }
@@ -139,7 +139,7 @@ export const getTableColumns = (
     align: "center",
   },
   {
-    title: "审核状态",
+    title: "审批状态",
     key: "auditStatus",
     align: "center",
     render({ auditStatus }) {
@@ -147,7 +147,7 @@ export const getTableColumns = (
     },
   },
   {
-    title: "审核意见",
+    title: "审批意见",
     key: "auditComment",
     align: "center",
   },
@@ -170,7 +170,7 @@ export const getTableColumns = (
             {
               default: () => [
                 h(NIcon, null, { default: () => h(LayersOutline) }),
-                " 审核",
+                " 审批",
               ],
             },
           ),

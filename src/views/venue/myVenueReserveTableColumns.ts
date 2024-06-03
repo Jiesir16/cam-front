@@ -16,7 +16,7 @@ const formatAuditStatus = (auditStatus) => {
           bordered: false,
         },
         {
-          default: () => "待审核",
+          default: () => "待审批",
         },
       );
     }
@@ -31,7 +31,7 @@ const formatAuditStatus = (auditStatus) => {
           bordered: false,
         },
         {
-          default: () => "审核通过",
+          default: () => "审批通过",
         },
       );
     }
@@ -46,7 +46,7 @@ const formatAuditStatus = (auditStatus) => {
           bordered: false,
         },
         {
-          default: () => "审核拒绝",
+          default: () => "审批拒绝",
         },
       );
     }

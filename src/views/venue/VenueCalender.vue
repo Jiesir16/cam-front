@@ -103,6 +103,7 @@ import { useRoute } from "vue-router";
 import { restfulApi } from "@/axios";
 import { StarFilled } from "@vicons/carbon";
 import { useUsersStore } from "@/stores/modules/users.ts";
+import router from "@/router";
 
 const message = useMessage();
 const show = ref(false);
@@ -144,7 +145,7 @@ async function handleSubmit() {
     .then(() => {
       message.success("申请成功");
       show.value = false;
-      fetchReserveData();
+      router.push({path: "/dashboard/venue/reserve"});
     });
 }
 

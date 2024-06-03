@@ -1,7 +1,7 @@
 <template>
   <n-flex justify="space-between" align="center" style="padding: 0 24px">
     <n-flex style="height: 50px" align="center">
-      <n-gradient-text :size="22" type="success">活动审核</n-gradient-text>
+      <n-gradient-text :size="22" type="success">活动审批</n-gradient-text>
     </n-flex>
   </n-flex>
 
@@ -137,6 +137,8 @@ function fetchActivityInfo() {
       venueName: data.venueName,
       categoryName: data.categoryName,
       imgUrl: data.activityImg,
+      contactPerson: data.contactPerson,
+      contactPhone: data.contactPhone,
     };
   });
 }

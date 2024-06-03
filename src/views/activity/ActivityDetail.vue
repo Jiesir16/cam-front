@@ -107,6 +107,8 @@
           endDatetime: null,
           enrollDeadline: null,
           imgUrl: null,
+          contactPerson: null,
+          contactPhone: null,
         });
         
         function fetchActivityInfo() {
@@ -128,6 +130,8 @@
               venueName: data.venueName,
               categoryName: data.categoryName,
               imgUrl: data.activityImg,
+              contactPerson: data.contactPerson,
+              contactPhone: data.contactPhone,
             };
           });
         }

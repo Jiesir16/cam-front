@@ -190,7 +190,7 @@ const routes = [
             name: "activity:audit",
             component: () => import("@/views/activity/Audit.vue"),
             meta: {
-              desc: "活动审核",
+              desc: "活动审批",
             },
           },
           {

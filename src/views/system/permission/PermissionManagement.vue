@@ -190,7 +190,7 @@ function handlePageChange(currentPage: number) {
 
 function fetchPermissions(param) {
   console.log("获取权限", param);
-  permissionApi.read(paginationRef, searchParams.value, tableData, loading);
+  permissionApi.read(paginationRef, param, tableData, loading);
 }
 
 fetchPermissions(searchParams.value);

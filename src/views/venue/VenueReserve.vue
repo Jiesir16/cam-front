@@ -84,7 +84,7 @@ interface PageParam {
 const paginationRef = reactive<PageParam>({
   page: 1,
   pageCount: 1,
-  pageSize: 10,
+  pageSize: 5,
   prefix: ({ itemCount }) => {
     return `Total is ${itemCount}.`;
   },
